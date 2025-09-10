@@ -2,13 +2,14 @@
 
 @php
 $variants = [
-    'default' => 'bg-white dark:bg-neutral-800 text-gray-900 dark:text-white shadow-md rounded-md p-4',
-    'primary' => 'bg-primary text-white shadow-lg rounded-md p-4',
-    'success' => 'bg-success text-white shadow-lg rounded-md p-4',
+'default' => 'bg-sigedra-card text-sigedra-text-dark border border-sigedra-border rounded-lg p-6',
+'primary' => 'bg-sigedra-primary text-white rounded-lg p-6',
+'secondary' => 'bg-sigedra-secondary text-white rounded-lg p-6',
+'accent' => 'bg-sigedra-accent text-white rounded-lg p-6',
 ];
 @endphp
 
 <div {{ $attributes->merge(['class' => $variants[$variant] ?? $variants['default']]) }}>
-    <h3 class="font-bold text-lg mb-2">{{ $title }}</h3>
-    <p>{{ $body }}</p>
+    <h3 class="font-bold text-xl mb-2">{{ $title }}</h3>
+    <p class="text-3xl font-semibold">{{ $body }}</p>
 </div>
