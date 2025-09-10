@@ -23,7 +23,7 @@ export default {
                 'sigedra-warning': '#F0AD4E',      // Amarillo/Naranja accesible
                 'sigedra-bg': '#F9FAFB',           // Fondo general
                 'sigedra-card': '#F2F6E3',         // Fondo para tarjetas y contenedores
-                'sigedra-light-colored-bg': '#F7FBF3',
+                'sigedra-light-colored-bg': '#F7FAF4',
                 'sigedra-input': '#F3F4F6',        // Fondo para inputs
                 'sigedra-border': '#D1D5DB',       // Borde estándar, ligeramente más oscuro
                 'sigedra-border-strong': '#9CA3AF',// Borde para énfasis (ej. cabecera de tabla)
@@ -36,12 +36,12 @@ export default {
             // Escala de tipografía estandarizada para legibilidad
             fontSize: {
                 'sm': '0.875rem', // 14px
-                'base': '1rem',     // 16px (base para párrafos)
+                'base': '1rem',   // 16px
                 'lg': '1.125rem', // 18px
                 'xl': '1.25rem',  // 20px
-                '2xl': '1.5rem',   // 24px (títulos de sección)
-                '3xl': '1.875rem', // 30px (títulos de página)
-                '4xl': '2.25rem',  // 36px
+                '2xl': '1.4375rem', // 23px (títulos de sección)
+                '3xl': '1.8125rem', // 29px (títulos de página)
+                '4xl': '2.125rem',  // 34px
             }
         },
     },

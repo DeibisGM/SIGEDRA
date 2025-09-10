@@ -22,7 +22,7 @@
 <div class="h-full lg:flex">
 
     <aside id="application-sidebar" class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed z-[60] w-64 bg-white border-e border-sigedra-border flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
-        <header class="h-[60px] flex-shrink-0 flex items-center px-6 border-b border-sigedra-border bg-sigedra-light-colored-bg">
+        <header class="h-[70px] flex-shrink-0 flex items-center px-6 border-b border-sigedra-border bg-sigedra-light-colored-bg">
             <a class="flex items-center text-xl font-bold text-sigedra-secondary" href="{{ route('home') }}">
                 SIGEDRA
             </a>
@@ -71,22 +71,29 @@
 
 
     <!-- ===== Content Area ===== -->
-    <div class="flex-1 flex flex-col h-full lg:ms-64">
+    <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll">
         <!-- Module Title Header -->
-        <header class="h-[60px] flex-shrink-0 bg-sigedra-light-colored-bg border-b border-sigedra-border flex items-center px-6">
-            <!-- Mobile Menu Toggle -->
-            <button type="button" class="lg:hidden text-gray-500 hover:text-gray-600 me-4" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
-                <span class="sr-only">Toggle Navigation</span>
-                <i class="ph ph-list text-xl"></i>
-            </button>
-            <!-- El H1 ahora tomará los estilos base de app.css para consistencia -->
-            <h1>
-                @yield('module_title', 'Módulo')
-            </h1>
+        <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b border-sigedra-border flex items-center">
+            <div class="container mx-auto px-6 flex items-center justify-between">
+                <div class="flex items-center">
+                    <!-- Mobile Menu Toggle -->
+                    <button type="button" class="lg:hidden text-gray-500 hover:text-gray-600 me-4" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
+                        <span class="sr-only">Toggle Navigation</span>
+                        <i class="ph ph-list text-xl"></i>
+                    </button>
+                    <!-- El H1 ahora tomará los estilos base de app.css para consistencia -->
+                    <h1>
+                        @yield('module_title', 'Módulo')
+                    </h1>
+                </div>
+                <div>
+                    @yield('header_actions')
+                </div>
+            </div>
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow overflow-y-auto">
+        <main class="flex-grow">
             <div class="container mx-auto px-6 py-8">
                 @yield('content')
             </div>
