@@ -16,7 +16,7 @@ export default {
             },
             colors: {
                 'sigedra-primary': '#88BBC5',
-                'sigedra-secondary': '#011A39',
+                'sigedra-secundary': '#011A39',
                 'sigedra-accent': '#49C388',
                 'sigedra-error': '#DB5B4D',
                 'sigedra-warning': '#F8D56A',

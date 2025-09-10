@@ -1,23 +1,16 @@
 @extends('layouts.app')
 
 @section('title', 'Dashboard')
+@section('module_title', 'Dashboard')
 
 @section('content')
 <div class="space-y-8">
-    <!-- Encabezado del Módulo -->
-    <h1 class="text-3xl font-bold text-sigedra-text-dark">Dashboard</h1>
-
     <!-- Grid de Estadísticas -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <x-card
             title="Estudiantes Presentes"
             body="34"
             variant="accent"
-        />
-        <x-card
-            title="Total de Ausencias"
-            body="2"
-            variant="secondary"
         />
         <x-card
             title="Clases para Hoy"

@@ -11,3 +11,4 @@ Route::get('/', function () {
 // ESTA ES LA RUTA CRÍTICA
 // Asegúrate de que llama a AttendanceController y no directamente a la vista.
 Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
+
