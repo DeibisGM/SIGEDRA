@@ -1,11 +1,12 @@
-@props(['active'])
+@props(['href', 'active' => false])
 
 @php
-$classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 dark:border-indigo-600 text-sm font-medium leading-5 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out';
+$classes = 'flex items-center gap-x-3.5 py-2 px-2.5 text-base rounded-lg transition-colors duration-200 ';
+$classes .= $active
+? 'bg-sigedra-input text-sigedra-secondary font-semibold'
+: 'text-sigedra-text-medium hover:bg-sigedra-input/70';
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a href="{{ $href }}" {{ $attributes->merge(['class' => $classes]) }}>
     {{ $slot }}
 </a>
