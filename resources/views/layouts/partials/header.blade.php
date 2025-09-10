@@ -5,7 +5,7 @@
             <div class="sm:hidden">
                 <button type="button" class="hs-overlay-toggle p-2 inline-flex justify-center items-center gap-x-2 rounded-lg border bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
                     <span class="sr-only">Toggle Navigation</span>
-                    <i class="ph ph-list text-2xl"></i>
+                    <i class="ph ph-list text-xl"></i>
                 </button>
             </div>
         </div>

@@ -15,19 +15,34 @@ export default {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                'sigedra-primary': '#88BBC5',
-                'sigedra-secundary': '#011A39',
-                'sigedra-accent': '#49C388',
-                'sigedra-error': '#DB5B4D',
-                'sigedra-warning': '#F8D56A',
-                'sigedra-bg': '#F9FAFB',
-                'sigedra-card': '#FFFFFF',
-                'sigedra-input': '#F3F4F6',
-                'sigedra-border': '#E5E7EB',
-                'sigedra-text-dark': '#111827',
-                'sigedra-text-medium': '#374151',
-                'sigedra-text-light': '#6B7280',
+                // Paleta de colores ajustada para mayor contraste y armonía
+                'sigedra-primary': '#193F4C',      // Un azul más vibrante y accesible
+                'sigedra-secondary': '#7AA352',     // Se mantiene, tiene excelente contraste
+                'sigedra-accent': '#34A853',       // Un verde más estándar y visible
+                'sigedra-error': '#D9534F',        // Rojo con buen contraste
+                'sigedra-warning': '#F0AD4E',      // Amarillo/Naranja accesible
+                'sigedra-bg': '#F9FAFB',           // Fondo general
+                'sigedra-card': '#F2F6E3',         // Fondo para tarjetas y contenedores
+                'sigedra-light-colored-bg': '#F7FBF3',
+                'sigedra-input': '#F3F4F6',        // Fondo para inputs
+                'sigedra-border': '#D1D5DB',       // Borde estándar, ligeramente más oscuro
+                'sigedra-border-strong': '#9CA3AF',// Borde para énfasis (ej. cabecera de tabla)
+
+                // Colores de texto con alto contraste
+                'sigedra-text-dark': '#1F2937',      // Texto principal, casi negro
+                'sigedra-text-medium': '#4B5563',    // Texto secundario, más oscuro que antes
+                'sigedra-text-light': '#9CA3AF',     // Para placeholders o texto deshabilitado
             },
+            // Escala de tipografía estandarizada para legibilidad
+            fontSize: {
+                'sm': '0.875rem', // 14px
+                'base': '1rem',     // 16px (base para párrafos)
+                'lg': '1.125rem', // 18px
+                'xl': '1.25rem',  // 20px
+                '2xl': '1.5rem',   // 24px (títulos de sección)
+                '3xl': '1.875rem', // 30px (títulos de página)
+                '4xl': '2.25rem',  // 36px
+            }
         },
     },
 

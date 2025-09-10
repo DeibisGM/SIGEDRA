@@ -1,3 +1,27 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Se definen estilos base para estandarizar la tipografía en toda la aplicación */
+@layer base {
+    body {
+        @apply bg-sigedra-bg font-sans text-base text-sigedra-text-dark antialiased;
+    }
+
+    /* Estilos consistentes para todos los encabezados */
+    h1, h2, h3, h4, h5, h6 {
+        @apply font-bold text-sigedra-secondary;
+    }
+
+    h1 {
+        @apply text-xl; /* Título principal del módulo */
+    }
+
+    h2 {
+        @apply text-xl; /* Títulos de sección */
+    }
+
+    h3 {
+        @apply text-xl; /* Subtítulos o títulos de tarjetas */
+    }
+}
