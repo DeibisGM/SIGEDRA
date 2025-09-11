@@ -15,10 +15,10 @@
 
 @section('content')
 <div class="space-y-8">
-    <div>
+    <div class="flex items-baseline gap-4">
         <!-- Títulos con la nueva jerarquía de CSS -->
         <h3 class="text-xl">Primer Grado</h3>
-        <p class="mt-1 text-base text-sigedra-text-medium">Curso: <span class="font-semibold">Matemáticas Avanzadas</span> &bull; 10/09/2025</p>
+        <p class="text-base text-sigedra-text-medium">Curso: <span class="font-semibold">Matemáticas Avanzadas</span> &bull; 10/09/2025</p>
     </div>
 
     <!-- Barra de Búsqueda y Acciones Secundarias -->
@@ -55,18 +55,13 @@
         {{-- Slot para el cuerpo de la tabla --}}
         <x-slot:body>
             @forelse ($students as $student)
-            <tr class="odd:bg-white even:bg-sigedra-input/40 hover:bg-sigedra-primary/10">
+            <tr x-data="{ selected: false }" @attendance-selected.stop="selected = ($event.detail.value !== '')" :class="{ 'bg-sigedra-primary/5': selected }" class="odd:bg-white even:bg-sigedra-input/40">
                 <td class="px-6 py-3 whitespace-nowrap text-base text-sigedra-text-medium">{{ $loop->iteration }}</td>
                 <td class="px-6 py-3 whitespace-nowrap text-base text-sigedra-text-medium">{{ $student['cedula'] }}</td>
                 <td class="px-6 py-3 whitespace-nowrap text-base font-medium text-sigedra-text-dark">{{ $student['nombre'] }}</td>
                 <td class="px-6 py-3 whitespace-nowrap"><x-percentage-chip :percentage="$student['asistencia']" /></td>
-                <td class="px-6 py-3 whitespace-nowrap w-48">
-                    <select class="py-2 px-3 block w-full bg-white border-sigedra-border rounded-lg text-base text-sigedra-text-dark focus:border-sigedra-primary focus:ring-sigedra-primary">
-                        <option>Presente</option>
-                        <option>Ausente</option>
-                        <option>Justificado</option>
-                        <option>Tardía</option>
-                    </select>
+                <td class="px-6 py-3 whitespace-nowrap w-56">
+                    <x-attendance-button-group />
                 </td>
                 <td class="px-6 py-3 whitespace-nowrap">
                     <input type="text" class="py-2 px-3 block w-full bg-white border-sigedra-border rounded-lg text-base text-sigedra-text-dark placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Añadir observación...">

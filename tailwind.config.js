@@ -28,6 +28,14 @@ export default {
                 'sigedra-border': '#D1D5DB',       // Borde estándar, ligeramente más oscuro
                 'sigedra-border-strong': '#9CA3AF',// Borde para énfasis (ej. cabecera de tabla)
 
+// Colores de estado de asistencia más light
+                'attendance-present': '#7CE287',    // Verde claro
+                'attendance-absent': '#F28A87',     // Rojo claro
+                'attendance-justified': '#F7C66B',  // Amarillo/Naranja claro
+                'attendance-late': '#7DD3FC', // Azul claro
+
+
+
                 // Colores de texto con alto contraste
                 'sigedra-text-dark': '#1F2937',      // Texto principal, casi negro
                 'sigedra-text-medium': '#4B5563',    // Texto secundario, más oscuro que antes
