@@ -1,7 +1,7 @@
-# Usamos una imagen oficial de PHP 8.2 con el servidor web Apache
-FROM php:8.2-apache
+# --- Base Stage ---
+FROM php:8.2-apache as base
 
-# 1. Instalamos las dependencias del sistema y extensiones de PHP que Laravel necesita
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -9,31 +9,57 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libfreetype6-dev \
-    nodejs \
-    npm \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql zip
 
-# 2. Configuramos Apache para que apunte a la carpeta /public de Laravel
+# Configure Apache for Render
+# Render sets a PORT environment variable, which we use to configure Apache.
 COPY 000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN a2enmod rewrite
 
-# 3. Instalamos Composer (el manejador de paquetes de PHP)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+# --- Composer Dependencies Stage ---
+FROM composer:latest as composer_deps
 
-# 4. Establecemos el directorio de trabajo
 WORKDIR /var/www/html
 
-# 5. Copiamos los archivos de la aplicación
+# Copy composer files and install dependencies
+COPY database/ database/
+COPY composer.json composer.lock ./ 
+RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist
+
+# --- NPM Dependencies Stage ---
+FROM node:18 as npm_deps
+
+WORKDIR /var/www/html
+
+# Copy package.json and install dependencies
+COPY package.json package-lock.json ./ 
+RUN npm install
+
+# Copy the rest of the frontend files and build
+COPY vite.config.js tailwind.config.js postcss.config.js ./ 
+COPY resources/ resources/
+RUN npm run build
+
+# --- Final Stage ---
+FROM base
+
+WORKDIR /var/www/html
+
+# Copy application code
 COPY . .
 
-# 6. Instalamos las dependencias de Composer y NPM, y compilamos los assets
-RUN composer install --no-interaction --optimize-autoloader --no-dev
-RUN npm install && npm run build
+# Copy installed dependencies
+COPY --from=composer_deps /var/www/html/vendor/ vendor/
+COPY --from=npm_deps /var/www/html/public/build/ public/build/
 
-# 7. Ajustamos los permisos de las carpetas de Laravel
+# Set permissions
 RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
 
-# El comando por defecto que se ejecutará al iniciar el contenedor es iniciar Apache
+# Set the port for Apache
+ENV APACHE_PORT=${PORT:-80}
+
+# Expose port 80 and start Apache
+EXPOSE 80
 CMD ["apache2-foreground"]
