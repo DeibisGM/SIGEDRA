@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\ReporteController;
+use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController; // ¡Muy importante importar el controlador!
 
@@ -11,4 +14,7 @@ Route::get('/', function () {
 // ESTA ES LA RUTA CRÍTICA
 // Asegúrate de que llama a AttendanceController y no directamente a la vista.
 Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
+Route::get('/profesores', [ProfesorController::class, 'index'])->name('profesores.index');
+Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
 

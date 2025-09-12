@@ -5,8 +5,8 @@ Usa slots para el contenido del encabezado (head) y el cuerpo (body).
 <div class="flex flex-col">
     <div class="-m-1.5 overflow-x-auto">
         <div class="p-1.5 min-w-full inline-block align-middle">
-            <div class="border rounded-lg overflow-hidden border-sigedra-border">
-                <table class="min-w-full divide-y divide-sigedra-border">
+            <div class="border rounded-lg overflow-hidden">
+                <table class="min-w-full divide-y">
                     <thead class="bg-sigedra-input">
                     <!-- El contenido del encabezado de la tabla se inserta aquí -->
                     {{ $head }}

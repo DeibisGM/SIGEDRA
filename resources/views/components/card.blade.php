@@ -2,7 +2,7 @@
 
 @php
 $variants = [
-'default' => 'bg-sigedra-card text-sigedra-text-dark border border-sigedra-border rounded-lg p-6',
+'default' => 'bg-sigedra-card text-sigedra-text-dark border rounded-lg p-6',
 'primary' => 'bg-sigedra-primary text-white rounded-lg p-6',
 'secondary' => 'bg-sigedra-secondary text-white rounded-lg p-6',
 'accent' => 'bg-sigedra-accent text-white rounded-lg p-6',

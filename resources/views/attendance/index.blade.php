@@ -24,7 +24,7 @@
     <!-- Barra de Búsqueda y Acciones Secundarias -->
     <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
         <div class="relative w-full md:w-2/5">
-            <input type="text" class="py-2 px-4 ps-11 block w-full bg-white border-sigedra-border rounded-lg text-base text-sigedra-text-dark placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Buscar estudiante...">
+            <input type="text" class="py-2 px-4 ps-11 block w-full bg-white border rounded-lg text-base text-sigedra-text-dark placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Buscar estudiante...">
             <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
                 <i class="ph ph-magnifying-glass text-lg text-sigedra-text-medium"></i>
             </div>
@@ -55,16 +55,16 @@
         {{-- Slot para el cuerpo de la tabla --}}
         <x-slot:body>
             @forelse ($students as $student)
-            <tr x-data="{ selected: false }" @attendance-selected.stop="selected = ($event.detail.value !== '')" :class="{ 'bg-sigedra-primary/5': selected }" class="odd:bg-white even:bg-sigedra-input/40">
+            <tr class="odd:bg-white even:bg-sigedra-input/40">
                 <td class="px-6 py-3 whitespace-nowrap text-base text-sigedra-text-medium">{{ $loop->iteration }}</td>
                 <td class="px-6 py-3 whitespace-nowrap text-base text-sigedra-text-medium">{{ $student['cedula'] }}</td>
                 <td class="px-6 py-3 whitespace-nowrap text-base font-medium text-sigedra-text-dark">{{ $student['nombre'] }}</td>
                 <td class="px-6 py-3 whitespace-nowrap"><x-percentage-chip :percentage="$student['asistencia']" /></td>
                 <td class="px-6 py-3 whitespace-nowrap w-56">
-                    <x-attendance-button-group />
+                    <x-attendance-select />
                 </td>
                 <td class="px-6 py-3 whitespace-nowrap">
-                    <input type="text" class="py-2 px-3 block w-full bg-white border-sigedra-border rounded-lg text-base text-sigedra-text-dark placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Añadir observación...">
+                    <input type="text" class="py-2 px-3 block w-full bg-white border rounded-lg text-base text-sigedra-text-dark placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Añadir observación...">
                 </td>
             </tr>
             @empty

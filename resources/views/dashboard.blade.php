@@ -28,15 +28,15 @@
     <div>
         <h2 class="text-2xl mb-4">Accesos Rápidos</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="{{ route('attendance.index') }}" class="block p-6 bg-sigedra-card rounded-lg border border-sigedra-border hover:border-sigedra-primary transition-colors duration-300">
+            <a href="{{ route('attendance.index') }}" class="block p-6 bg-sigedra-card rounded-lg border hover:border-sigedra-primary transition-colors duration-300">
                 <h3 class="font-bold text-xl text-sigedra-secondary">Pasar Asistencia</h3>
                 <p class="mt-2 text-sigedra-text-medium">Registra la asistencia diaria de tus cursos.</p>
             </a>
-            <a href="#" class="block p-6 bg-sigedra-card rounded-lg border border-sigedra-border hover:border-sigedra-primary transition-colors duration-300">
+            <a href="#" class="block p-6 bg-sigedra-card rounded-lg border hover:border-sigedra-primary transition-colors duration-300">
                 <h3 class="font-bold text-xl text-sigedra-secondary">Generar Reportes</h3>
                 <p class="mt-2 text-sigedra-text-medium">Consulta y exporta informes de asistencia.</p>
             </a>
-            <a href="#" class="block p-6 bg-sigedra-card rounded-lg border border-sigedra-border hover:border-sigedra-primary transition-colors duration-300">
+            <a href="#" class="block p-6 bg-sigedra-card rounded-lg border hover:border-sigedra-primary transition-colors duration-300">
                 <h3 class="font-bold text-xl text-sigedra-secondary">Gestionar Estudiantes</h3>
                 <p class="mt-2 text-sigedra-text-medium">Accede a los perfiles de los estudiantes.</p>
             </a>
