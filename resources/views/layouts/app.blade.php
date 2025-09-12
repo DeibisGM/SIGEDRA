@@ -14,21 +14,18 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" />
 
     <!-- Scripts y Estilos -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.HSStaticMethods) {
-                window.HSStaticMethods.autoInit();
-            }
-        });
-    </script>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="h-screen overflow-hidden">
+<body class="bg-sigedra-bg">
 
-<div class="h-full lg:flex">
+<!-- ===== Page Wrapper ===== -->
+<div class="flex h-screen overflow-hidden">
 
-    <aside id="application-sidebar" class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed z-[60] w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
+    <!-- ===== Sidebar ===== -->
+    <aside id="application-sidebar"
+           class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform
+                  hidden fixed top-0 left-0 bottom-0 z-[60] w-64 bg-white border-e
+                  lg:block lg:translate-x-0 lg:end-auto lg:bottom-0">
         <header class="h-[70px] flex-shrink-0 flex items-center px-6 border-b bg-sigedra-light-colored-bg">
             <a class="flex items-center text-xl font-bold text-sigedra-secondary" href="{{ route('home') }}">
                 SIGEDRA
@@ -83,47 +80,44 @@
             </form>
         </footer>
     </aside>
-
+    <!-- ===== End Sidebar ===== -->
 
     <!-- ===== Content Area ===== -->
-    <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll">
-        <!-- Module Title Header -->
-        <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
-            <div class="container mx-auto px-6 flex items-center justify-between">
-                <div class="flex items-center">
-                    <!-- Mobile Menu Toggle -->
-                    <button type="button" class="lg:hidden text-gray-500 hover:text-gray-600 me-4" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
+    <div class="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+        <!-- ===== Header ===== -->
+        <header class="sticky top-0 z-40 flex w-full bg-white drop-shadow-sm">
+            <div class="flex flex-grow items-center justify-between py-4 px-4 shadow-sm md:px-6 2xl:px-11">
+                <div class="flex items-center gap-2 sm:gap-4">
+                    <!-- Hamburger Toggle BTN -->
+                    <button type="button" class="lg:hidden text-gray-500 hover:text-gray-600" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
                         <span class="sr-only">Toggle Navigation</span>
-                        <i class="ph ph-list text-xl"></i>
+                        <i class="ph ph-list text-2xl"></i>
                     </button>
-                    <!-- El H1 ahora tomará los estilos base de app.css para consistencia -->
+                    <!-- Hamburger Toggle BTN -->
                     <h1>
                         @yield('module_title', 'Módulo')
                     </h1>
                 </div>
-                <div>
-                    @yield('header_actions')
+
+                <div class="flex items-center gap-3 2xsm:gap-7">
+                   @yield('header_actions')
                 </div>
             </div>
         </header>
+        <!-- ===== End Header ===== -->
 
-        <!-- Main Content -->
-        <main class="flex-grow">
-            <div class="container mx-auto px-6 py-8">
+        <!-- ===== Main Content ===== -->
+        <main>
+            <div class="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                 @yield('content')
             </div>
         </main>
+        <!-- ===== End Main Content ===== -->
     </div>
     <!-- ===== End Content Area ===== -->
 </div>
+<!-- ===== End Page Wrapper ===== -->
 
 @livewireScripts
-<script>
-    document.addEventListener('livewire:navigated', () => {
-        setTimeout(() => {
-            window.HSStaticMethods.autoInit();
-        }, 100);
-    });
-</script>
 </body>
 </html>
