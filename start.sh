@@ -1,8 +1,10 @@
 #!/bin/sh
 
-# Set the port in the Apache configuration
-sed -i "s/80/${PORT:-80}/g" /etc/apache2/sites-available/000-default.conf
-echo "Listen ${PORT:-80}" >> /etc/apache2/ports.conf
+# Set the port in the NGINX configuration
+sed -i "s/listen 80;/listen ${PORT:-80};/g" /etc/nginx/sites-available/default
 
-# Start Apache
-apache2-foreground
+# Start PHP-FPM
+php-fpm &
+
+# Start Nginx
+nginx -g 'daemon off;'
