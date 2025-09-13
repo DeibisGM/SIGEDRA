@@ -55,18 +55,7 @@
         {{-- Slot para el cuerpo de la tabla --}}
         <x-slot:body>
             @forelse ($students as $student)
-            <tr class="odd:bg-white even:bg-sigedra-input/40">
-                <td class="px-6 py-3 whitespace-nowrap text-base text-sigedra-text-medium">{{ $loop->iteration }}</td>
-                <td class="px-6 py-3 whitespace-nowrap text-base text-sigedra-text-medium">{{ $student['cedula'] }}</td>
-                <td class="px-6 py-3 whitespace-nowrap text-base font-medium text-sigedra-text-dark">{{ $student['nombre'] }}</td>
-                <td class="px-6 py-3 whitespace-nowrap"><x-percentage-chip :percentage="$student['asistencia']" /></td>
-                <td class="px-6 py-3 whitespace-nowrap w-56">
-                    <x-attendance-select/>
-                </td>
-                <td class="px-6 py-3 whitespace-nowrap">
-                    <input type="text" class="py-2 px-3 block w-full bg-white border rounded-lg text-base text-sigedra-text-dark placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Añadir observación...">
-                </td>
-            </tr>
+                <x-tarjeta-alumno :student="$student" :loop="$loop" />
             @empty
             <tr>
                 <td colspan="6" class="px-6 py-3 text-center text-base text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
