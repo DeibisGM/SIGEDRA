@@ -106,7 +106,7 @@
 
         <!-- Main Content -->
         <main class="flex-grow">
-            <div class="container mx-auto px-6 py-8">
+            <div class="container mx-auto px-6 py-8 pb-28">
                 @yield('content')
             </div>
         </main>
