@@ -24,11 +24,11 @@
 @endsection
 
 @section('content')
-<div class="space-y-8">
+<div class="space-y-6">
     <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
         <h3 class="text-xl font-bold text-sigedra-primary">Primer Grado</h3>
-        <p class="text-sm text-sigedra-text-medium">
-            <span class="font-semibold">Curso:</span> Matemáticas Avanzadas &bull; <span class="font-semibold">Fecha:</span> 10/09/2025
+        <p class="text-base text-sigedra-text-medium">
+            <span class="font-semibold">Curso:</span> Matemáticas Avanzadas
         </p>
     </div>
 
@@ -42,17 +42,20 @@
             </div>
         </div>
         {{-- Action buttons --}}
-        <div class="flex gap-3 w-full md:w-auto">
-            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm">
+        <div class="flex gap-3 w-full md:w-auto justify-end">
+            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm" title="Actualizar">
                 <i class="ph ph-arrows-clockwise text-lg"></i>
-                <span>Actualizar</span>
+                <span class="sm:inline">Actualizar</span>
             </x-buttons.secondary>
-            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm">Marcar todos como presentes</x-buttons.secondary>
+            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm" title="Marcar todos como presentes">
+                <i class="ph ph-check-square-offset text-lg"></i>
+                <span class="sm:inline">Todos presentes</span>
+            </x-buttons.secondary>
         </div>
     </div>
 
     <!-- Tabla de Estudiantes implementada con el nuevo componente reutilizable -->
-    <x-table>
+    <x-table class="-mx-4 md:mx-0">
         {{-- Slot para el encabezado de la tabla --}}
         <x-slot:head>
             <tr>

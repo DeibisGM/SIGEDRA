@@ -13,8 +13,3 @@ class EstudianteController extends Controller
         return view('estudiantes.index');
     }
 }
-
-class EstudianteController extends Controller
-{
-    //
-}

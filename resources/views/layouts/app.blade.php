@@ -16,7 +16,7 @@
     <!-- Scripts y Estilos -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    
+
 </head>
 <body class="h-screen overflow-hidden">
 
@@ -86,7 +86,7 @@
     <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll">
         <!-- Module Title Header -->
         <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
-            <div class="container mx-auto px-6 flex items-center justify-between">
+            <div class="container mx-auto px-4 flex items-center justify-between">
                 <div class="flex items-center">
                     <!-- Mobile Menu Toggle -->
                     <button type="button" id="mobile-menu-toggle" class="lg:hidden text-gray-500 hover:text-gray-600 me-4">
@@ -106,7 +106,7 @@
 
         <!-- Main Content -->
         <main class="flex-grow">
-            <div class="container mx-auto px-6 py-8 pb-28">
+            <div class="container mx-auto px-4 py-4 pb-24">
                 @yield('content')
             </div>
         </main>

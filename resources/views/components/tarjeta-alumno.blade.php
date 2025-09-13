@@ -8,7 +8,7 @@
             <div class="flex justify-between items-start">
                 <div>
                     <p class="font-bold text-base">{{ $student['nombre'] }}</p>
-                    <p class="text-sm text-sigedra-text-medium">CI: {{ $student['cedula'] }}</p>
+                    <p class="text-sm text-sigedra-text-medium">{{ $student['cedula'] }}</p>
                 </div>
                 <x-percentage-chip :percentage="$student['asistencia']" />
             </div>
@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <label class="text-sm font-medium text-sigedra-text-medium sr-only" for="observaciones-{{ $student['cedula'] }}">Observaciones:</label>
-                    <input id="observaciones-{{ $student['cedula'] }}" type="text" class="py-1 px-2 block w-full border-sigedra-border rounded-lg text-sm" placeholder="Añadir observación...">
+                    <textarea id="observaciones-{{ $student['cedula'] }}" rows="2" class="py-1 px-2 block w-full border-sigedra-border rounded-lg text-sm" placeholder="Añadir observación..."></textarea>
                 </div>
             </div>
         </div>

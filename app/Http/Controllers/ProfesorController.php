@@ -13,8 +13,3 @@ class ProfesorController extends Controller
         return view('profesores.index');
     }
 }
-
-class ProfesorController extends Controller
-{
-    //
-}

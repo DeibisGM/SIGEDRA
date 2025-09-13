@@ -13,8 +13,3 @@ class ReporteController extends Controller
         return view('reportes.index');
     }
 }
-
-class ReporteController extends Controller
-{
-    //
-}
