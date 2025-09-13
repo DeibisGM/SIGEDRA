@@ -114,6 +114,13 @@
     <!-- ===== End Content Area ===== -->
 </div>
 
+<!-- Mobile Footer Actions -->
+<div class="block md:hidden fixed bottom-0 left-0 w-full bg-white border-t p-4 z-20">
+    <div class="container mx-auto">
+        @yield('footer_actions')
+    </div>
+</div>
+
 @livewireScripts
 
 </body>

@@ -4,9 +4,19 @@
 @section('module_title', 'Registro de Asistencia')
 
 @section('header_actions')
-    <div class="flex gap-3">
+    <div class="hidden md:flex gap-3">
         <x-buttons.secondary>Cancelar</x-buttons.secondary>
         <x-buttons.primary>
+            <i class="ph ph-floppy-disk text-lg"></i>
+            <span>Guardar Cambios</span>
+        </x-buttons.primary>
+    </div>
+@endsection
+
+@section('footer_actions')
+    <div class="flex gap-3 w-full">
+        <x-buttons.secondary class="w-full justify-center">Cancelar</x-buttons.secondary>
+        <x-buttons.primary class="w-full justify-center">
             <i class="ph ph-floppy-disk text-lg"></i>
             <span>Guardar Cambios</span>
         </x-buttons.primary>
