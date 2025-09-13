@@ -16,23 +16,20 @@
     <!-- Scripts y Estilos -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.HSStaticMethods) {
-                window.HSStaticMethods.autoInit();
-            }
-        });
-    </script>
+    
 </head>
 <body class="h-screen overflow-hidden">
 
 <div class="h-full lg:flex">
 
-    <aside id="application-sidebar" class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform hidden fixed z-[60] w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
-        <header class="h-[70px] flex-shrink-0 flex items-center px-6 border-b bg-sigedra-light-colored-bg">
+    <aside id="application-sidebar" class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
+        <header class="h-[70px] flex-shrink-0 flex items-center justify-between px-6 border-b bg-sigedra-light-colored-bg">
             <a class="flex items-center text-xl font-bold text-sigedra-secondary" href="{{ route('home') }}">
                 SIGEDRA
             </a>
+            <button type="button" id="sidebar-close-button" class="lg:hidden text-gray-500 hover:text-gray-600">
+                <i class="ph ph-x text-xl"></i>
+            </button>
         </header>
 
         @php
@@ -92,7 +89,7 @@
             <div class="container mx-auto px-6 flex items-center justify-between">
                 <div class="flex items-center">
                     <!-- Mobile Menu Toggle -->
-                    <button type="button" class="lg:hidden text-gray-500 hover:text-gray-600 me-4" data-hs-overlay="#application-sidebar" aria-controls="application-sidebar" aria-label="Toggle navigation">
+                    <button type="button" id="mobile-menu-toggle" class="lg:hidden text-gray-500 hover:text-gray-600 me-4">
                         <span class="sr-only">Toggle Navigation</span>
                         <i class="ph ph-list text-xl"></i>
                     </button>
@@ -118,12 +115,6 @@
 </div>
 
 @livewireScripts
-<script>
-    document.addEventListener('livewire:navigated', () => {
-        setTimeout(() => {
-            window.HSStaticMethods.autoInit();
-        }, 100);
-    });
-</script>
+
 </body>
 </html>
