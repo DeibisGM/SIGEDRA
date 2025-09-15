@@ -30,6 +30,6 @@
     [type='button'],
     [type='reset'],
     [type='submit'] {
-        @apply focus:outline-none focus:border-sigedra-primary;
+        @apply focus:outline-none;
     }
 }

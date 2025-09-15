@@ -47,11 +47,4 @@ class AttendanceController extends Controller
         ]);
     }
 
-    /**
-     * Show the intermediate form for selecting course and date.
-     */
-    public function preCreate(): View
-    {
-        return view('attendance.pre-create');
-    }
 }
