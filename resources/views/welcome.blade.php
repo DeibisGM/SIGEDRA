@@ -28,7 +28,7 @@
     <div>
         <h2 class="text-2xl font-bold text-sigedra-text-dark mb-4">Accesos Rápidos</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <a href="{{ route('attendance.index') }}" class="block p-6 bg-sigedra-card rounded-lg border hover:border-sigedra-primary transition-colors duration-300">
+            <a href="{{ route('attendance.pre-create') }}" class="block p-6 bg-sigedra-card rounded-lg border hover:border-sigedra-primary transition-colors duration-300">
                 <h3 class="font-bold text-xl text-sigedra-secondary">Pasar Asistencia</h3>
                 <p class="mt-2 text-sigedra-text-medium">Registra la asistencia diaria de tus cursos.</p>
             </a>

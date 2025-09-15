@@ -77,14 +77,13 @@
                                 <i class="ph ph-pencil-simple"></i>
                                 <span>Editar</span>
                             </x-buttons.secondary>
-                            <x-buttons.secondary
+                            <x-buttons.danger-secondary
                                 x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion')"
-                                class="text-sigedra-danger hover:bg-sigedra-danger hover:text-white"
                             >
                                 <i class="ph ph-trash"></i>
                                 <span>Eliminar</span>
-                            </x-buttons.secondary>
+                            </x-buttons.danger-secondary>
                         </div>
                     </td>
                 </tr>
@@ -94,11 +93,11 @@
 
     <x-modal name="confirm-attendance-deletion" focusable>
         <div class="p-6">
-            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+            <h2 class="text-lg font-medium text-gray-900">
                 ¿Estás seguro de que deseas eliminar este registro de asistencia?
             </h2>
 
-            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+            <p class="mt-1 text-sm text-gray-600">
                 Una vez eliminado, no se podrá recuperar.
             </p>
 
