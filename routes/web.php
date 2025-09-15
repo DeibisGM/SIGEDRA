@@ -14,6 +14,7 @@ Route::get('/', function () {
 // ESTA ES LA RUTA CRÍTICA
 // Asegúrate de que llama a AttendanceController y no directamente a la vista.
 Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
+Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
 Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
 Route::get('/profesores', [ProfesorController::class, 'index'])->name('profesores.index');
 Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
