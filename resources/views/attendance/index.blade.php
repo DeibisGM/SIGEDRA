@@ -151,7 +151,7 @@
                 <!-- Selector de Fecha -->
                 <div>
                     <x-input-label for="date" value="Fecha" />
-                    <x-text-input id="date" class="block mt-1 w-full" type="text" name="date" x-model="date" placeholder="dd/mm/yyyy" required />
+                    <x-text-input id="date" class="block mt-1 w-full flatpickr" type="text" name="date" x-model="date" placeholder="dd/mm/yyyy" required />
                 </div>
             </div>
 
