@@ -44,59 +44,64 @@
         </div>
     </div>
 
-    <!-- Tabla de Historial de Asistencias -->
-    <x-table class="-mx-4 md:mx-0">
+
+
+    <x-table class="-mx-4 md:mx-0 table-fixed w-full">
         <x-slot:head>
             <tr>
-                <th scope="col" class="px-6 py-4 text-start text-base font-semibold text-sigedra-text-medium uppercase tracking-wider">Fecha</th>
-                <th scope="col" class="px-6 py-4 text-start text-base font-semibold text-sigedra-text-medium uppercase tracking-wider">Curso</th>
-                <th scope="col" class="px-6 py-4 text-start text-base font-semibold text-sigedra-text-medium uppercase tracking-wider">Presentes</th>
-                <th scope="col" class="px-6 py-4 text-start text-base font-semibold text-sigedra-text-medium uppercase tracking-wider">Ausentes</th>
-                <th scope="col" class="px-6 py-4 text-start text-base font-semibold text-sigedra-text-medium uppercase tracking-wider">Tardías</th>
-                <th scope="col" class="px-6 py-4 text-end text-base font-semibold text-sigedra-text-medium uppercase tracking-wider">Acciones</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[100px]">Fecha</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Curso</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Presentes</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Ausentes</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Tardías</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Asistencia %</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[220px]">Acciones</th>
             </tr>
         </x-slot:head>
 
         <x-slot:body>
             @php
-                $attendances = [
-                    ['date' => '10/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 18, 'absent' => 2, 'late' => 1],
-                    ['date' => '09/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 20, 'absent' => 0, 'late' => 1],
-                    ['date' => '08/05/2024', 'course' => 'Ciencias Naturales', 'present' => 15, 'absent' => 5, 'late' => 0],
-                    ['date' => '07/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 19, 'absent' => 1, 'late' => 1],
-                    ['date' => '06/05/2024', 'course' => 'Historia', 'present' => 21, 'absent' => 0, 'late' => 0],
-                ];
+            $attendances = [
+            ['date' => '10/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 18, 'absent' => 2, 'late' => 1],
+            ['date' => '09/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 20, 'absent' => 0, 'late' => 1],
+            ['date' => '08/05/2024', 'course' => 'Ciencias Naturales', 'present' => 15, 'absent' => 5, 'late' => 0],
+            ['date' => '07/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 19, 'absent' => 1, 'late' => 1],
+            ['date' => '06/05/2024', 'course' => 'Historia', 'present' => 21, 'absent' => 0, 'late' => 0],
+            ];
             @endphp
             @foreach ($attendances as $attendance)
-                <tr class="border-b border-sigedra-border">
-                    <td class="px-6 py-4 whitespace-nowrap text-base text-sigedra-text-dark font-semibold">{{ $attendance['date'] }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-base text-sigedra-text-medium">{{ $attendance['course'] }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-base text-sigedra-text-medium">{{ $attendance['present'] }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-base text-sigedra-text-medium">{{ $attendance['absent'] }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-base text-sigedra-text-medium">{{ $attendance['late'] }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-end text-base font-medium">
-                        <div class="flex justify-end gap-2 items-center">
-                            <x-buttons.secondary href="#">
-                                <i class="ph ph-eye"></i>
-                                <span>Ver</span>
-                            </x-buttons.secondary>
-                            <x-buttons.secondary href="#">
-                                <i class="ph ph-pencil-simple"></i>
-                                <span>Editar</span>
-                            </x-buttons.secondary>
-                            <x-buttons.danger-secondary
-                                x-data=""
-                                x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion')"
-                            >
-                                <i class="ph ph-trash"></i>
-                                <span>Eliminar</span>
-                            </x-buttons.danger-secondary>
-                        </div>
-                    </td>
-                </tr>
+            @php
+            $total = $attendance['present'] + $attendance['absent'] + $attendance['late'];
+            $percent = $total > 0 ? round(($attendance['present'] / $total) * 100) : 0;
+            @endphp
+            <tr class="border-b border-sigedra-border">
+                <td class="px-6 py-4 text-base text-sigedra-text-medium">{{ $attendance['date'] }}</td>
+                <td class="px-6 py-4 font-medium text-sigedra-text-dark">{{ $attendance['course'] }}</td>
+                <td class="px-6 py-4 text-base text-sigedra-text-medium">{{ $attendance['present'] }}</td>
+                <td class="px-6 py-4 text-base text-sigedra-text-medium">{{ $attendance['absent'] }}</td>
+                <td class="px-6 py-4 text-base text-sigedra-text-medium">{{ $attendance['late'] }}</td>
+                <td class="px-6 py-4 text-base text-sigedra-text-medium">{{ $percent }}%</td>
+                <td class="px-6 py-4 text-base font-medium">
+                    <div class="flex items-center space-x-2">
+                        <x-buttons.secondary href="#">
+                            <i class="ph ph-eye"></i>
+
+                        </x-buttons.secondary>
+                        <x-buttons.secondary href="#">
+                            <i class="ph ph-pencil-simple"></i>
+
+                        </x-buttons.secondary>
+                        <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion')">
+                            <i class="ph ph-trash"></i>
+
+                        </x-buttons.danger-secondary>
+                    </div>
+                </td>
+            </tr>
             @endforeach
         </x-slot:body>
     </x-table>
+
 
     <!-- Delete Confirmation Modal -->
     <x-modal name="confirm-attendance-deletion" focusable>

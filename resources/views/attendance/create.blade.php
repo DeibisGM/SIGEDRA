@@ -76,7 +76,7 @@
                 <x-tarjeta-alumno :student="$student" :loop="$loop" />
             @empty
             <tr>
-                <td colspan="6" class="px-6 py-3 text-center text-base text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
+                <td colspan="6" class="px-6 py-3 text-center text-sm text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
             </tr>
             @endforelse
         </x-slot:body>
