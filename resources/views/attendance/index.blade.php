@@ -4,11 +4,11 @@
 @section('module_title', 'Historial de Asistencias')
 
 @section('header_actions')
-    <div class="hidden md:flex gap-3">
-        <a href="{{ route('attendance.create') }}" class="flex items-center gap-2 bg-sigedra-primary-button text-white font-bold py-2 px-4 rounded-lg hover:bg-sigedra-primary-button-hover focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sigedra-primary-button">
+    <div class="hidden md:flex">
+        <x-buttons.primary href="{{ route('attendance.pre-create') }}">
             <i class="ph ph-plus-circle text-lg"></i>
             <span>Pasar Nueva Asistencia</span>
-        </a>
+        </x-buttons.primary>
     </div>
 @endsection
 
@@ -61,16 +61,10 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-sigedra-text-medium">{{ $attendance['absent'] }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-sigedra-text-medium">{{ $attendance['late'] }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
-                        <div class="flex justify-end gap-2">
-                            <button class="text-sigedra-primary hover:text-sigedra-primary-dark" title="Ver">
-                                <i class="ph ph-eye text-lg"></i>
-                            </button>
-                            <button class="text-sigedra-primary hover:text-sigedra-primary-dark" title="Editar">
-                                <i class="ph ph-pencil-simple text-lg"></i>
-                            </button>
-                            <button class="text-sigedra-danger hover:text-sigedra-danger-dark" title="Eliminar">
-                                <i class="ph ph-trash text-lg"></i>
-                            </button>
+                        <div class="flex justify-end gap-2 items-center">
+                            <x-buttons.secondary href="#" class="!py-1 !px-2">Ver</x-buttons.secondary>
+                            <x-buttons.secondary href="#" class="!py-1 !px-2">Editar</x-buttons.secondary>
+                            <x-danger-button class="!py-1 !px-2">Eliminar</x-danger-button>
                         </div>
                     </td>
                 </tr>
