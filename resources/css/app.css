@@ -1,3 +1,6 @@
+@import "flatpickr/dist/flatpickr.min.css";
+@import "./flatpickr-custom.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -23,5 +26,13 @@
 
     h3 {
         @apply text-xl; /* Subtítulos o títulos de tarjetas */
+    }
+
+    /* Custom focus styles for buttons */
+    button,
+    [type='button'],
+    [type='reset'],
+    [type='submit'] {
+        @apply focus:outline-none;
     }
 }
