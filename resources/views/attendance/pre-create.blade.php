@@ -4,7 +4,7 @@
 @section('module_title', 'Seleccionar Curso y Fecha')
 
 @section('content')
-<div class="card">
+<div class="card" x-data="{ subject: 'Matemáticas Avanzadas', date: '' }">
     <div class="card-body">
         <div class="space-y-6">
             <p class="text-sigedra-text-medium">
@@ -15,7 +15,7 @@
                 {{-- Selector de Materia --}}
                 <div>
                     <x-input-label for="subject" value="Materia" />
-                    <select id="subject" name="subject" class="mt-1 block w-full py-2 px-3 border border-sigedra-border bg-white rounded-md shadow-sm focus:outline-none focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm">
+                    <select id="subject" name="subject" x-model="subject" class="mt-1 block w-full py-2 px-3 border border-sigedra-border bg-white rounded-md shadow-sm focus:outline-none focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm">
                         <option>Matemáticas Avanzadas</option>
                         <option>Ciencias Naturales</option>
                         <option>Historia</option>
@@ -25,12 +25,15 @@
                 {{-- Selector de Fecha --}}
                 <div>
                     <x-input-label for="date" value="Fecha" />
-                    <x-text-input id="date" class="block mt-1 w-full" type="date" name="date" :value="date('Y-m-d')" required />
+                    <x-text-input id="date" class="block mt-1 w-full" type="text" name="date" x-model="date" placeholder="dd/mm/yyyy" required />
                 </div>
             </div>
 
             <div class="flex justify-end pt-4">
-                <x-buttons.primary href="{{ route('attendance.create') }}">
+                <x-buttons.primary
+                    as="button"
+                    x-on:click="window.location.href = `{{ route('attendance.create') }}?materia=${subject}&fecha=${date}`"
+                >
                     Continuar
                 </x-buttons.primary>
             </div>

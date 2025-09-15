@@ -12,6 +12,13 @@
     </div>
 @endsection
 
+@section('footer_actions')
+    <x-buttons.primary href="{{ route('attendance.pre-create') }}" class="w-full md:hidden">
+        <i class="ph ph-plus-circle text-lg"></i>
+        <span>Pasar Nueva Asistencia</span>
+    </x-buttons.primary>
+@endsection
+
 @section('content')
 <div class="space-y-6">
     <!-- Barra de Búsqueda y Filtros -->
@@ -46,11 +53,11 @@
         <x-slot:body>
             @php
                 $attendances = [
-                    ['date' => '2024-05-10', 'course' => 'Matemáticas Avanzadas', 'present' => 18, 'absent' => 2, 'late' => 1],
-                    ['date' => '2024-05-09', 'course' => 'Matemáticas Avanzadas', 'present' => 20, 'absent' => 0, 'late' => 1],
-                    ['date' => '2024-05-08', 'course' => 'Ciencias Naturales', 'present' => 15, 'absent' => 5, 'late' => 0],
-                    ['date' => '2024-05-07', 'course' => 'Matemáticas Avanzadas', 'present' => 19, 'absent' => 1, 'late' => 1],
-                    ['date' => '2024-05-06', 'course' => 'Historia', 'present' => 21, 'absent' => 0, 'late' => 0],
+                    ['date' => '10/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 18, 'absent' => 2, 'late' => 1],
+                    ['date' => '09/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 20, 'absent' => 0, 'late' => 1],
+                    ['date' => '08/05/2024', 'course' => 'Ciencias Naturales', 'present' => 15, 'absent' => 5, 'late' => 0],
+                    ['date' => '07/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 19, 'absent' => 1, 'late' => 1],
+                    ['date' => '06/05/2024', 'course' => 'Historia', 'present' => 21, 'absent' => 0, 'late' => 0],
                 ];
             @endphp
             @foreach ($attendances as $attendance)
@@ -62,14 +69,49 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-sigedra-text-medium">{{ $attendance['late'] }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium">
                         <div class="flex justify-end gap-2 items-center">
-                            <x-buttons.secondary href="#" class="!py-1 !px-2">Ver</x-buttons.secondary>
-                            <x-buttons.secondary href="#" class="!py-1 !px-2">Editar</x-buttons.secondary>
-                            <x-danger-button class="!py-1 !px-2">Eliminar</x-danger-button>
+                            <x-buttons.secondary href="#">
+                                <i class="ph ph-eye"></i>
+                                <span>Ver</span>
+                            </x-buttons.secondary>
+                            <x-buttons.secondary href="#">
+                                <i class="ph ph-pencil-simple"></i>
+                                <span>Editar</span>
+                            </x-buttons.secondary>
+                            <x-buttons.secondary
+                                x-data=""
+                                x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion')"
+                                class="text-sigedra-danger hover:bg-sigedra-danger hover:text-white"
+                            >
+                                <i class="ph ph-trash"></i>
+                                <span>Eliminar</span>
+                            </x-buttons.secondary>
                         </div>
                     </td>
                 </tr>
             @endforeach
         </x-slot:body>
     </x-table>
+
+    <x-modal name="confirm-attendance-deletion" focusable>
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                ¿Estás seguro de que deseas eliminar este registro de asistencia?
+            </h2>
+
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                Una vez eliminado, no se podrá recuperar.
+            </p>
+
+            <div class="mt-6 flex justify-end">
+                <x-buttons.secondary x-on:click="$dispatch('close')">
+                    Cancelar
+                </x-buttons.secondary>
+
+                <x-danger-button class="ms-3" x-on:click="$dispatch('close')">
+                    Eliminar
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 </div>
 @endsection

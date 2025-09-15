@@ -20,8 +20,11 @@ class AttendanceController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        $subject = $request->query('materia', 'Curso no seleccionado');
+        $date = $request->query('fecha', 'Fecha no seleccionada');
+
         // This method displays the form to take a new attendance.
         // Datos estáticos de ejemplo
         $students = [
@@ -37,7 +40,11 @@ class AttendanceController extends Controller
             ['cedula' => '667788990', 'nombre' => 'Jose Pablo Alvarado', 'email' => 'jose.alvarado@email.com', 'seccion' => '7-1', 'asistencia' => 90, 'estado' => 'Tardía'],
         ];
 
-        return view('attendance.create', ['students' => $students]);
+        return view('attendance.create', [
+            'students' => $students,
+            'subject' => $subject,
+            'date' => $date,
+        ]);
     }
 
     /**

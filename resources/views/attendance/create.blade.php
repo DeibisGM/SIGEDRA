@@ -25,10 +25,12 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="flex flex-col md:flex-row md:items-baseline gap-1 md:gap-4">
-        <h3 class="text-xl font-bold text-sigedra-primary">Primer Grado</h3>
+    <div class="flex flex-col md:flex-row md:items-baseline md:gap-4">
+        <h3 class="text-xl font-bold text-sigedra-primary">
+            <span class="font-semibold">Curso:</span> {{ $subject }}
+        </h3>
         <p class="text-base text-sigedra-text-medium">
-            <span class="font-semibold">Curso:</span> Matemáticas Avanzadas
+            <span class="font-semibold">Fecha:</span> {{ $date }}
         </p>
     </div>
 
