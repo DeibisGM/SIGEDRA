@@ -5,7 +5,7 @@ $total = $attendance['present'] + $attendance['absent'] + $attendance['late'];
 $percent = $total > 0 ? round(($attendance['present'] / $total) * 100) : 0;
 @endphp
 
-<tr class="block md:table-row md:odd:bg-white md:even:bg-sigedra-input/40">
+<tr class="block md:table-row md:odd:bg-white md:even:bg-sigedra-input/40 border-b border-sigedra-border last:border-b-0">
     <!-- Mobile Card View -->
     <td class="block md:hidden" colspan="7">
         <div class="p-4 bg-white">
