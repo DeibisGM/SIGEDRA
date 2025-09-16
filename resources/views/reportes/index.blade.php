@@ -3,7 +3,7 @@
 @section('title', 'Reportes')
 
 @section('breadcrumbs')
-    <div class="text-base text-gray-500">
+    <div class="text-base text-gray-500 whitespace-nowrap truncate">
         <a href="{{ route('reportes.index') }}" class="hover:text-gray-700">Reportes</a>
         <span class="mx-2">/</span>
         <span>Generación de Reportes</span>

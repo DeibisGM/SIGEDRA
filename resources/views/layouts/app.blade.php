@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-    
+
 
     <!-- Scripts y Estilos -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -86,16 +86,16 @@
         <!-- Primary Header -->
         <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
             <div class="container mx-auto px-4 flex items-center justify-between h-full">
-                <div class="flex items-center">
+                <div class="flex items-center min-w-0">
                     <!-- Mobile Menu Toggle -->
-                    <button type="button" id="mobile-menu-toggle" class="lg:hidden text-gray-500 hover:text-gray-600 me-4">
+                    <button type="button" id="mobile-menu-toggle" class="lg:hidden text-gray-500 hover:text-gray-600 me-4 flex-shrink-0">
                         <span class="sr-only">Toggle Navigation</span>
                         <i class="ph ph-list text-xl"></i>
                     </button>
                     <!-- Breadcrumbs -->
                     @yield('breadcrumbs')
                 </div>
-                <div>
+                <div class="ms-4">
                     <!-- Help Button -->
                     <a href="#" class="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border rounded-lg px-3 py-2 transition-colors">
                         <i class="ph ph-question text-xl"></i>
@@ -112,7 +112,7 @@
                     <h1 class="text-xl font-bold text-gray-800 leading-tight">
                         @yield('module_title', 'Módulo')
                     </h1>
-                    <p class="text-sm text-gray-500 mt-1">
+                    <p class="text-base text-gray-500 mt-1">
                         @yield('module_subtitle', '')
                     </p>
                 </div>

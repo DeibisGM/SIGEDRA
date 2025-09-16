@@ -3,7 +3,7 @@
 @section('title', 'Estudiantes')
 
 @section('breadcrumbs')
-    <div class="text-base text-gray-500">
+    <div class="text-base text-gray-500 whitespace-nowrap truncate">
         <a href="{{ route('estudiantes.index') }}" class="hover:text-gray-700">Estudiantes</a>
         <span class="mx-2">/</span>
         <span>Gestión de Estudiantes</span>
