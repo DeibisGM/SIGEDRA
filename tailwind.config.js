@@ -63,6 +63,9 @@ export default {
                 '2xl': '1.4375rem', // 23px (títulos de sección)
                 '3xl': '1.8125rem', // 29px (títulos de página)
                 '4xl': '2.125rem',  // 34px
+            },
+            transitionProperty: {
+                'backdrop-filter': 'backdrop-filter',
             }
         },
     },

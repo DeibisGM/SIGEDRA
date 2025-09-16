@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('breadcrumbs')
-    <div class="text-base text-gray-500">
+    <div class="text-base text-gray-500 whitespace-nowrap truncate">
         <a href="{{ route('home') }}" class="hover:text-gray-700">Inicio</a>
         <span class="mx-2">/</span>
         <span>Dashboard</span>

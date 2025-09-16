@@ -3,7 +3,7 @@
 @section('title', 'Asistencia')
 
 @section('breadcrumbs')
-    <div class="text-base text-gray-500">
+    <div class="text-base text-gray-500 whitespace-nowrap truncate">
         <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
         <span class="mx-2">/</span>
         <span>Historial de asistencia</span>
@@ -56,108 +56,34 @@
 
 
 
-    <!-- Table Header for Desktop -->
-    <div class="hidden md:grid md:grid-cols-7 gap-4 px-6 py-4 text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">
-        <div class="w-[100px]">Fecha</div>
-        <div>Curso</div>
-        <div>Presentes</div>
-        <div>Ausentes</div>
-        <div>Tardías</div>
-        <div>Asistencia %</div>
-        <div class="w-[220px]">Acciones</div>
-    </div>
+    <x-table class="-mx-4 md:mx-0">
+        <x-slot:head>
+            <tr>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[100px]">Fecha</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Curso</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Presentes</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Ausentes</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Tardías</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Asistencia %</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[220px]">Acciones</th>
+            </tr>
+        </x-slot:head>
 
-    <!-- Attendance List -->
-    <div class="space-y-4 md:space-y-0">
-    @php
-    $attendances = [
-    ['date' => '10/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 18, 'absent' => 2, 'late' => 1],
-    ['date' => '09/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 20, 'absent' => 0, 'late' => 1],
-    ['date' => '08/05/2024', 'course' => 'Ciencias Naturales', 'present' => 15, 'absent' => 5, 'late' => 0],
-    ['date' => '07/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 19, 'absent' => 1, 'late' => 1],
-    ['date' => '06/05/2024', 'course' => 'Historia', 'present' => 21, 'absent' => 0, 'late' => 0],
-    ];
-    @endphp
-    @foreach ($attendances as $attendance)
-        @php
-        $total = $attendance['present'] + $attendance['absent'] + $attendance['late'];
-        $percent = $total > 0 ? round(($attendance['present'] / $total) * 100) : 0;
-        @endphp
-
-        <div class="md:border-b md:border-sigedra-border">
-            <!-- Mobile Card -->
-            <div class="md:hidden p-4 border rounded-lg bg-white space-y-3">
-                <div class="flex justify-between items-start">
-                    <div class="flex-grow overflow-hidden pr-4">
-                        <p class="font-semibold text-gray-800 truncate">{{ $attendance['course'] }}</p>
-                        <p class="text-sm text-gray-600 truncate">
-                            Presentes: {{ $attendance['present'] }}, Ausentes: {{ $attendance['absent'] }}, Tardías: {{ $attendance['late'] }}
-                        </p>
-                    </div>
-                    <div x-data="{ open: false }" class="relative flex-shrink-0">
-                        <button @click="open = !open" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 -mt-2">
-                            <i class="ph ph-dots-three-vertical text-xl"></i>
-                        </button>
-                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-20" x-cloak>
-                            <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="ph ph-eye"></i> Ver
-                            </a>
-                            <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                <i class="ph ph-pencil-simple"></i> Editar
-                            </a>
-                            <a href="#" x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion')" class="flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-gray-100">
-                                <i class="ph ph-trash"></i> Eliminar
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex items-center gap-4 text-sm">
-                    @php
-                        $priorityClass = 'bg-red-100 text-red-800';
-                        $priorityText = 'Asistencia Baja';
-                        if ($percent >= 90) {
-                            $priorityClass = 'bg-green-100 text-green-800';
-                            $priorityText = 'Asistencia Alta';
-                        } elseif ($percent >= 70) {
-                            $priorityClass = 'bg-yellow-100 text-yellow-800';
-                            $priorityText = 'Asistencia Media';
-                        }
-                    @endphp
-                    <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full text-xs font-medium {{ $priorityClass }}">
-                        {{ $priorityText }}
-                    </span>
-                    <div class="flex items-center gap-2 text-gray-500">
-                        <i class="ph ph-calendar text-base"></i>
-                        <span>{{ $attendance['date'] }}</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Desktop Row -->
-            <div class="hidden md:grid md:grid-cols-7 gap-4 items-center px-6 py-4">
-                <div class="text-base text-sigedra-text-medium">{{ $attendance['date'] }}</div>
-                <div class="font-medium text-sigedra-text-dark">{{ $attendance['course'] }}</div>
-                <div class="text-base text-sigedra-text-medium">{{ $attendance['present'] }}</div>
-                <div class="text-base text-sigedra-text-medium">{{ $attendance['absent'] }}</div>
-                <div class="text-base text-sigedra-text-medium">{{ $attendance['late'] }}</div>
-                <div class="text-base text-sigedra-text-medium">{{ $percent }}%</div>
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <x-buttons.secondary href="#">
-                            <i class="ph ph-eye"></i>
-                        </x-buttons.secondary>
-                        <x-buttons.secondary href="#">
-                            <i class="ph ph-pencil-simple"></i>
-                        </x-buttons.secondary>
-                        <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion')">
-                            <i class="ph ph-trash"></i>
-                        </x-buttons.danger-secondary>
-                    </div>
-                </div>
-            </div>
-        </div>
-    @endforeach
-    </div>
+        <x-slot:body>
+            @php
+            $attendances = [
+            ['date' => '10/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 18, 'absent' => 2, 'late' => 1],
+            ['date' => '09/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 20, 'absent' => 0, 'late' => 1],
+            ['date' => '08/05/2024', 'course' => 'Ciencias Naturales', 'present' => 15, 'absent' => 5, 'late' => 0],
+            ['date' => '07/05/2024', 'course' => 'Matemáticas Avanzadas', 'present' => 19, 'absent' => 1, 'late' => 1],
+            ['date' => '06/05/2024', 'course' => 'Historia', 'present' => 21, 'absent' => 0, 'late' => 0],
+            ];
+            @endphp
+            @foreach ($attendances as $attendance)
+                <x-attendance-history-row-card :attendance="$attendance" />
+            @endforeach
+        </x-slot:body>
+    </x-table>
 
 
     <!-- Delete Confirmation Modal -->
