@@ -11,6 +11,7 @@
 @endsection
 
 @section('module_title', 'Registro de Asistencia')
+@section('module_subtitle', 'Pasa lista para un curso en una fecha específica')
 
 @section('header_actions')
     <div class="hidden md:flex gap-3">

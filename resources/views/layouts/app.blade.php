@@ -9,9 +9,7 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-    <!-- Icons -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css" />
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css" />
+    
 
     <!-- Scripts y Estilos -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -87,7 +85,7 @@
     <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll">
         <!-- Primary Header -->
         <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
-            <div class="container mx-auto px-4 flex items-center justify-between">
+            <div class="container mx-auto px-4 flex items-center justify-between h-full">
                 <div class="flex items-center">
                     <!-- Mobile Menu Toggle -->
                     <button type="button" id="mobile-menu-toggle" class="lg:hidden text-gray-500 hover:text-gray-600 me-4">
@@ -135,11 +133,13 @@
 </div>
 
 <!-- Mobile Footer Actions -->
+@hasSection('footer_actions')
 <div class="block md:hidden fixed bottom-0 left-0 w-full bg-white border-t p-4 z-20">
     <div class="container mx-auto">
         @yield('footer_actions')
     </div>
 </div>
+@endif
 
 @livewireScripts
 
