@@ -88,7 +88,7 @@
             <x-slot:head>
                 <tr>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre Completo</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Apellidos y Nombre</th>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">F. Nacimiento</th>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Género</th>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Dirección</th>
@@ -102,15 +102,15 @@
                 $students = [
                     [
                         'cedula' => '1-1234-5678',
-                        'nombre' => 'Juan',
-                        'apellidos' => 'Pérez Gómez',
+                        'nombre' => 'John Deibys',
+                        'apellidos' => 'Gutierrez Morales',
                         'fecha_nacimiento' => '15/03/2010',
                         'genero' => 'M',
                         'direccion' => 'San José, Desamparados, Calle Fallas',
                     ],
                     [
                         'cedula' => '2-0987-6543',
-                        'nombre' => 'María',
+                        'nombre' => 'Ana Lucía',
                         'apellidos' => 'Rodríguez López',
                         'fecha_nacimiento' => '22/07/2011',
                         'genero' => 'F',
@@ -118,7 +118,7 @@
                     ],
                     [
                         'cedula' => '3-1111-2222',
-                        'nombre' => 'Carlos',
+                        'nombre' => 'Carlos José',
                         'apellidos' => 'González Mora',
                         'fecha_nacimiento' => '10/11/2010',
                         'genero' => 'M',
@@ -126,7 +126,7 @@
                     ],
                     [
                         'cedula' => '4-2222-3333',
-                        'nombre' => 'Ana',
+                        'nombre' => 'María Fernanda',
                         'apellidos' => 'Fernández Solano',
                         'fecha_nacimiento' => '05/01/2011',
                         'genero' => 'F',
@@ -134,7 +134,7 @@
                     ],
                     [
                         'cedula' => '5-4444-5555',
-                        'nombre' => 'Luis',
+                        'nombre' => 'Luis Andrés',
                         'apellidos' => 'Martinez Castro',
                         'fecha_nacimiento' => '30/09/2010',
                         'genero' => 'M',
@@ -144,26 +144,26 @@
                 @endphp
                 @foreach ($students as $student)
                     <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ $student['cedula'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $student['nombre'] . ' ' . $student['apellidos'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $student['fecha_nacimiento'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ $student['genero'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 max-w-xs truncate" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800">{{ str_replace('-', '', $student['cedula']) . '@est.mep.go.cr' }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div class="flex items-center gap-x-4">
-                                <a href="#" class="text-gray-500 hover:text-sigedra-primary transition-colors" title="Ver Detalles del Estudiante">
-                                    <i class="ph ph-eye text-xl"></i>
-                                </a>
-                                <a href="#" class="text-gray-500 hover:text-sigedra-primary transition-colors" title="Editar Estudiante">
-                                    <i class="ph ph-pencil-simple text-xl"></i>
-                                </a>
-                                <a href="#" class="text-gray-500 hover:text-sigedra-error transition-colors" title="Eliminar Estudiante">
-                                    <i class="ph ph-trash text-xl"></i>
-                                </a>
-                                <a href="#" class="text-gray-500 hover:text-sigedra-primary transition-colors" title="Ver Información de Encargados">
-                                    <i class="ph ph-users-three text-xl"></i>
-                                </a>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ $student['cedula'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{ $student['fecha_nacimiento'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{ $student['genero'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800">{{ str_replace('-', '', $student['cedula']) . '@est.mep.go.cr' }}</td>
+                        <td class="px-6 py-4 text-sm font-medium">
+                            <div class="w-full flex items-center justify-center gap-x-2">
+                                <x-buttons.secondary href="#" title="Ver Detalles del Estudiante">
+                                    <i class="ph ph-eye text-lg"></i>
+                                </x-buttons.secondary>
+                                <x-buttons.secondary href="#" title="Editar Estudiante">
+                                    <i class="ph ph-pencil-simple text-lg"></i>
+                                </x-buttons.secondary>
+                                <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion')" title="Eliminar Estudiante">
+                                    <i class="ph ph-trash text-lg"></i>
+                                </x-buttons.danger-secondary>
+                                <x-buttons.secondary href="#" title="Ver Información de Encargados del Estudiante">
+                                    <i class="ph ph-users-three text-lg"></i>
+                                </x-buttons.secondary>
                             </div>
                         </td>
                     </tr>
@@ -171,5 +171,28 @@
             </x-slot:body>
         </x-table>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <x-modal name="confirm-student-deletion" focusable>
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                ¿Estás seguro de que deseas eliminar este estudiante?
+            </h2>
+
+            <p class="mt-1 text-base text-gray-600">
+                Toda la información del estudiante, incluyendo asistencias y notas, será eliminada permanentemente. Esta acción no se puede deshacer.
+            </p>
+
+            <div class="mt-6 flex justify-end">
+                <x-buttons.secondary x-on:click="$dispatch('close')">
+                    Cancelar
+                </x-buttons.secondary>
+
+                <x-danger-button class="ms-3" x-on:click="$dispatch('close')">
+                    Eliminar Estudiante
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 </div>
 @endsection
