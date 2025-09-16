@@ -86,15 +86,17 @@
 
         <div class="md:border-b md:border-sigedra-border">
             <!-- Mobile Card -->
-            <div class="md:hidden p-4 border rounded-lg bg-white">
-                <div class="flex justify-between items-center">
-                    <div>
-                        <p class="font-semibold text-gray-800">{{ $attendance['date'] }}</p>
-                        <p class="text-gray-600">{{ $attendance['course'] }}</p>
+            <div class="md:hidden p-4 border rounded-lg bg-white space-y-3">
+                <div class="flex justify-between items-start">
+                    <div class="flex-grow overflow-hidden pr-4">
+                        <p class="font-semibold text-gray-800 truncate">{{ $attendance['course'] }}</p>
+                        <p class="text-sm text-gray-600 truncate">
+                            Presentes: {{ $attendance['present'] }}, Ausentes: {{ $attendance['absent'] }}, Tardías: {{ $attendance['late'] }}
+                        </p>
                     </div>
-                    <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open" class="text-gray-600 hover:text-gray-800 p-2 rounded-full hover:bg-gray-100">
-                            <i class="ph ph-dots-three-vertical text-2xl"></i>
+                    <div x-data="{ open: false }" class="relative flex-shrink-0">
+                        <button @click="open = !open" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100 -mt-2">
+                            <i class="ph ph-dots-three-vertical text-xl"></i>
                         </button>
                         <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-40 bg-white rounded-md shadow-lg py-1 z-20" x-cloak>
                             <a href="#" class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -107,6 +109,26 @@
                                 <i class="ph ph-trash"></i> Eliminar
                             </a>
                         </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4 text-sm">
+                    @php
+                        $priorityClass = 'bg-red-100 text-red-800';
+                        $priorityText = 'Asistencia Baja';
+                        if ($percent >= 90) {
+                            $priorityClass = 'bg-green-100 text-green-800';
+                            $priorityText = 'Asistencia Alta';
+                        } elseif ($percent >= 70) {
+                            $priorityClass = 'bg-yellow-100 text-yellow-800';
+                            $priorityText = 'Asistencia Media';
+                        }
+                    @endphp
+                    <span class="inline-flex items-center gap-1.5 py-1 px-2 rounded-full text-xs font-medium {{ $priorityClass }}">
+                        {{ $priorityText }}
+                    </span>
+                    <div class="flex items-center gap-2 text-gray-500">
+                        <i class="ph ph-calendar text-base"></i>
+                        <span>{{ $attendance['date'] }}</span>
                     </div>
                 </div>
             </div>

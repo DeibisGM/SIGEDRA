@@ -108,15 +108,15 @@
         <!-- Secondary Header -->
         <header class="bg-white shadow-sm">
             <div class="container mx-auto px-4 py-5 flex items-center justify-between">
-                <div>
-                    <h1 class="text-xl font-bold text-gray-800 leading-tight">
+                <div class="flex-1 overflow-hidden pr-4">
+                    <h1 class="text-xl font-bold text-gray-800 leading-tight truncate">
                         @yield('module_title', 'Módulo')
                     </h1>
-                    <p class="text-sm text-gray-500 mt-1">
+                    <p class="text-sm text-gray-500 mt-1 truncate">
                         @yield('module_subtitle', '')
                     </p>
                 </div>
-                <div class="hidden sm:block">
+                <div class="hidden sm:block flex-shrink-0">
                     @yield('header_actions')
                 </div>
             </div>
