@@ -109,8 +109,8 @@
             <x-slot:head>
                 <tr>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Apellidos y Nombre</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">F. Nacimiento</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre completo</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Fecha Nacimiento</th>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Género</th>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Dirección</th>
                     <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Correo MEP</th>
@@ -169,7 +169,7 @@
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $student['fecha_nacimiento'] }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $student['genero'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800 truncate max-w-sm" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ str_replace('-', '', $student['cedula']) . '@est.mep.go.cr' }}</td>
                         <td class="px-6 py-4 text-sm font-medium">
                             <div class="w-full flex items-center justify-center gap-x-2">
