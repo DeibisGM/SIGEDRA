@@ -18,11 +18,11 @@
 
 
 </head>
-<body class="h-screen overflow-hidden">
+<body class="h-screen">
 
 <div class="h-full lg:flex">
 
-    <aside id="application-sidebar" class="hs-overlay [--auto-close:lg] hs-overlay-open:translate-x-0 -translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
+    <aside id="application-sidebar" class="-translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
         <header class="h-[70px] flex-shrink-0 flex items-center justify-between px-6 border-b bg-sigedra-light-colored-bg">
             <a class="flex items-center text-xl font-bold text-sigedra-secondary" href="{{ route('home') }}">
                 SIGEDRA
@@ -34,15 +34,15 @@
 
         @php
         $navLinks = [
-            ['route' => 'home', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
-            ['route' => 'attendance.index', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
-            ['route' => 'estudiantes.index', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
-            ['route' => 'profesores.index', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Profesores'],
-            ['route' => 'reportes.index', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
-            ['route' => '#', 'icon' => 'ph-exam', 'label' => 'Notas'],
-            ['route' => '#', 'icon' => 'ph-backpack', 'label' => 'Grado'],
-            ['route' => '#', 'icon' => 'ph-book', 'label' => 'Materias'],
-            ['route' => '#', 'icon' => 'ph-file-text', 'label' => 'Bitacora'],
+            ['route' => 'home', 'active_pattern' => 'home', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
+            ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
+            ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
+            ['route' => 'profesores.index', 'active_pattern' => 'profesores.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Profesores'],
+            ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
+            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-exam', 'label' => 'Notas'],
+            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-backpack', 'label' => 'Grado'],
+            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-book', 'label' => 'Materias'],
+            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-file-text', 'label' => 'Bitacora'],
         ];
         @endphp
 
@@ -55,9 +55,9 @@
                     <a href="{{ $link['route'] == '#' ? '#' : route($link['route']) }}"
                        @class([
                            'flex items-center gap-x-3.5 py-2 px-3.5 rounded-lg text-base transition-colors duration-200',
-                           'bg-sigedra-input text-sigedra-primary font-semibold' => request()->routeIs($link['route']) && $link['route'] != '#',
+                           'bg-sigedra-input text-sigedra-primary font-semibold' => $link['route'] != '#' && request()->routeIs($link['active_pattern']),
                            'text-sigedra-text-medium opacity-50 cursor-not-allowed' => $link['route'] == '#',
-                           'text-sigedra-text-medium hover:bg-sigedra-input hover:text-sigedra-primary' => $link['route'] != '#' && !request()->routeIs($link['route']),
+                           'text-sigedra-text-medium hover:bg-sigedra-input hover:text-sigedra-primary' => $link['route'] != '#' && !request()->routeIs($link['active_pattern']),
                        ])>
                         <i class="ph {{ $link['icon'] }} text-2xl"></i>
                         <span>{{ $link['label'] }}</span>
@@ -81,10 +81,11 @@
         </footer>
     </aside>
 
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
 
     <!-- ===== Content Area ===== -->
     <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll">
-        <!-- Module Title Header -->
+        <!-- Primary Header -->
         <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
             <div class="container mx-auto px-4 flex items-center justify-between">
                 <div class="flex items-center">
@@ -93,12 +94,31 @@
                         <span class="sr-only">Toggle Navigation</span>
                         <i class="ph ph-list text-xl"></i>
                     </button>
-                    <!-- El H1 ahora tomará los estilos base de app.css para consistencia -->
-                    <h1>
-                        @yield('module_title', 'Módulo')
-                    </h1>
+                    <!-- Breadcrumbs -->
+                    @yield('breadcrumbs')
                 </div>
                 <div>
+                    <!-- Help Button -->
+                    <a href="#" class="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border rounded-lg px-3 py-2 transition-colors">
+                        <i class="ph ph-question text-xl"></i>
+                        <span class="hidden sm:inline">Ayuda</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Secondary Header -->
+        <header class="bg-white shadow-sm">
+            <div class="container mx-auto px-4 py-5 flex items-center justify-between">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800 leading-tight">
+                        @yield('module_title', 'Módulo')
+                    </h1>
+                    <p class="text-sm text-gray-500 mt-1">
+                        @yield('module_subtitle', '')
+                    </p>
+                </div>
+                <div class="hidden sm:block">
                     @yield('header_actions')
                 </div>
             </div>

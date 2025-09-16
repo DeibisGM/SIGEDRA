@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Asistencia')
+
+@section('breadcrumbs')
+    <div class="text-base text-gray-500">
+        <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
+        <span class="mx-2">/</span>
+        <span>Crear Asistencia</span>
+    </div>
+@endsection
+
 @section('module_title', 'Registro de Asistencia')
 
 @section('header_actions')

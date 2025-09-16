@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('title', 'Profesores')
+
+@section('breadcrumbs')
+    <div class="text-base text-gray-500">
+        <a href="{{ route('profesores.index') }}" class="hover:text-gray-700">Profesores</a>
+        <span class="mx-2">/</span>
+        <span>Gestión de Profesores</span>
+    </div>
+@endsection
+
 @section('module_title', 'Gestión de Profesores')
 
 @section('content')

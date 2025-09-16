@@ -1,7 +1,17 @@
 @extends('layouts.app')
 
 @section('title', 'Asistencia')
+
+@section('breadcrumbs')
+    <div class="text-base text-gray-500">
+        <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
+        <span class="mx-2">/</span>
+        <span>Historial de asistencia</span>
+    </div>
+@endsection
+
 @section('module_title', 'Historial de Asistencias')
+@section('module_subtitle', 'Consulta el historial de las asistencias en el sistema')
 
 @section('header_actions')
     <div class="hidden md:flex">
