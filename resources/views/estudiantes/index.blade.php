@@ -32,7 +32,7 @@
                  x-transition:leave-start="opacity-100 transform scale-100"
                  x-transition:leave-end="opacity-0 transform scale-95"
                  @click.away="open = false"
-                 class="absolute right-0 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
+                 class="absolute left-0 mt-2 w-56 origin-top-left bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
                  style="display: none;">
                 <div class="py-1">
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">1er Grado</a>
@@ -45,22 +45,43 @@
             </div>
         </div>
 
-        <!-- Excel Buttons -->
-        <x-buttons.secondary>
-            <i class="ph ph-download-simple text-lg"></i>
-            <span class="ms-2">Descargar Plantilla</span>
-        </x-buttons.secondary>
-
-        <x-buttons.secondary>
-            <i class="ph ph-upload-simple text-lg"></i>
-            <span class="ms-2">Cargar Plantilla</span>
-        </x-buttons.secondary>
+        <div class="flex-grow"></div>
 
         <!-- Create Student Button -->
         <x-buttons.primary as="a" href="#">
             <i class="ph ph-plus-circle text-lg"></i>
             <span class="ms-2">Crear Estudiante</span>
         </x-buttons.primary>
+
+        <!-- More Actions Dropdown -->
+        <div x-data="{ open: false }" class="relative">
+            <x-buttons.secondary @click="open = !open" class="flex items-center px-3">
+                <span class="sr-only">Más acciones</span>
+                <i class="ph ph-dots-three-vertical text-lg"></i>
+            </x-buttons.secondary>
+
+            <div x-show="open"
+                 x-transition:enter="transition ease-out duration-200"
+                 x-transition:enter-start="opacity-0 transform scale-95"
+                 x-transition:enter-end="opacity-100 transform scale-100"
+                 x-transition:leave="transition ease-in duration-75"
+                 x-transition:leave-start="opacity-100 transform scale-100"
+                 x-transition:leave-end="opacity-0 transform scale-95"
+                 @click.away="open = false"
+                 class="absolute right-0 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
+                 style="display: none;">
+                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        <i class="ph ph-download-simple text-lg text-gray-500"></i>
+                        <span>Descargar Plantilla</span>
+                    </a>
+                    <a href="#" class="flex items-center gap-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+                        <i class="ph ph-upload-simple text-lg text-gray-500"></i>
+                        <span>Cargar Plantilla</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
 
@@ -148,7 +169,7 @@
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $student['fecha_nacimiento'] }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ $student['genero'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-800 truncate max-w-sm" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
                         <td class="px-6 py-4 text-sm text-gray-800">{{ str_replace('-', '', $student['cedula']) . '@est.mep.go.cr' }}</td>
                         <td class="px-6 py-4 text-sm font-medium">
                             <div class="w-full flex items-center justify-center gap-x-2">
