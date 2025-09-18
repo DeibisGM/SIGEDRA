@@ -66,30 +66,44 @@
         </div>
     </div>
 
-    <!-- Tabla de Estudiantes implementada con el nuevo componente reutilizable -->
-    <x-table>
-        {{-- Slot para el encabezado de la tabla --}}
-        <x-slot:head>
-            <tr>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">#</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre completo</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Asistencia</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Estado</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Observaciones</th>
-            </tr>
-        </x-slot:head>
+    <!-- Tabla de Estudiantes (oculta en móvil) -->
+    <div class="hidden md:block">
+        <x-table>
+            {{-- Slot para el encabezado de la tabla --}}
+            <x-slot:head>
+                <tr>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">#</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre completo</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Asistencia</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Estado</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Observaciones</th>
+                </tr>
+            </x-slot:head>
 
-        {{-- Slot para el cuerpo de la tabla --}}
-        <x-slot:body>
-            @forelse ($students as $student)
-                <x-tarjeta-alumno :student="$student" :loop="$loop" />
-            @empty
-            <tr>
-                <td colspan="6" class="px-6 py-3 text-center text-base text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
-            </tr>
-            @endforelse
-        </x-slot:body>
-    </x-table>
+            {{-- Slot para el cuerpo de la tabla --}}
+            <x-slot:body>
+                @forelse ($students as $student)
+                    <x-tarjeta-alumno-row :student="$student" :loop="$loop" />
+                @empty
+                <tr>
+                    <td colspan="6" class="px-6 py-3 text-center text-base text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
+                </tr>
+                @endforelse
+            </x-slot:body>
+        </x-table>
+    </div>
+
+
+    <!-- Vista de Tarjetas de Estudiantes (solo en móvil) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:hidden">
+        @forelse ($students as $student)
+            <x-tarjeta-alumno :student="$student" />
+        @empty
+            <div class="sm:col-span-2 text-center text-base text-sigedra-text-medium">
+                No hay estudiantes en esta clase.
+            </div>
+        @endforelse
+    </div>
 </div>
 @endsection
