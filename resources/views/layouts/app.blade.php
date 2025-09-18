@@ -39,6 +39,7 @@
         ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
         ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-file-text', 'label' => 'Bitácora'],
         // --- NUEVO ENLACE AÑADIDO ---
+        ['route' => 'pdf.preview', 'active_pattern' => 'pdf.preview', 'icon' => 'ph-printer', 'label' => 'Vista para PDF'],
         ['route' => 'login.test', 'active_pattern' => 'login.test', 'icon' => 'ph-sign-in', 'label' => 'Módulo Prueba Login'],
         // --- FIN DE NUEVO ENLACE ---
         ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-exam', 'label' => 'Notas'],

@@ -7,6 +7,7 @@ use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BitacoraController; // --- AÑADIR ESTA LÍNEA ---
+use App\Http\Controllers\PdfPreviewController; // --- AÑADIR ESTA LÍNEA ---
 
 // Ruta para la página principal (índice de módulos)
 Route::get('/', function () {
@@ -27,3 +28,6 @@ Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.in
 // --- NUEVA RUTA PARA PRUEBA DE LOGIN ---
 Route::get('/login-test', [LoginTestController::class, 'index'])->name('login.test');
 // --- FIN DE NUEVA RUTA ---
+
+// --- NUEVA RUTA PARA VISTA DE IMPRESIÓN ---
+Route::get('/vista-pdf', [PdfPreviewController::class, 'index'])->name('pdf.preview');
