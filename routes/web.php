@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LoginTestController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\EstudianteController;
@@ -18,8 +19,11 @@ Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudi
 Route::get('/estudiantes/crear', [EstudianteController::class, 'create'])->name('estudiantes.create');
 Route::get('/estudiantes/{id}', [EstudianteController::class, 'show'])->name('estudiantes.show');
 Route::get('/profesores', [ProfesorController::class, 'index'])->name('profesores.index');
-Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
 
-// --- NUEVA RUTA PARA BITÁCORA ---
+
+Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
 Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
+
+// --- NUEVA RUTA PARA PRUEBA DE LOGIN ---
+Route::get('/login-test', [LoginTestController::class, 'index'])->name('login.test');
 // --- FIN DE NUEVA RUTA ---

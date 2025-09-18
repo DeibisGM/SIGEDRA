@@ -32,15 +32,18 @@
 
         @php
         $navLinks = [
-            ['route' => 'home', 'active_pattern' => 'home', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
-            ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
-            ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
-            ['route' => 'profesores.index', 'active_pattern' => 'profesores.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Profesores'],
-            ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
-            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-exam', 'label' => 'Notas'],
-            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-backpack', 'label' => 'Grado'],
-            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-book', 'label' => 'Materias'],
+        ['route' => 'home', 'active_pattern' => 'home', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
+        ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
+        ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
+        ['route' => 'profesores.index', 'active_pattern' => 'profesores.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Profesores'],
+        ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
         ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-file-text', 'label' => 'Bitácora'],
+        // --- NUEVO ENLACE AÑADIDO ---
+        ['route' => 'login.test', 'active_pattern' => 'login.test', 'icon' => 'ph-sign-in', 'label' => 'Módulo Prueba Login'],
+        // --- FIN DE NUEVO ENLACE ---
+        ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-exam', 'label' => 'Notas'],
+        ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-backpack', 'label' => 'Grado'],
+        ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-book', 'label' => 'Materias'],
         ];
         @endphp
 
