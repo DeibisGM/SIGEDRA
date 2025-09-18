@@ -3,44 +3,44 @@
 @section('title', 'Asistencia')
 
 @section('breadcrumbs')
-    <div class="text-base text-gray-500 whitespace-nowrap truncate">
-        <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
-        <span class="mx-2">/</span>
-        <span>Crear Asistencia</span>
-    </div>
+<div class="text-base text-gray-500 whitespace-nowrap truncate">
+    <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
+    <span class="mx-2">/</span>
+    <span>Crear Asistencia</span>
+</div>
 @endsection
 
 @section('module_title', 'Registro de Asistencia')
 @section('module_subtitle', 'Pasa lista para un curso en una fecha específica')
 
 @section('header_actions')
-    <div class="hidden md:flex gap-3">
-        <x-buttons.secondary>Cancelar</x-buttons.secondary>
-        <x-buttons.primary>
-            <i class="ph ph-floppy-disk text-lg"></i>
-            <span>Guardar Cambios</span>
-        </x-buttons.primary>
-    </div>
+<div class="hidden md:flex gap-3">
+    <x-buttons.secondary>Cancelar</x-buttons.secondary>
+    <x-buttons.primary>
+        <i class="ph ph-floppy-disk text-lg"></i>
+        <span>Guardar Cambios</span>
+    </x-buttons.primary>
+</div>
 @endsection
 
 @section('footer_actions')
-    <div class="flex gap-3 w-full">
-        <x-buttons.secondary class="w-full justify-center">Cancelar</x-buttons.secondary>
-        <x-buttons.primary class="w-full justify-center">
-            <i class="ph ph-floppy-disk text-lg"></i>
-            <span>Guardar Cambios</span>
-        </x-buttons.primary>
-    </div>
+<div class="flex gap-3 w-full">
+    <x-buttons.secondary class="w-full justify-center">Cancelar</x-buttons.secondary>
+    <x-buttons.primary class="w-full justify-center">
+        <i class="ph ph-floppy-disk text-lg"></i>
+        <span>Guardar Cambios</span>
+    </x-buttons.primary>
+</div>
 @endsection
 
 @section('content')
 <div class="space-y-6">
-    <div class="flex flex-col md:flex-row md:items-baseline md:gap-x-3">
-        <h2 class="text-lg font-semibold text-gray-800">
-            Curso: {{ $subject }}
-        </h2>
-        <p class="text-base text-gray-500">
-            Fecha: {{ $date }}
+    <div class="flex flex-col md:flex-row md:items-baseline md:gap-4">
+        <h3 class="text-xl font-bold text-sigedra-primary">
+            <span class="font-semibold">Curso:</span> {{ $subject }}
+        </h3>
+        <p class="text-base text-sigedra-text-medium">
+            <span class="font-semibold">Fecha:</span> {{ $date }}
         </p>
     </div>
 
@@ -67,7 +67,7 @@
     </div>
 
     <!-- Tabla de Estudiantes implementada con el nuevo componente reutilizable -->
-    <x-table>
+    <x-table class="-mx-4 md:mx-0">
         {{-- Slot para el encabezado de la tabla --}}
         <x-slot:head>
             <tr>
@@ -83,10 +83,10 @@
         {{-- Slot para el cuerpo de la tabla --}}
         <x-slot:body>
             @forelse ($students as $student)
-                <x-tarjeta-alumno :student="$student" :loop="$loop" />
+            <x-tarjeta-alumno :student="$student" :loop="$loop" />
             @empty
             <tr>
-                <td colspan="6" class="px-6 py-3 text-center text-base text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
+                <td colspan="6" class="px-6 py-3 text-center text-sm text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
             </tr>
             @endforelse
         </x-slot:body>

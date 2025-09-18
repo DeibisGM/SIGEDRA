@@ -12,4 +12,12 @@ class EstudianteController extends Controller
     {
         return view('estudiantes.index');
     }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(): View
+    {
+        return view('estudiantes.create');
+    }
 }

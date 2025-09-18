@@ -48,7 +48,7 @@
         <div class="flex-grow"></div>
 
         <!-- Create Student Button -->
-        <x-buttons.primary as="a" href="#">
+        <x-buttons.primary as="a" href="{{ route('estudiantes.create') }}">
             <i class="ph ph-plus-circle text-lg"></i>
             <span class="ms-2">Crear Estudiante</span>
         </x-buttons.primary>
