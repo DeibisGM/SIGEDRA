@@ -39,35 +39,32 @@
 @section('content')
 <div class="space-y-6">
     <!-- Barra de Búsqueda y Filtros -->
-    <div class="sticky top-0 bg-sigedra-bg z-10 py-4 -mx-4 px-4 md:mx-0 md:py-0">
-        <div class="flex flex-col md:flex-row gap-3 justify-between items-center">
-            <div class="relative w-full md:w-auto md:flex-1">
-                <input type="text" class="py-2 px-4 ps-11 block w-full bg-white border-sigedra-border rounded-lg text-sm placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Buscar por fecha o curso...">
-                <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
-                    <i class="ph ph-magnifying-glass text-lg text-sigedra-text-medium"></i>
-                </div>
+    <div class="flex flex-col md:flex-row gap-3 justify-between items-center">
+        <div class="relative w-full md:w-auto md:flex-1">
+            <input type="text" class="py-2 px-4 ps-11 block w-full bg-white border-sigedra-border rounded-lg text-sm placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Buscar por fecha o curso...">
+            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
+                <i class="ph ph-magnifying-glass text-lg text-sigedra-text-medium"></i>
             </div>
-            <div class="flex gap-3 w-full md:w-auto justify-end">
-                <x-buttons.secondary class="w-full md:w-auto justify-center text-sm" title="Filtros">
-                    <i class="ph ph-faders text-lg"></i>
-                    <span class="sm:inline">Filtros</span>
-                </x-buttons.secondary>
-            </div>
+        </div>
+        <div class="flex gap-3 w-full md:w-auto justify-end">
+            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm" title="Filtros">
+                <i class="ph ph-faders text-lg"></i>
+                <span class="sm:inline">Filtros</span>
+            </x-buttons.secondary>
         </div>
     </div>
 
 
-    <div class="rounded-lg border border-sigedra-border overflow-hidden">
-        <x-table>
+    <x-table>
         <x-slot:head>
             <tr>
-                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[100px]">Fecha</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Fecha</th>
                 <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Curso</th>
                 <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Presentes</th>
                 <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Ausentes</th>
                 <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Tardías</th>
                 <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Asistencia %</th>
-                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[220px]">Acciones</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Acciones</th>
             </tr>
         </x-slot:head>
 
@@ -86,7 +83,6 @@
             @endforeach
         </x-slot:body>
     </x-table>
-    </div>
 
 
     <!-- Delete Confirmation Modal -->

@@ -104,94 +104,90 @@
     </div>
 
     <!-- Student Table -->
-    <div class="rounded-lg border border-sigedra-border overflow-hidden">
-        <x-table>
-            <x-slot:head>
-                <tr>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre completo</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Fecha Nacimiento</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Género</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Dirección</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Correo MEP</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Acciones</th>
-                </tr>
-            </x-slot:head>
+    <x-table>
+        <x-slot:head>
+            <tr>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre completo</th>
+                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Edad</th>
+                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Género</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Dirección</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Acciones</th>
+            </tr>
+        </x-slot:head>
 
-            <x-slot:body>
-                @php
-                $students = [
-                    [
-                        'cedula' => '1-1234-5678',
-                        'nombre' => 'John Deibys',
-                        'apellidos' => 'Gutierrez Morales',
-                        'fecha_nacimiento' => '15/03/2010',
-                        'genero' => 'M',
-                        'direccion' => 'San José, Desamparados, Calle Fallas',
-                    ],
-                    [
-                        'cedula' => '2-0987-6543',
-                        'nombre' => 'Ana Lucía',
-                        'apellidos' => 'Rodríguez López',
-                        'fecha_nacimiento' => '22/07/2011',
-                        'genero' => 'F',
-                        'direccion' => 'Alajuela, Grecia, Puente de Piedra',
-                    ],
-                    [
-                        'cedula' => '3-1111-2222',
-                        'nombre' => 'Carlos José',
-                        'apellidos' => 'González Mora',
-                        'fecha_nacimiento' => '10/11/2010',
-                        'genero' => 'M',
-                        'direccion' => 'Cartago, La Unión, Tres Ríos',
-                    ],
-                    [
-                        'cedula' => '4-2222-3333',
-                        'nombre' => 'María Fernanda',
-                        'apellidos' => 'Fernández Solano',
-                        'fecha_nacimiento' => '05/01/2011',
-                        'genero' => 'F',
-                        'direccion' => 'Heredia, Santo Domingo, Santa Rosa',
-                    ],
-                    [
-                        'cedula' => '5-4444-5555',
-                        'nombre' => 'Luis Andrés',
-                        'apellidos' => 'Martinez Castro',
-                        'fecha_nacimiento' => '30/09/2010',
-                        'genero' => 'M',
-                        'direccion' => 'Guanacaste, Liberia, Centro',
-                    ],
-                ];
-                @endphp
-                @foreach ($students as $student)
-                    <tr class="hover:bg-gray-50">
-                        <td class="px-6 py-4 text-sm font-medium text-gray-800">{{ $student['cedula'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $student['fecha_nacimiento'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ $student['genero'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
-                        <td class="px-6 py-4 text-sm text-gray-800">{{ str_replace('-', '', $student['cedula']) . '@est.mep.go.cr' }}</td>
-                        <td class="px-6 py-4 text-sm font-medium">
-                            <div class="w-full flex items-center justify-center gap-x-2">
-                                <x-buttons.secondary href="#" title="Ver Detalles del Estudiante">
-                                    <i class="ph ph-eye text-lg"></i>
-                                </x-buttons.secondary>
-                                <x-buttons.secondary href="#" title="Editar Estudiante">
-                                    <i class="ph ph-pencil-simple text-lg"></i>
-                                </x-buttons.secondary>
-                                <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion')" title="Eliminar Estudiante">
-                                    <i class="ph ph-trash text-lg"></i>
-                                </x-buttons.danger-secondary>
-                                <x-buttons.secondary href="#" title="Ver Información de Encargados del Estudiante">
-                                    <i class="ph ph-users-three text-lg"></i>
-                                </x-buttons.secondary>
-                            </div>
-                        </td>
-                    </tr>
-                @endforeach
-            </x-slot:body>
-        </x-table>
-    </div>
+        <x-slot:body>
+            @php
+            $students = [
+                [
+                    'cedula' => '1-1234-5678',
+                    'nombre' => 'John Deibys',
+                    'apellidos' => 'Gutierrez Morales',
+                    'fecha_nacimiento' => '15/03/2010',
+                    'genero' => 'M',
+                    'direccion' => 'San José, Desamparados, Calle Fallas',
+                ],
+                [
+                    'cedula' => '2-0987-6543',
+                    'nombre' => 'Ana Lucía',
+                    'apellidos' => 'Rodríguez López',
+                    'fecha_nacimiento' => '22/07/2011',
+                    'genero' => 'F',
+                    'direccion' => 'Alajuela, Grecia, Puente de Piedra',
+                ],
+                [
+                    'cedula' => '3-1111-2222',
+                    'nombre' => 'Carlos José',
+                    'apellidos' => 'González Mora',
+                    'fecha_nacimiento' => '10/11/2010',
+                    'genero' => 'M',
+                    'direccion' => 'Cartago, La Unión, Tres Ríos',
+                ],
+                [
+                    'cedula' => '4-2222-3333',
+                    'nombre' => 'María Fernanda',
+                    'apellidos' => 'Fernández Solano',
+                    'fecha_nacimiento' => '05/01/2011',
+                    'genero' => 'F',
+                    'direccion' => 'Heredia, Santo Domingo, Santa Rosa',
+                ],
+                [
+                    'cedula' => '5-4444-5555',
+                    'nombre' => 'Luis Andrés',
+                    'apellidos' => 'Martinez Castro',
+                    'fecha_nacimiento' => '30/09/2010',
+                    'genero' => 'M',
+                    'direccion' => 'Guanacaste, Liberia, Centro',
+                ],
+            ];
+            @endphp
+            @foreach ($students as $student)
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-base font-medium text-gray-800">{{ $student['cedula'] }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800 text-center">{{ \Carbon\Carbon::createFromFormat('d/m/Y', $student['fecha_nacimiento'])->age }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800 text-center">{{ $student['genero'] }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
+                    <td class="px-6 py-4 text-base font-medium">
+                        <div class="w-full flex items-center justify-center gap-x-2">
+                            <x-buttons.secondary href="#" title="Ver Detalles del Estudiante">
+                                <i class="ph ph-eye text-lg"></i>
+                            </x-buttons.secondary>
+                            <x-buttons.secondary href="#" title="Ver Información de Encargados del Estudiante">
+                                <i class="ph ph-users-three text-lg"></i>
+                            </x-buttons.secondary>
+                            <x-buttons.secondary href="#" title="Editar Estudiante">
+                                <i class="ph ph-pencil-simple text-lg"></i>
+                            </x-buttons.secondary>
+                            <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion')" title="Eliminar Estudiante">
+                                <i class="ph ph-trash text-lg"></i>
+                            </x-buttons.danger-secondary>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </x-slot:body>
+    </x-table>
 
     <!-- Delete Confirmation Modal -->
     <x-modal name="confirm-student-deletion" focusable>

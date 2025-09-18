@@ -35,12 +35,12 @@
 
 @section('content')
 <div class="space-y-6">
-    <div class="flex flex-col md:flex-row md:items-baseline md:gap-4">
-        <h3 class="text-xl font-bold text-sigedra-primary">
-            <span class="font-semibold">Curso:</span> {{ $subject }}
-        </h3>
-        <p class="text-base text-sigedra-text-medium">
-            <span class="font-semibold">Fecha:</span> {{ $date }}
+    <div class="flex flex-col md:flex-row md:items-baseline md:gap-x-3">
+        <h2 class="text-lg font-semibold text-gray-800">
+            Curso: {{ $subject }}
+        </h2>
+        <p class="text-base text-gray-500">
+            Fecha: {{ $date }}
         </p>
     </div>
 
@@ -67,7 +67,7 @@
     </div>
 
     <!-- Tabla de Estudiantes implementada con el nuevo componente reutilizable -->
-    <x-table class="-mx-4 md:mx-0">
+    <x-table>
         {{-- Slot para el encabezado de la tabla --}}
         <x-slot:head>
             <tr>
@@ -86,7 +86,7 @@
                 <x-tarjeta-alumno :student="$student" :loop="$loop" />
             @empty
             <tr>
-                <td colspan="6" class="px-6 py-3 text-center text-sm text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
+                <td colspan="6" class="px-6 py-3 text-center text-base text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
             </tr>
             @endforelse
         </x-slot:body>
