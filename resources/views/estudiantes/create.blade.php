@@ -14,18 +14,32 @@
 @section('module_subtitle', 'Ingresa los datos para registrar un nuevo estudiante en el sistema.')
 
 @section('content')
-<div class="p-4 sm:p-8 bg-white shadow-sm sm:rounded-lg">
     <form action="#" method="POST" class="space-y-8">
         @csrf
 
         {{-- Seccion de Datos Personales --}}
         <div class="space-y-6">
             <h2 class="text-lg font-semibold border-b border-gray-200 pb-2">Datos Personales del Estudiante</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <!-- Cédula -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+                <!-- Tipo de Identificacion -->
                 <div>
+                    <x-input-label for="tipo_identificacion" :value="__('Tipo de Identificación')" />
+                    <select id="tipo_identificacion" name="tipo_identificacion" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="nacional">Nacional</option>
+                        <option value="extranjero">Extranjero</option>
+                    </select>
+                </div>
+
+                <!-- Cédula con botón -->
+                <div class="md:col-span-1">
                     <x-input-label for="cedula" :value="__('Cédula')" />
-                    <x-text-input id="cedula" name="cedula" type="text" class="mt-1 block w-full" required autofocus placeholder="Ej: 1-2345-6789"/>
+                    <div class="mt-1 flex rounded-md shadow-sm">
+                        <x-text-input id="cedula" name="cedula" type="text" class="block w-full rounded-none rounded-l-md" required autofocus placeholder="Buscar estudiante..."/>
+                        <button type="button" class="relative -ml-px inline-flex items-center space-x-2 rounded-r-md border border-gray-300 bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
+                            <span>Buscar</span>
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Nacionalidad -->
@@ -35,7 +49,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <!-- Primer Nombre -->
                 <div>
                     <x-input-label for="primer_nombre" :value="__('Primer Nombre')" />
@@ -52,6 +66,12 @@
                 <div>
                     <x-input-label for="primer_apellido" :value="__('Primer Apellido')" />
                     <x-text-input id="primer_apellido" name="primer_apellido" type="text" class="mt-1 block w-full" required placeholder="Pérez"/>
+                </div>
+
+                <!-- Segundo Apellido -->
+                <div>
+                    <x-input-label for="segundo_apellido" :value="__('Segundo Apellido (Opcional)')" />
+                    <x-text-input id="segundo_apellido" name="segundo_apellido" type="text" class="mt-1 block w-full" placeholder="Rojas"/>
                 </div>
             </div>
 
@@ -178,7 +198,6 @@
             </x-primary-button>
         </div>
     </form>
-</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
