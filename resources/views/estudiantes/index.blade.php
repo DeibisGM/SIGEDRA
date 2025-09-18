@@ -170,9 +170,11 @@
                     <td class="px-6 py-4 text-base text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
                     <td class="px-6 py-4 text-base font-medium">
                         <div class="w-full flex items-center justify-center gap-x-2">
-                            <x-buttons.secondary href="#" title="Ver Detalles del Estudiante">
+                            {{-- ----- LÍNEA MODIFICADA ----- --}}
+                            <x-buttons.secondary href="{{ route('estudiantes.show', ['id' => $student['cedula']]) }}" title="Ver Detalles del Estudiante">
                                 <i class="ph ph-eye text-lg"></i>
                             </x-buttons.secondary>
+                            {{-- ----- FIN DE LÍNEA MODIFICADA ----- --}}
                             <x-buttons.secondary href="#" title="Ver Información de Encargados del Estudiante">
                                 <i class="ph ph-users-three text-lg"></i>
                             </x-buttons.secondary>

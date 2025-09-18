@@ -17,6 +17,11 @@ Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attenda
 Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
 Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
 Route::get('/estudiantes/crear', [EstudianteController::class, 'create'])->name('estudiantes.create');
+
+// --- NUEVA RUTA ---
+// Ruta para ver los detalles de un estudiante. Se pasa un ID como parámetro.
+Route::get('/estudiantes/{id}', [EstudianteController::class, 'show'])->name('estudiantes.show');
+// --- FIN DE NUEVA RUTA ---
+
 Route::get('/profesores', [ProfesorController::class, 'index'])->name('profesores.index');
 Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
-

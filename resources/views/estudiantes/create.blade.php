@@ -153,12 +153,12 @@
                     <x-input-label for="grado_id" value="Grado a Matricular" />
                     <select id="grado_id" name="grado_id" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                         <option value="" disabled selected>Seleccione un grado...</option>
-                        <option value="1">Sétimo</option>
-                        <option value="2">Octavo</option>
-                        <option value="3">Noveno</option>
-                        <option value="4">Décimo</option>
-                        <option value="5">Undécimo</option>
-                        <option value="6">Duodécimo</option>
+                        <option value="1">Primer Grado</option>
+                        <option value="2">Segundo Grado</option>
+                        <option value="3">Tercer Grado</option>
+                        <option value="4">Cuarto Grado</option>
+                        <option value="5">Quinto Grado</option>
+                        <option value="6">Sexto Grado</option>
                     </select>
                 </div>
             </div>
