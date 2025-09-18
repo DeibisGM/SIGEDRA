@@ -165,7 +165,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow">
+        <main class="flex-grow bg-sigedra-bg">
             <div class="container mx-auto px-4 py-4 pb-24">
                 @yield('content')
             </div>

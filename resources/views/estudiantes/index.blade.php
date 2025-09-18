@@ -162,7 +162,7 @@
             ];
             @endphp
             @foreach ($students as $student)
-                <tr class="hover:bg-gray-50">
+                <tr class="bg-white hover:bg-gray-50">
                     <td class="px-6 py-4 text-base font-medium text-gray-800">{{ $student['cedula'] }}</td>
                     <td class="px-6 py-4 text-base text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
                     <td class="px-6 py-4 text-base text-gray-800 text-center">{{ \Carbon\Carbon::createFromFormat('d/m/Y', $student['fecha_nacimiento'])->age }}</td>
