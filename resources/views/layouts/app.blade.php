@@ -40,7 +40,7 @@
             ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-exam', 'label' => 'Notas'],
             ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-backpack', 'label' => 'Grado'],
             ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-book', 'label' => 'Materias'],
-            ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-file-text', 'label' => 'Bitacora'],
+        ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-file-text', 'label' => 'Bitácora'],
         ];
         @endphp
 
