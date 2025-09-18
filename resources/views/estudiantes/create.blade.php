@@ -14,7 +14,6 @@
 @section('module_subtitle', 'Ingresa los datos para registrar un nuevo estudiante en el sistema.')
 
 @section('header_actions')
-
 {{-- Botones de Acción --}}
 <div class="flex items-center justify-end mt-4 gap-3">
     <x-buttons.secondary as="a" href="{{ route('estudiantes.index') }}">
@@ -26,20 +25,17 @@
         <span>Guardar Estudiante</span>
     </x-buttons.primary>
 </div>
-
 @endsection
 
 @section('content')
 <div class="w-full">
-    {{-- Se ha reducido el espaciado vertical entre las tarjetas de 8 a 6 --}}
     <form action="#" method="POST" class="space-y-4">
         @csrf
 
-        {{-- 1. Card: Datos Personales --}}
+        {{-- 1. Card: Información de Identidad --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Datos Personales</h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
+            <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Información de Identidad</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {{-- Tipo de Identificación --}}
                 <div>
                     <x-input-label for="tipo_identificacion" value="Tipo de Identificación" />
@@ -50,7 +46,7 @@
                 </div>
 
                 {{-- Cédula con botón de búsqueda --}}
-                <div class="lg:col-span-2">
+                <div class="md:col-span-2">
                     <x-input-label for="cedula" value="Cédula" />
                     <div class="mt-1 flex rounded-md shadow-sm">
                         <x-text-input id="cedula" name="cedula" type="text" class="flex-1 block w-full rounded-none rounded-l-md" required autofocus placeholder="Buscar estudiante por cédula..." />
@@ -60,13 +56,15 @@
                         </button>
                     </div>
                 </div>
+            </div>
+        </div>
 
-                {{-- Nacionalidad --}}
-                <div>
-                    <x-input-label for="nacionalidad" value="Nacionalidad" />
-                    <x-text-input id="nacionalidad" name="nacionalidad" type="text" class="mt-1 block w-full" placeholder="Ej: Costarricense" />
-                </div>
+        {{-- 2. Card: Datos Personales --}}
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Datos Personales</h2>
 
+            {{-- Nombre y Apellidos --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
                 {{-- Primer Nombre --}}
                 <div>
                     <x-input-label for="primer_nombre" value="Primer Nombre" />
@@ -90,27 +88,64 @@
                     <x-input-label for="segundo_apellido" value="Segundo Apellido (Opcional)" />
                     <x-text-input id="segundo_apellido" name="segundo_apellido" type="text" class="mt-1 block w-full" placeholder="Rojas" />
                 </div>
+            </div>
 
+            {{-- Fecha de Nacimiento, Género y Nacionalidad --}}
+            {{-- CAMBIO: Se ajusta el grid a 3 columnas en 'lg' y se elimina el col-span --}}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end mt-6">
                 {{-- Fecha de Nacimiento --}}
-                <div class="lg:col-span-2">
+                <div>
                     <x-input-label for="fecha_nacimiento" value="Fecha de Nacimiento" />
                     <x-text-input id="fecha_nacimiento" name="fecha_nacimiento" type="date" class="mt-1 block w-full" required />
                 </div>
 
                 {{-- Género --}}
-                <div class="lg:col-span-2">
+                <div>
                     <x-input-label for="genero" value="Género" />
                     <select id="genero" name="genero" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                        <option value="" disabled selected>Seleccione un género...</option>
+                        <option value="" disabled selected>Seleccione...</option>
                         <option value="M">Masculino</option>
                         <option value="F">Femenino</option>
                         <option value="O">Otro</option>
                     </select>
                 </div>
+
+                {{-- Nacionalidad --}}
+                <div>
+                    <x-input-label for="nacionalidad" value="Nacionalidad" />
+                    <x-text-input id="nacionalidad" name="nacionalidad" type="text" class="mt-1 block w-full" placeholder="Ej: Costarricense" />
+                </div>
+            </div>
+
+            {{-- Apartado de Dirección --}}
+            <div class="mt-8 border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Dirección</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {{-- Provincia --}}
+                    <div>
+                        <x-input-label for="provincia" value="Provincia (Opcional)" />
+                        <x-text-input id="provincia" name="provincia" type="text" class="mt-1 block w-full" placeholder="Ej: San José" />
+                    </div>
+                    {{-- Cantón --}}
+                    <div>
+                        <x-input-label for="canton" value="Cantón (Opcional)" />
+                        <x-text-input id="canton" name="canton" type="text" class="mt-1 block w-full" placeholder="Ej: Desamparados" />
+                    </div>
+                    {{-- Distrito --}}
+                    <div>
+                        <x-input-label for="distrito" value="Distrito (Opcional)" />
+                        <x-text-input id="distrito" name="distrito" type="text" class="mt-1 block w-full" placeholder="Ej: San Miguel" />
+                    </div>
+                    {{-- Dirección Exacta --}}
+                    <div class="md:col-span-2 lg:col-span-3">
+                        <x-input-label for="direccion_exacta" value="Dirección Exacta (Opcional)" />
+                        <textarea id="direccion_exacta" name="direccion_exacta" rows="3" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" placeholder="Ej: 100 metros al sur del parque central, casa color verde con portón negro."></textarea>
+                    </div>
+                </div>
             </div>
         </div>
 
-        {{-- 2. Card: Información Académica --}}
+        {{-- 3. Card: Información Académica --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
             <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Información Académica</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -129,7 +164,7 @@
             </div>
         </div>
 
-        {{-- 3. Card: Necesidades Especiales (Adecuación) --}}
+        {{-- 4. Card: Necesidades Especiales (Adecuación) --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
             <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Necesidades Especiales (Adecuación)</h2>
             <div class="space-y-6">
@@ -163,7 +198,7 @@
             </div>
         </div>
 
-        {{-- 4. Card: Asignación de Encargado --}}
+        {{-- 5. Card: Asignación de Encargado --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
             <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Asignación de Encargado</h2>
 
@@ -198,8 +233,6 @@
                 </div>
             </div>
         </div>
-
-
     </form>
 </div>
 
