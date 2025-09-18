@@ -16,6 +16,8 @@ Route::get('/', function () {
 Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
 Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
 Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
+Route::get('/estudiantes/crear', [EstudianteController::class, 'create'])->name('estudiantes.create');
+Route::post('/estudiantes', [EstudianteController::class, 'store'])->name('estudiantes.store');
 Route::get('/profesores', [ProfesorController::class, 'index'])->name('profesores.index');
 Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
 
