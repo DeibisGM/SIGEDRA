@@ -95,7 +95,49 @@
                     <!-- Breadcrumbs -->
                     @yield('breadcrumbs')
                 </div>
-                <div class="ms-4">
+                <div class="ms-4 flex items-center gap-x-4">
+                    <!-- User Dropdown -->
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="flex items-center gap-x-2 focus:outline-none p-1 rounded-md hover:bg-gray-100">
+                            <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-gray-700">
+                                <span class="text-sm font-semibold">DG</span>
+                            </span>
+                            <p class="hidden md:block text-sm font-semibold text-gray-800">Deibis Gutierrez</p>
+                            <i class="ph ph-caret-down text-sm text-gray-500 hidden md:block"></i>
+                        </button>
+
+                        <div x-show="open"
+                             @click.away="open = false"
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-95"
+                             class="absolute right-0 mt-2 w-56 bg-white rounded-md shadow-lg border border-sigedra-border z-20"
+                             style="display: none;">
+                            <div class="p-2">
+                                <div class="px-3 py-2">
+                                    <p class="text-sm font-semibold text-gray-800">Deibis Gutierrez</p>
+                                    <p class="text-xs text-gray-500">maestro@sigedra.com</p>
+                                </div>
+                                <div class="h-px bg-gray-200 my-1"></div>
+                                <a href="#" class="flex items-center gap-x-3 px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100">
+                                    <i class="ph ph-user-circle text-lg text-gray-500"></i>
+                                    <span>Mi Perfil</span>
+                                </a>
+                                <div class="h-px bg-gray-200 my-1"></div>
+                                <form method="POST" action="#">
+                                    @csrf
+                                    <button type="submit" class="w-full flex items-center gap-x-3 px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50">
+                                        <i class="ph ph-sign-out text-lg"></i>
+                                        <span>Cerrar Sesión</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Help Button -->
                     <a href="#" class="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 border rounded-lg px-3 py-2 transition-colors">
                         <i class="ph ph-question text-xl"></i>
@@ -123,7 +165,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow">
+        <main class="flex-grow bg-sigedra-bg">
             <div class="container mx-auto px-4 py-4 pb-24">
                 @yield('content')
             </div>
