@@ -9,4 +9,13 @@ import flatpickr from "flatpickr";
 
 document.addEventListener('DOMContentLoaded', function () {
     flatpickr(".flatpickr", {});
+
+    if (document.getElementById('attendanceChart')) {
+        import('./report-charts.js')
+            .then(module => {
+                const initCharts = module.default;
+                initCharts();
+            })
+            .catch(err => console.error('Chart loading failed:', err));
+    }
 });
