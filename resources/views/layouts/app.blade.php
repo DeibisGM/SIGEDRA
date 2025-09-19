@@ -73,7 +73,7 @@
 
         <!-- Sidebar Footer -->
         <footer class="p-4 flex-shrink-0 border-t mt-auto">
-            <form method="POST" action="#">
+            <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="w-full flex items-center gap-x-3 py-2 px-3.5 rounded-lg text-base text-sigedra-text-medium hover:bg-red-50 hover:text-sigedra-error">
                     <i class="ph ph-sign-out text-2xl"></i>
@@ -131,7 +131,7 @@
                                     <span>Mi Perfil</span>
                                 </a>
                                 <div class="h-px bg-gray-200 my-1"></div>
-                                <form method="POST" action="#">
+                                <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="w-full flex items-center gap-x-3 px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50">
                                         <i class="ph ph-sign-out text-lg"></i>
