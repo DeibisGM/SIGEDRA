@@ -17,10 +17,20 @@ class GestionEstudiantes extends Component
         $this->isReady = true;
     }
 
+    public function updatingPage(): void
+    {
+        $this->isReady = false;
+    }
+
+    public function updatedPage(): void
+    {
+        $this->isReady = true;
+    }
+
     public function render()
     {
         return view('livewire.gestion-estudiantes', [
-            'estudiantes' => $this->isReady ? Estudiante::latest('id')->paginate(10) : [],
+            'estudiantes' => $this->isReady ? Estudiante::paginate(10) : [],
         ]);
     }
 }
