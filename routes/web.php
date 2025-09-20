@@ -1,14 +1,12 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\LoginTestController;
 use App\Http\Controllers\ProfesorController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BitacoraController;
-use App\Http\Controllers\PdfPreviewController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -35,14 +33,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
-    Route::get('/vista-pdf', [PdfPreviewController::class, 'index'])->name('pdf.preview');
 });
-
-// Test route (can remain outside auth for now)
-Route::get('/login-test', [LoginTestController::class, 'index'])->name('login.test');
-
-// Temporary route to fix password hash
-Route::get('/fix-password', [LoginTestController::class, 'fixPassword']);
 
 
 require __DIR__.'/auth.php';

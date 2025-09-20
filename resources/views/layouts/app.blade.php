@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SIGEDRA - @yield('title')</title>
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
@@ -36,16 +39,9 @@
         ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
         ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
         ['route' => 'profesores.index', 'active_pattern' => 'profesores.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Profesores'],
-        ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
-        ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-file-text', 'label' => 'Bitácora'],
-        // --- NUEVO ENLACE AÑADIDO ---
-        ['route' => 'pdf.preview', 'active_pattern' => 'pdf.preview', 'icon' => 'ph-printer', 'label' => 'Vista para PDF'],
-        ['route' => 'login.test', 'active_pattern' => 'login.test', 'icon' => 'ph-sign-in', 'label' => 'Módulo Prueba Login'],
-        // --- FIN DE NUEVO ENLACE ---
-        ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-exam', 'label' => 'Notas'],
-        ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-backpack', 'label' => 'Grado'],
-        ['route' => '#', 'active_pattern' => '', 'icon' => 'ph-book', 'label' => 'Materias'],
-        ];
+                        ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
+                        ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-book', 'label' => 'Bitacora'],
+                    ];
         @endphp
 
 
@@ -73,8 +69,8 @@
 
         <!-- Sidebar Footer -->
         <footer class="p-4 flex-shrink-0 border-t mt-auto">
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
+            <form method="POST" action="{{ route('logout') }}" id="logout-form-sidebar" onsubmit="event.preventDefault(); console.log('Logout form submitted (sidebar)'); this.submit(); setTimeout(() => { console.log('Redirecting to /login (sidebar)'); window.location.replace('/login'); }, 100);">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
                 <button type="submit" class="w-full flex items-center gap-x-3 py-2 px-3.5 rounded-lg text-base text-sigedra-text-medium hover:bg-red-50 hover:text-sigedra-error">
                     <i class="ph ph-sign-out text-2xl"></i>
                     <span class="font-medium">Cerrar Sesión</span>
@@ -131,8 +127,8 @@
                                     <span>Mi Perfil</span>
                                 </a>
                                 <div class="h-px bg-gray-200 my-1"></div>
-                                <form method="POST" action="{{ route('logout') }}">
-                                    @csrf
+                                <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown" onsubmit="event.preventDefault(); console.log('Logout form submitted (dropdown)'); this.submit(); setTimeout(() => { console.log('Redirecting to /login (dropdown)'); window.location.replace('/login'); }, 100);">
+                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                     <button type="submit" class="w-full flex items-center gap-x-3 px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50">
                                         <i class="ph ph-sign-out text-lg"></i>
                                         <span>Cerrar Sesión</span>
