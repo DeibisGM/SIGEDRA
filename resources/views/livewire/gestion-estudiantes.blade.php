@@ -74,7 +74,7 @@
 
     @if ($isReady && $estudiantes->hasPages())
         <div class="mt-8">
-            {{ $estudiantes->links() }}
+            {{ $estudiantes->links('vendor.pagination.sigedra-pagination') }}
         </div>
     @endif
 </div>
