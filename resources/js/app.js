@@ -19,7 +19,7 @@ window.tomSelect = function (config) {
     return {
         ...config,
         init() {
-            instance = new TomSelect(this.$el, config.settings);
+            instance = new TomSelect(Alpine.raw(this.$el), config.settings);
             this.$watch(config.wireModel, (value) => {
                 if (value !== instance.getValue()) {
                     instance.setValue(value, true);
