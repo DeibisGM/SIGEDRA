@@ -5,26 +5,23 @@
             {{-- Filtro por Año Académico --}}
             <div>
                 <label for="anio_academico_id" class="block font-semibold text-sm text-gray-800">Año Académico</label>
-                <x-forms.tom-select
-                    id="anio_academico_id"
-                    wireModel="anio_academico_id"
-                    :options="$aniosAcademicos->map(fn($anio) => ['id' => $anio->id, 'text' => $anio->anio])->toArray()"
-                    placeholder="-- Todos los Años --"
-                    class="mt-1"
-                />
+                <select id="anio_academico_id" wire:model="anio_academico_id" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="">-- Todos los Años --</option>
+                    @foreach($aniosAcademicos as $anio)
+                        <option value="{{ $anio->id }}">{{ $anio->anio }}</option>
+                    @endforeach
+                </select>
             </div>
 
             {{-- Filtro por Grado (Dependiente del año) --}}
             <div>
                 <label for="grado_id" class="block font-semibold text-sm text-gray-800">Grado</label>
-                <x-forms.tom-select
-                    id="grado_id"
-                    wireModel="grado_id"
-                    :options="$grados->map(fn($grado) => ['id' => $grado->id, 'text' => $grado->nivelAcademico->nombre])->toArray()"
-                    placeholder="-- Todos los Grados --"
-                    class="mt-1"
-                    :disabled="$grados->isEmpty()"
-                />
+                <select id="grado_id" wire:model="grado_id" @disabled($grados->isEmpty()) class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    <option value="">-- Todos los Grados --</option>
+                    @foreach($grados as $grado)
+                        <option value="{{ $grado->id }}">{{ $grado->nivelAcademico->nombre }}</option>
+                    @endforeach
+                </select>
             </div>
         </div>
 

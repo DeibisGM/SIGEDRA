@@ -8,30 +8,7 @@ import 'preline';
 import flatpickr from "flatpickr";
 
 import Alpine from 'alpinejs';
-import TomSelect from 'tom-select';
-
 window.Alpine = Alpine;
-
-// Inicializa TomSelect de forma reutilizable
-window.tomSelect = function (config) {
-    let instance = null;
-
-    return {
-        ...config,
-        init() {
-            instance = new TomSelect(Alpine.raw(this.$el), config.settings);
-            this.$watch(config.wireModel, (value) => {
-                if (value !== instance.getValue()) {
-                    instance.setValue(value, true);
-                }
-            });
-        }
-    };
-};
-
-document.addEventListener('alpine:init', () => {
-    Alpine.data('tomSelect', tomSelect);
-});
 
 Alpine.start();
 
