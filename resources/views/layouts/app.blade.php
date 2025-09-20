@@ -12,12 +12,11 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700&display=swap" rel="stylesheet" />
 
-
-
     <!-- Scripts y Estilos -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
+    {{-- AÑADE ESTA LÍNEA PARA LOS ESTILOS DE LIVEWIRE --}}
+    @livewireStyles
 </head>
 <body class="h-screen">
 
@@ -39,11 +38,10 @@
         ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
         ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
         ['route' => 'profesores.index', 'active_pattern' => 'profesores.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Profesores'],
-                        ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
-                        ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-book', 'label' => 'Bitacora'],
-                    ];
+        ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
+        ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-book', 'label' => 'Bitacora'],
+        ];
         @endphp
-
 
         <!-- Navigation -->
         <nav class="flex-1 p-4 overflow-y-auto">
@@ -52,20 +50,18 @@
                 <li>
                     <a href="{{ $link['route'] == '#' ? '#' : route($link['route']) }}"
                        @class([
-                           'flex items-center gap-x-3.5 py-2 px-3.5 rounded-lg text-base transition-colors duration-200',
-                           'bg-sigedra-input text-sigedra-primary font-semibold' => $link['route'] != '#' && request()->routeIs($link['active_pattern']),
-                           'text-sigedra-text-medium opacity-50 cursor-not-allowed' => $link['route'] == '#',
-                           'text-sigedra-text-medium hover:bg-sigedra-input hover:text-sigedra-primary' => $link['route'] != '#' && !request()->routeIs($link['active_pattern']),
-                       ])>
-                        <i class="ph {{ $link['icon'] }} text-2xl"></i>
-                        <span>{{ $link['label'] }}</span>
+                    'flex items-center gap-x-3.5 py-2 px-3.5 rounded-lg text-base transition-colors duration-200',
+                    'bg-sigedra-input text-sigedra-primary font-semibold' => $link['route'] != '#' && request()->routeIs($link['active_pattern']),
+                    'text-sigedra-text-medium opacity-50 cursor-not-allowed' => $link['route'] == '#',
+                    'text-sigedra-text-medium hover:bg-sigedra-input hover:text-sigedra-primary' => $link['route'] != '#' && !request()->routeIs($link['active_pattern']),
+                    ])>
+                    <i class="ph {{ $link['icon'] }} text-2xl"></i>
+                    <span>{{ $link['label'] }}</span>
                     </a>
                 </li>
                 @endforeach
             </ul>
         </nav>
-
-
 
         <!-- Sidebar Footer -->
         <footer class="p-4 flex-shrink-0 border-t mt-auto">
@@ -183,6 +179,7 @@
 </div>
 @endif
 
+{{-- ESTA LÍNEA YA LA TENÍAS, PERO ES CRUCIAL PARA LOS SCRIPTS DE LIVEWIRE --}}
 @livewireScripts
 
 </body>

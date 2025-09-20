@@ -2,51 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
-use App\Models\Estudiante; // Import the Estudiante model
-use App\Models\Grado; // Import the Grado model
-use App\Models\AnioAcademico; // Import the AnioAcademico model
+use App\Models\Estudiante;
 
 class EstudianteController extends Controller
 {
-    public function index(Request $request): View
+    /**
+     * Muestra la página de gestión de estudiantes.
+     * La vista simplemente cargará el componente Livewire, que se encargará del resto.
+     */
+    public function index(): View
     {
-        $query = Estudiante::query();
-
-        // Apply filters if present in the request
-        if ($request->has('grado_id') && $request->grado_id != '') {
-            $query->whereHas('asignacionesGrado', function ($q) use ($request) {
-                $q->where('grado_id', $request->grado_id);
-            });
-        }
-        // Removed anio_academico_id filter from whereHas due to unknown column
-
-        $estudiantes = $query->get(); // Fetch filtered students
-
-        $grados = Grado::all(); // Fetch all grades for the dropdown
-        $aniosAcademicos = AnioAcademico::all(); // Fetch all academic years for the dropdown
-
-        return view('estudiantes.index', compact('estudiantes', 'grados', 'aniosAcademicos'));
+        return view('estudiantes.index');
     }
 
+    /**
+     * Muestra el formulario para crear un nuevo estudiante.
+     */
     public function create(): View
     {
         return view('estudiantes.create');
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  string  $id
-     * @return View
+     * Muestra el perfil detallado de un estudiante específico.
      */
     public function show(string $id): View
     {
-        $student = Estudiante::findOrFail($id); // Fetch a specific student
+        // Usamos findOrFail para que Laravel automáticamente muestre un error 404 si el ID no existe.
+        // Usamos with() para cargar las relaciones de forma eficiente y evitar consultas extra.
+        $student = Estudiante::with(['grados.nivelAcademico', 'grados.anioAcademico'])->findOrFail($id);
 
-        // Keep hardcoded data for courses and history for now
+        // Manteniendo los datos de ejemplo para las otras secciones del perfil como se solicitó.
         $current_courses = [
             ['materia' => 'Matemáticas', 'profesor' => 'Ana Rojas', 'periodo_1' => 85, 'periodo_2' => 90, 'promedio' => 87.5, 'estado' => 'Aprobado'],
             ['materia' => 'Ciencias', 'profesor' => 'Carlos Perez', 'periodo_1' => 78, 'periodo_2' => 82, 'promedio' => 80, 'estado' => 'Aprobado'],
@@ -59,7 +47,6 @@ class EstudianteController extends Controller
             ['año' => '2022', 'grado' => 'Segundo Grado', 'promedio_final' => 91, 'estado' => 'Aprobado'],
             ['año' => '2021', 'grado' => 'Primer Grado', 'promedio_final' => 95, 'estado' => 'Aprobado'],
         ];
-
 
         return view('estudiantes.show', [
             'student' => $student,
