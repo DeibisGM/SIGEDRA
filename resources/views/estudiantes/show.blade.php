@@ -6,7 +6,7 @@
 <div class="text-base text-gray-500 whitespace-nowrap truncate">
     <a href="{{ route('estudiantes.index') }}" class="hover:text-gray-700">Estudiantes</a>
     <span class="mx-2">/</span>
-    <span class="font-semibold text-sigedra-primary">{{ $student['nombre_completo'] }}</span>
+    <span class="font-semibold text-sigedra-primary">{{ $student->nombre_completo }}</span>
 </div>
 @endsection
 
@@ -22,21 +22,21 @@
             <!-- Avatar -->
             <div class="flex-shrink-0">
                 <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-sigedra-primary text-white">
-                    <span class="text-3xl font-bold">{{ $student['avatar_initials'] }}</span>
+                    <span class="text-3xl font-bold">{{ $student->avatar_initials }}</span>
                 </span>
             </div>
 
             <!-- Información Principal -->
             <div class="flex-grow">
-                <h1 class="text-3xl font-bold text-sigedra-primary">{{ $student['nombre_completo'] }}</h1>
+                <h1 class="text-3xl font-bold text-sigedra-primary">{{ $student->nombre_completo }}</h1>
                 {{-- CAMBIO: Se elimina la "Sección" de esta línea --}}
                 <p class="mt-1 text-base text-sigedra-text-medium">
-                    Cédula: {{ $student['cedula'] }} <span class="mx-2">|</span> Grado Actual: <strong>{{ $student['grado_actual'] }}</strong>
+                    Cédula: {{ $student->cedula }} <span class="mx-2">|</span> Grado Actual: <strong>{{ $student->grado_actual }}</strong>
                 </p>
                 <div class="mt-3 flex items-center gap-x-3">
-                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ $student['status'] }}</span>
-                    @if($student['adecuacion']['requiere'])
-                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">{{ $student['adecuacion']['tipo'] }}</span>
+                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">{{ $student->status }}</span>
+                    @if($student->adecuacion && $student->adecuacion->requiere)
+                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">{{ $student->adecuacion->tipo }}</span>
                     @endif
                 </div>
             </div>

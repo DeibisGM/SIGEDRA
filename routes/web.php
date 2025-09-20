@@ -8,8 +8,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BitacoraController;
 
+use Illuminate\Support\Facades\Auth;
+
 Route::get('/', function () {
-    return view('welcome');
+    if (Auth::check()) {
+        return redirect()->route('home'); // Redirect to dashboard if authenticated
+    }
+    return redirect()->route('login'); // Redirect to login if not authenticated
 });
 
 Route::get('/dashboard', function () {

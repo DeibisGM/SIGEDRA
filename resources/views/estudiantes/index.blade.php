@@ -15,35 +15,22 @@
 
 @section('header_actions')
     <div class="hidden md:flex items-center gap-3">
-        <!-- Grade Selector Dropdown -->
-        <div x-data="{ open: false }" class="relative">
-            <x-buttons.secondary @click="open = !open" class="flex items-center">
-                <i class="ph ph-graduation-cap text-lg"></i>
-                <span class="ms-2">Seleccionar Grado</span>
-                <span class="text-xs text-gray-400 ms-1.5">({{ now()->year }})</span>
-                <i class="ph ph-caret-down text-sm ms-2"></i>
-            </x-buttons.secondary>
+        <!-- Grade and Year Selectors -->
+        <form action="{{ route('estudiantes.index') }}" method="GET" class="flex items-center gap-3">
+            <select name="grado_id" id="grado_id" onchange="this.form.submit()" class="py-2 px-4 block w-full bg-white border-sigedra-border rounded-lg text-sm focus:border-sigedra-primary focus:ring-sigedra-primary">
+                <option value="">Todos los Grados</option>
+                @foreach($grados as $grado)
+                    <option value="{{ $grado->id }}" @selected(request('grado_id') == $grado->id)>{{ $grado->nivelAcademico->nombre }}</option>
+                @endforeach
+            </select>
 
-            <div x-show="open"
-                 x-transition:enter="transition ease-out duration-200"
-                 x-transition:enter-start="opacity-0 transform scale-95"
-                 x-transition:enter-end="opacity-100 transform scale-100"
-                 x-transition:leave="transition ease-in duration-75"
-                 x-transition:leave-start="opacity-100 transform scale-100"
-                 x-transition:leave-end="opacity-0 transform scale-95"
-                 @click.away="open = false"
-                 class="absolute left-0 mt-2 w-56 origin-top-left bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20"
-                 style="display: none;">
-                <div class="py-1">
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">1er Grado</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">2do Grado</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">3er Grado</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">4to Grado</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">5to Grado</a>
-                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">6to Grado</a>
-                </div>
-            </div>
-        </div>
+            <select name="anio_academico_id" id="anio_academico_id" onchange="this.form.submit()" class="py-2 px-4 block w-full bg-white border-sigedra-border rounded-lg text-sm focus:border-sigedra-primary focus:ring-sigedra-primary">
+                <option value="">Todos los Años</option>
+                @foreach($aniosAcademicos as $anio)
+                    <option value="{{ $anio->id }}" @selected(request('anio_academico_id') == $anio->id)>{{ $anio->anio }}</option>
+                @endforeach
+            </select>
+        </form>
 
         <div class="flex-grow"></div>
 
@@ -117,64 +104,18 @@
         </x-slot:head>
 
         <x-slot:body>
-            @php
-            $students = [
-                [
-                    'cedula' => '1-1234-5678',
-                    'nombre' => 'John Deibys',
-                    'apellidos' => 'Gutierrez Morales',
-                    'fecha_nacimiento' => '15/03/2010',
-                    'genero' => 'M',
-                    'direccion' => 'San José, Desamparados, Calle Fallas',
-                ],
-                [
-                    'cedula' => '2-0987-6543',
-                    'nombre' => 'Ana Lucía',
-                    'apellidos' => 'Rodríguez López',
-                    'fecha_nacimiento' => '22/07/2011',
-                    'genero' => 'F',
-                    'direccion' => 'Alajuela, Grecia, Puente de Piedra',
-                ],
-                [
-                    'cedula' => '3-1111-2222',
-                    'nombre' => 'Carlos José',
-                    'apellidos' => 'González Mora',
-                    'fecha_nacimiento' => '10/11/2010',
-                    'genero' => 'M',
-                    'direccion' => 'Cartago, La Unión, Tres Ríos',
-                ],
-                [
-                    'cedula' => '4-2222-3333',
-                    'nombre' => 'María Fernanda',
-                    'apellidos' => 'Fernández Solano',
-                    'fecha_nacimiento' => '05/01/2011',
-                    'genero' => 'F',
-                    'direccion' => 'Heredia, Santo Domingo, Santa Rosa',
-                ],
-                [
-                    'cedula' => '5-4444-5555',
-                    'nombre' => 'Luis Andrés',
-                    'apellidos' => 'Martinez Castro',
-                    'fecha_nacimiento' => '30/09/2010',
-                    'genero' => 'M',
-                    'direccion' => 'Guanacaste, Liberia, Centro',
-                ],
-            ];
-            @endphp
-            @foreach ($students as $student)
+            @foreach ($estudiantes as $estudiante)
                 <tr class="bg-white hover:bg-gray-50">
-                    <td class="px-6 py-4 text-base font-medium text-gray-800">{{ $student['cedula'] }}</td>
-                    <td class="px-6 py-4 text-base text-gray-800">{{ $student['apellidos'] . ', ' . $student['nombre'] }}</td>
-                    <td class="px-6 py-4 text-base text-gray-800 text-center">{{ \Carbon\Carbon::createFromFormat('d/m/Y', $student['fecha_nacimiento'])->age }}</td>
-                    <td class="px-6 py-4 text-base text-gray-800 text-center">{{ $student['genero'] }}</td>
-                    <td class="px-6 py-4 text-base text-gray-800" title="{{ $student['direccion'] }}">{{ $student['direccion'] }}</td>
+                    <td class="px-6 py-4 text-base font-medium text-gray-800">{{ $estudiante->cedula }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800">{{ $estudiante->nombre_completo }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800 text-center">{{ \Carbon\Carbon::parse($estudiante->fecha_nacimiento)->age }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800 text-center">{{ $estudiante->genero }}</td>
+                    <td class="px-6 py-4 text-base text-gray-800" title="{{ $estudiante->direccion }}">{{ $estudiante->direccion }}</td>
                     <td class="px-6 py-4 text-base font-medium">
                         <div class="w-full flex items-center justify-center gap-x-2">
-                            {{-- ----- LÍNEA MODIFICADA ----- --}}
-                            <x-buttons.secondary href="{{ route('estudiantes.show', ['id' => $student['cedula']]) }}" title="Ver Detalles del Estudiante">
+                            <x-buttons.secondary href="{{ route('estudiantes.show', ['id' => $estudiante->id]) }}" title="Ver Detalles del Estudiante">
                                 <i class="ph ph-eye text-lg"></i>
                             </x-buttons.secondary>
-                            {{-- ----- FIN DE LÍNEA MODIFICADA ----- --}}
                             <x-buttons.secondary href="#" title="Ver Información de Encargados del Estudiante">
                                 <i class="ph ph-users-three text-lg"></i>
                             </x-buttons.secondary>
