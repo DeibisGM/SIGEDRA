@@ -14,14 +14,15 @@ window.Alpine = Alpine;
 
 // Inicializa TomSelect de forma reutilizable
 window.tomSelect = function (config) {
+    let instance = null;
+
     return {
         ...config,
-        instance: null,
         init() {
-            this.instance = new TomSelect(this.$el, config.settings);
+            instance = new TomSelect(this.$el, config.settings);
             this.$watch(config.wireModel, (value) => {
-                if (value !== this.instance.getValue()) {
-                    this.instance.setValue(value, true);
+                if (value !== instance.getValue()) {
+                    instance.setValue(value, true);
                 }
             });
         }
