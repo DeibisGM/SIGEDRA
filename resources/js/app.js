@@ -7,6 +7,33 @@ import 'preline';
 
 import flatpickr from "flatpickr";
 
+import Alpine from 'alpinejs';
+import TomSelect from 'tom-select';
+
+window.Alpine = Alpine;
+
+// Inicializa TomSelect de forma reutilizable
+window.tomSelect = function (config) {
+    return {
+        ...config,
+        instance: null,
+        init() {
+            this.instance = new TomSelect(this.$el, config.settings);
+            this.$watch(config.wireModel, (value) => {
+                if (value !== this.instance.getValue()) {
+                    this.instance.setValue(value, true);
+                }
+            });
+        }
+    };
+};
+
+document.addEventListener('alpine:init', () => {
+    Alpine.data('tomSelect', tomSelect);
+});
+
+Alpine.start();
+
 document.addEventListener('DOMContentLoaded', function () {
     flatpickr(".flatpickr", {});
 
