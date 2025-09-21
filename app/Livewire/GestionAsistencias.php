@@ -43,6 +43,8 @@ class GestionAsistencias extends Component
 
     public function applyFilters()
     {
+        // This method now only exists to trigger a network request.
+        // The deferred properties will be sent along with this request.
         $this->resetPage();
     }
 
@@ -52,7 +54,8 @@ class GestionAsistencias extends Component
         $this->endDate = '';
         $this->selectedGrades = [];
         $this->selectedMaterias = [];
-        $this->resetPage();
+
+        $this->applyFilters();
     }
 
     public function render()

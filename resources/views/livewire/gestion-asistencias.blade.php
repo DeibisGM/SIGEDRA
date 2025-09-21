@@ -15,25 +15,25 @@
                 <!-- Filtro por fecha -->
                 <div>
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
-                    <x-text-input wire:model.lazy="startDate" id="start_date" class="block mt-1 w-full" type="date" name="start_date" placeholder="Seleccione fecha de inicio" />
+                    <x-text-input wire:model.defer="startDate" id="start_date" class="block mt-1 w-full flatpickr" type="text" name="start_date" placeholder="Seleccionar fecha de inicio" />
                 </div>
                 <div>
                     <x-input-label for="end_date">Fecha de fin</x-input-label>
-                    <x-text-input wire:model.lazy="endDate" id="end_date" class="block mt-1 w-full" type="date" name="end_date" placeholder="Seleccione fecha de fin" />
+                    <x-text-input wire:model.defer="endDate" id="end_date" class="block mt-1 w-full flatpickr" type="text" name="end_date" placeholder="Seleccionar fecha de fin" />
                 </div>
 
                 <!-- Filtro por Grado -->
                 <div x-data="{ open: false }" class="relative">
                     <x-input-label for="grades">Grado</x-input-label>
-                    <button @click="open = !open" type="button" class="mt-1 w-full text-left bg-white border border-sigedra-border rounded-md shadow-sm pl-3 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm">
-                        <span class="block truncate">
+                    <button @click="open = !open" type="button" class="relative mt-1 w-full text-left bg-white border border-sigedra-border rounded-md shadow-sm pl-3 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm flex items-center">
+                        <span class="block truncate flex-grow">
                             @if (empty($selectedGrades))
                                 Todos los grados
                             @else
                                 {{ count($selectedGrades) }} grados seleccionados
                             @endif
                         </span>
-                        <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <i class="ph ph-caret-down text-lg text-gray-400"></i>
                         </span>
                     </button>
@@ -42,7 +42,7 @@
                             @foreach($allGrados as $grado)
                                 <li>
                                     <label class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
-                                        <input wire:model.lazy="selectedGrades" type="checkbox" value="{{ $grado->id }}" class="h-4 w-4 text-sigedra-primary border-gray-300 rounded focus:ring-sigedra-primary">
+                                        <input wire:model.defer="selectedGrades" type="checkbox" value="{{ $grado->id }}" class="h-4 w-4 text-sigedra-primary border-gray-300 rounded focus:ring-sigedra-primary">
                                         <span class="ml-3 block font-normal truncate">{{ $grado->nombre }}</span>
                                     </label>
                                 </li>
@@ -54,15 +54,15 @@
                 <!-- Filtro por Materia -->
                 <div x-data="{ open: false }" class="relative">
                     <x-input-label for="subjects">Materia</x-input-label>
-                    <button @click="open = !open" type="button" class="mt-1 w-full text-left bg-white border border-sigedra-border rounded-md shadow-sm pl-3 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm">
-                        <span class="block truncate">
+                    <button @click="open = !open" type="button" class="relative mt-1 w-full text-left bg-white border border-sigedra-border rounded-md shadow-sm pl-3 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm flex items-center">
+                        <span class="block truncate flex-grow">
                              @if (empty($selectedMaterias))
                                 Todas las materias
                             @else
                                 {{ count($selectedMaterias) }} materias seleccionadas
                             @endif
                         </span>
-                        <span class="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                        <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <i class="ph ph-caret-down text-lg text-gray-400"></i>
                         </span>
                     </button>
@@ -71,7 +71,7 @@
                             @foreach($allMaterias as $materia)
                                 <li>
                                     <label class="flex items-center px-3 py-2 cursor-pointer hover:bg-gray-100">
-                                        <input wire:model.lazy="selectedMaterias" type="checkbox" value="{{ $materia->id }}" class="h-4 w-4 text-sigedra-primary border-gray-300 rounded focus:ring-sigedra-primary">
+                                        <input wire:model.defer="selectedMaterias" type="checkbox" value="{{ $materia->id }}" class="h-4 w-4 text-sigedra-primary border-gray-300 rounded focus:ring-sigedra-primary">
                                         <span class="ml-3 block font-normal truncate">{{ $materia->nombre }}</span>
                                     </label>
                                 </li>
@@ -99,7 +99,7 @@
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Presentes</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Tardías</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Ausentes</th>
-                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Asistencia %</th>
+                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">ASIST. %</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Acciones</th>
                     </tr>
                 </x-slot:head>
