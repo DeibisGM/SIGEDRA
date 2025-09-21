@@ -94,11 +94,18 @@
                 <div class="ms-4 flex items-center gap-x-4">
                     <!-- User Dropdown -->
                     <div x-data="{ open: false }" class="relative">
+                        @php
+                            $userName = Auth::user()->name;
+                            $userEmail = Auth::user()->email;
+                            $userInitials = collect(explode(' ', $userName))->map(function ($word) {
+                                return mb_substr($word, 0, 1);
+                            })->take(2)->implode('');
+                        @endphp
                         <button @click="open = !open" class="flex items-center gap-x-2 focus:outline-none p-1 rounded-md hover:bg-gray-100">
                             <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-gray-700">
-                                <span class="text-sm font-semibold">DG</span>
+                                <span class="text-sm font-semibold">{{ $userInitials }}</span>
                             </span>
-                            <p class="hidden md:block text-sm font-semibold text-gray-800">Deibis Gutierrez</p>
+                            <p class="hidden md:block text-sm font-semibold text-gray-800">{{ $userName }}</p>
                             <i class="ph ph-caret-down text-sm text-gray-500 hidden md:block"></i>
                         </button>
 
@@ -114,8 +121,8 @@
                              style="display: none;">
                             <div class="p-2">
                                 <div class="px-3 py-2">
-                                    <p class="text-sm font-semibold text-gray-800">Deibis Gutierrez</p>
-                                    <p class="text-xs text-gray-500">maestro@sigedra.com</p>
+                                    <p class="text-sm font-semibold text-gray-800">{{ $userName }}</p>
+                                    <p class="text-xs text-gray-500">{{ $userEmail }}</p>
                                 </div>
                                 <div class="h-px bg-gray-200 my-1"></div>
                                 <a href="#" class="flex items-center gap-x-3 px-3 py-2 text-sm text-gray-700 rounded-md hover:bg-gray-100">
