@@ -52,25 +52,8 @@ COPY . .
 COPY --from=composer_deps /var/www/html/vendor/ vendor/
 COPY --from=npm_deps /var/www/html/public/build/ public/build/
 
-# Create .env file
-RUN cp .env.example .env
-
-# Generate application key
-RUN php artisan key:generate --force
-
-# Run optimizations
-RUN php artisan config:cache
-RUN php artisan route:cache
-RUN php artisan view:cache
-
-# Create the database file
-RUN touch database/database.sqlite
-
-# Run migrations
-RUN php artisan migrate --force
-
 # Set permissions
-RUN chown -R www-data:www-data storage bootstrap/cache database/database.sqlite
+RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
 
 # Copy start script

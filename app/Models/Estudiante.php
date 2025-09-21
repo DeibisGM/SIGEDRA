@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -35,17 +34,6 @@ class Estudiante extends Model
                 $attributes['primer_apellido'] . ' ' .
                 ($attributes['segundo_apellido'] ?? '')
             )
-        );
-    }
-
-    /**
-     * Accesor para calcular la edad del estudiante dinámicamente.
-     * Esto permite usar `$estudiante->edad` y siempre estará actualizado.
-     */
-    protected function edad(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value, array $attributes) => Carbon::parse($attributes['fecha_nacimiento'])->age
         );
     }
 }
