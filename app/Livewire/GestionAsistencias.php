@@ -148,6 +148,11 @@ class GestionAsistencias extends Component
                 $query->where('carga_academica.maestro_id', $this->activeFilters['selectedMaestro']);
             }
 
+            $user = auth()->user();
+            if ($user->hasRole('Maestro')) {
+                $query->where('maestro.usuario_id', $user->id);
+            }
+
 
             $asistencias = $query->paginate($this->perPage);
 
