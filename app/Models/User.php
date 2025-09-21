@@ -14,24 +14,26 @@ class User extends Authenticatable
 
     /**
      * The table associated with the model.
-     * @var string
+     * Ya no es necesario, Laravel usará 'users' por defecto.
+     * protected $table = 'usuario';
      */
-    protected $table = 'usuario';
 
     /**
      * Indicates if the model should be timestamped.
-     *
-     * @var bool
+     * Ya no es necesario, la tabla 'users' tiene timestamps (created_at, updated_at).
+     * public $timestamps = false;
      */
-    public $timestamps = false;
 
     /**
      * The attributes that are mass assignable.
      * @var array<int, string>
      */
     protected $fillable = [
+        'name',
         'cedula',
-        'contrasena',
+        'email',
+        'password',
+        'activo',
         'requiere_cambio_contrasena',
     ];
 
@@ -40,34 +42,27 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'contrasena',
+        'password',
         'remember_token',
     ];
 
     /**
-     * Get the name of the password attribute for authentication.
-     * @return string
-     */
-    public function getAuthPasswordName()
-    {
-        return 'contrasena';
-    }
-
-    /**
      * Get the maestro record associated with the user.
+     * NOTA: La clave foránea se actualizará a 'user_id' en un paso posterior.
      */
     public function maestro(): HasOne
     {
-        return $this->hasOne(Maestro::class, 'usuario_id');
+        return $this->hasOne(Maestro::class, 'user_id');
     }
 
     /**
      * The roles that belong to the user.
+     * NOTA: La clave foránea y la tabla pivot se actualizarán en pasos posteriores.
      */
     public function roles(): BelongsToMany
     {
-        // Assuming a Role model exists or will be created.
-        return $this->belongsToMany(Role::class, 'usuario_roles', 'usuario_id', 'rol_id');
+        // Asumiendo que existe un modelo Role
+        return $this->belongsToMany(Role::class, 'usuario_roles', 'user_id', 'rol_id');
     }
 
     /**
@@ -77,7 +72,9 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'contrasena' => 'hashed',
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+            'activo' => 'boolean',
             'requiere_cambio_contrasena' => 'boolean',
         ];
     }
