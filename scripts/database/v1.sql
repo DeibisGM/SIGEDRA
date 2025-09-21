@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: db_sigedra
+-- Host: 34.132.141.129    Database: db_sigedra
 -- ------------------------------------------------------
--- Server version	5.5.5-10.4.32-MariaDB
+-- Server version	8.0.41-google
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +14,15 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
+SET @@SESSION.SQL_LOG_BIN= 0;
+
+--
+-- GTID state at the beginning of the backup 
+--
+
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '5a790116-95f4-11f0-b40c-42010a400004:1-172,
+950fa219-9657-11f0-b499-42010a400005:1-454';
 
 --
 -- Table structure for table `anio_lectivo`
@@ -23,9 +32,9 @@ DROP TABLE IF EXISTS `anio_lectivo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `anio_lectivo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `anio` smallint(6) NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `anio` smallint NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `anio_UNIQUE` (`anio`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -49,15 +58,15 @@ DROP TABLE IF EXISTS `asignacion_estudiante_grado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asignacion_estudiante_grado` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `estudiante_id` int(11) NOT NULL,
-  `grado_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `estudiante_id` int NOT NULL,
+  `grado_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_estudiante_grado_unique` (`estudiante_id`,`grado_id`),
   KEY `fk_asignacion_estudiante_grado_grado` (`grado_id`),
   CONSTRAINT `fk_asignacion_estudiante_grado_estudiante` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiante` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_asignacion_estudiante_grado_grado` FOREIGN KEY (`grado_id`) REFERENCES `grado` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -78,10 +87,10 @@ DROP TABLE IF EXISTS `asistencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asistencia` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `sesion_asistencia_id` int(11) NOT NULL,
-  `estudiante_id` int(11) NOT NULL,
-  `estado_asistencia_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `sesion_asistencia_id` int NOT NULL,
+  `estudiante_id` int NOT NULL,
+  `estado_asistencia_id` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_asistencia_estados_asistencia` (`estado_asistencia_id`),
   KEY `fk_asistencia_estudiante` (`estudiante_id`),
@@ -89,7 +98,7 @@ CREATE TABLE `asistencia` (
   CONSTRAINT `fk_asistencia_estados_asistencia` FOREIGN KEY (`estado_asistencia_id`) REFERENCES `estados_asistencia` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_asistencia_estudiante` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiante` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_asistencia_sesion_asistencia` FOREIGN KEY (`sesion_asistencia_id`) REFERENCES `sesion_asistencia` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=1024 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=833 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,9 +119,9 @@ DROP TABLE IF EXISTS `cache`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache` (
-  `key` varchar(255) NOT NULL,
-  `value` mediumtext NOT NULL,
-  `expiration` int(11) NOT NULL,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -134,9 +143,9 @@ DROP TABLE IF EXISTS `cache_locks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cache_locks` (
-  `key` varchar(255) NOT NULL,
-  `owner` varchar(255) NOT NULL,
-  `expiration` int(11) NOT NULL,
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
   PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -158,17 +167,17 @@ DROP TABLE IF EXISTS `carga_academica`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `carga_academica` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `maestro_id` int(11) NOT NULL,
-  `materia_id` int(11) NOT NULL,
-  `grado_id` int(11) NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `maestro_id` int NOT NULL,
+  `materia_id` int NOT NULL,
+  `grado_id` int NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_carga_academica_grado` (`grado_id`),
   KEY `fk_carga_academica_maestro_competencia` (`maestro_id`,`materia_id`),
   CONSTRAINT `fk_carga_academica_grado` FOREIGN KEY (`grado_id`) REFERENCES `grado` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_carga_academica_maestro_competencia` FOREIGN KEY (`maestro_id`, `materia_id`) REFERENCES `maestro_competencia` (`maestro_id`, `materia_id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,16 +198,16 @@ DROP TABLE IF EXISTS `ciclo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ciclo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `grado_id` int(11) NOT NULL,
-  `tipo_ciclo_id` int(11) NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `grado_id` int NOT NULL,
+  `tipo_ciclo_id` int NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `fk_ciclo_grado` (`grado_id`),
   KEY `fk_ciclo_tipo_ciclo` (`tipo_ciclo_id`),
   CONSTRAINT `fk_ciclo_grado` FOREIGN KEY (`grado_id`) REFERENCES `grado` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ciclo_tipo_ciclo` FOREIGN KEY (`tipo_ciclo_id`) REFERENCES `tipo_ciclo` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,19 +228,19 @@ DROP TABLE IF EXISTS `encargado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `encargado` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(11) NOT NULL,
-  `cedula` varchar(30) NOT NULL,
-  `nombre_completo` varchar(200) NOT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  `correo` varchar(100) DEFAULT NULL,
-  `direccion` text DEFAULT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int unsigned NOT NULL,
+  `cedula` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `nombre_completo` varchar(200) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `correo` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `direccion` text COLLATE utf8mb4_general_ci,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `usuario_id_UNIQUE` (`usuario_id`),
   UNIQUE KEY `cedula_UNIQUE` (`cedula`),
-  CONSTRAINT `fk_encargado_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  KEY `fk_encargado_usuario_id_idx` (`usuario_id`),
+  CONSTRAINT `fk_encargado_usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +249,6 @@ CREATE TABLE `encargado` (
 
 LOCK TABLES `encargado` WRITE;
 /*!40000 ALTER TABLE `encargado` DISABLE KEYS */;
-INSERT INTO `encargado` VALUES (1,22,'1-0241-0862','Adriana Blanco','86236139',NULL,NULL,1),(2,48,'1-2896-1886','Fabiana Alvarado','83335310',NULL,NULL,1),(3,70,'1-2959-1146','Gustavo Blanco','88449050',NULL,NULL,1),(4,71,'1-3620-5588','Hilda Delgado','85870693',NULL,NULL,1),(5,19,'1-4786-0258','Hilda Alvarado','81531123',NULL,NULL,1),(6,77,'1-8115-7831','Esteban Jimenez','83981181',NULL,NULL,1),(7,78,'1-8373-0183','Adriana Blanco','87154167',NULL,NULL,1),(8,41,'1-8403-9967','Adriana Jimenez','84841527',NULL,NULL,1),(9,83,'1-9153-5489','Hilda Blanco','84159677',NULL,NULL,1),(10,80,'121015063000','Hilda Elizondo','82053008',NULL,NULL,1),(11,68,'121041996494','Fabiana Blanco','81929374',NULL,NULL,1),(12,60,'121255928480','Esteban Granados','88918783',NULL,NULL,1),(13,84,'121346363306','Fabiana Jimenez','81409600',NULL,NULL,1),(14,59,'121578583858','Ivan Jimenez','81960892',NULL,NULL,1),(15,90,'121603907943','Adriana Infante','88812201',NULL,NULL,1),(16,15,'121800140651','Julia Jimenez','82032072',NULL,NULL,1),(17,46,'121980644844','Adriana Fallas','84636380',NULL,NULL,1),(18,31,'2-2475-5076','Hilda Fallas','86044480',NULL,NULL,1),(19,65,'2-3330-0708','Carlos Delgado','88376169',NULL,NULL,1),(20,17,'2-3429-9002','Carlos Jimenez','86892611',NULL,NULL,1),(21,86,'2-4127-3073','Hilda Fallas','85252348',NULL,NULL,1),(22,28,'2-5243-9867','Adriana Elizondo','84087366',NULL,NULL,1),(23,38,'2-5560-2310','Fabiana Granados','85175920',NULL,NULL,1),(24,67,'2-6099-5541','Gustavo Granados','83714739',NULL,NULL,1),(25,43,'2-6726-7027','Ivan Cordero','87429339',NULL,NULL,1),(26,51,'2-8776-5719','Ivan Cordero','84049175',NULL,NULL,1),(27,55,'2-8925-6534','Daniel Granados','83341908',NULL,NULL,1),(28,82,'2-9904-4029','Fabiana Jimenez','88024972',NULL,NULL,1),(29,45,'3-0169-1924','Carlos Alvarado','81766243',NULL,NULL,1),(30,75,'3-1648-7483','Ivan Infante','84625286',NULL,NULL,1),(31,81,'3-2073-7860','Ivan Jimenez','82334325',NULL,NULL,1),(32,88,'3-2090-9882','Carlos Fallas','81863295',NULL,NULL,1),(33,42,'3-2266-1645','Beatriz Cordero','86036868',NULL,NULL,1),(34,44,'3-3658-7175','Daniel Alvarado','82640524',NULL,NULL,1),(35,52,'3-4035-7679','Adriana Granados','88246487',NULL,NULL,1),(36,24,'3-4893-3773','Carlos Jimenez','88424860',NULL,NULL,1),(37,21,'3-5393-4591','Daniel Elizondo','81333694',NULL,NULL,1),(38,58,'3-5926-7485','Carlos Jimenez','89224375',NULL,NULL,1),(39,57,'3-7195-3272','Hilda Blanco','81940275',NULL,NULL,1),(40,64,'3-8333-0771','Gustavo Herrera','86163961',NULL,NULL,1),(41,20,'3-8638-1532','Julia Herrera','80729461',NULL,NULL,1),(42,50,'3-8721-2888','Adriana Alvarado','81930005',NULL,NULL,1),(43,40,'3-9261-5891','Hilda Blanco','84704989',NULL,NULL,1),(44,33,'4-3661-2489','Julia Cordero','84288999',NULL,NULL,1),(45,37,'4-4134-4720','Esteban Herrera','86085252',NULL,NULL,1),(46,23,'4-5960-3771','Hilda Infante','81017220',NULL,NULL,1),(47,66,'4-7509-0650','Julia Cordero','87075859',NULL,NULL,1),(48,32,'4-8904-0856','Gustavo Blanco','88603810',NULL,NULL,1),(49,87,'4-9581-0783','Ivan Elizondo','87256646',NULL,NULL,1),(50,63,'5-0431-0913','Daniel Fallas','88228848',NULL,NULL,1),(51,89,'5-0910-6350','Daniel Elizondo','82378416',NULL,NULL,1),(52,13,'5-1090-5561','Hilda Alvarado','88094434',NULL,NULL,1),(53,61,'5-4230-1489','Adriana Granados','83337541',NULL,NULL,1),(54,36,'5-4601-2924','Gustavo Blanco','88453593',NULL,NULL,1),(55,14,'5-6351-3785','Hilda Delgado','86173903',NULL,NULL,1),(56,18,'5-8928-4779','Julia Granados','85665264',NULL,NULL,1),(57,85,'5-9950-0535','Ivan Granados','86525771',NULL,NULL,1),(58,29,'6-1307-1261','Daniel Fallas','89099567',NULL,NULL,1),(59,39,'6-2448-0008','Ivan Fallas','81769594',NULL,NULL,1),(60,53,'6-3191-0720','Carlos Granados','85879255',NULL,NULL,1),(61,30,'6-3581-3461','Julia Alvarado','82561427',NULL,NULL,1),(62,35,'6-4619-9363','Carlos Cordero','86174273',NULL,NULL,1),(63,79,'6-4813-8743','Daniel Jimenez','84783376',NULL,NULL,1),(64,54,'6-7776-4970','Gustavo Jimenez','85964751',NULL,NULL,1),(65,73,'6-7965-5863','Carlos Cordero','88028952',NULL,NULL,1),(66,49,'6-8056-6109','Beatriz Delgado','81267908',NULL,NULL,1),(67,91,'6-8530-9878','Gustavo Blanco','84650993',NULL,NULL,1),(68,16,'6-8609-9175','Julia Fallas','87845945',NULL,NULL,1),(69,69,'6-8906-0219','Carlos Alvarado','82098836',NULL,NULL,1),(70,27,'7-0954-8929','Adriana Fallas','86066422',NULL,NULL,1),(71,74,'7-1273-7849','Esteban Cordero','88645246',NULL,NULL,1),(72,56,'7-1633-8578','Gustavo Herrera','87826340',NULL,NULL,1),(73,72,'7-1985-3989','Gustavo Infante','82685564',NULL,NULL,1),(74,76,'7-2162-1061','Ivan Delgado','83534002',NULL,NULL,1),(75,62,'7-2341-3736','Gustavo Blanco','80209988',NULL,NULL,1),(76,34,'7-4814-4551','Fabiana Fallas','81381013',NULL,NULL,1),(77,92,'7-5446-9123','Adriana Jimenez','84811395',NULL,NULL,1),(78,25,'7-5520-8754','Fabiana Fallas','87624275',NULL,NULL,1),(79,26,'7-7312-7195','Carlos Blanco','80034350',NULL,NULL,1),(80,47,'7-9945-2729','Esteban Elizondo','86892652',NULL,NULL,1);
 /*!40000 ALTER TABLE `encargado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -252,8 +260,8 @@ DROP TABLE IF EXISTS `estados_asistencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estados_asistencia` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -276,18 +284,23 @@ DROP TABLE IF EXISTS `estudiante`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estudiante` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cedula` varchar(30) NOT NULL,
-  `primer_nombre` varchar(50) NOT NULL,
-  `segundo_nombre` varchar(50) DEFAULT NULL,
-  `primer_apellido` varchar(50) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `cedula` varchar(30) COLLATE utf8mb4_general_ci NOT NULL,
+  `primer_nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `segundo_nombre` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `primer_apellido` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `segundo_apellido` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `fecha_nacimiento` date NOT NULL,
-  `genero` char(1) DEFAULT NULL,
-  `nacionalidad` varchar(50) DEFAULT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `direccion` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `genero` char(1) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nacionalidad` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
+  `edad` int DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `cedula_UNIQUE` (`cedula`)
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  UNIQUE KEY `cedula_UNIQUE` (`cedula`),
+  KEY `estudiante_fecha_nacimiento_index` (`fecha_nacimiento`),
+  KEY `idx_estudiante_primer_nombre` (`primer_nombre`)
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +309,7 @@ CREATE TABLE `estudiante` (
 
 LOCK TABLES `estudiante` WRITE;
 /*!40000 ALTER TABLE `estudiante` DISABLE KEYS */;
-INSERT INTO `estudiante` VALUES (1,'504902127718','Diego',NULL,'Torres','2014-09-19','M','Colombiano',1),(2,'1-1718-3916','Valentina',NULL,'Gomez','2016-09-19','M','Costarricense',1),(3,'1-5716-3698','Diego',NULL,'Torres','2012-09-19','F','Costarricense',1),(4,'3-5411-5378','Camila',NULL,'Perez','2019-09-19','M','Costarricense',1),(5,'1-3048-9150','Luis',NULL,'Sanchez','2018-09-19','M','Costarricense',1),(6,'6-6084-3781','Luis',NULL,'Rodriguez','2016-09-19','F','Costarricense',1),(7,'4-3309-6873','Luis',NULL,'Gomez','2014-09-19','M','Costarricense',1),(8,'6-4658-8797','Juan',NULL,'Flores','2016-09-19','F','Costarricense',1),(9,'2-8039-2190','Pedro',NULL,'Ramirez','2014-09-19','F','Costarricense',1),(10,'504258367485','Valentina',NULL,'Rodriguez','2016-09-19','F','Costarricense',1),(11,'2-7010-6347','Maria',NULL,'Rodriguez','2016-09-19','F','Costarricense',1),(12,'3-1060-8115','Camila',NULL,'Perez','2015-09-19','M','Costarricense',1),(13,'5-5236-4967','Javier',NULL,'Rodriguez','2017-09-19','M','Panameño',1),(14,'504607612124','Sofia',NULL,'Vargas','2016-09-19','F','Nicaragüense',1),(15,'6-2995-8144','Diego',NULL,'Diaz','2013-09-19','F','Nicaragüense',1),(16,'2-9172-8462','Pedro',NULL,'Rodriguez','2019-09-19','M','Costarricense',1),(17,'5-3012-3020','Ana',NULL,'Sanchez','2016-09-19','F','Costarricense',1),(18,'1-6073-6298','Javier',NULL,'Diaz','2012-09-19','F','Costarricense',1),(19,'7-7719-8199','Diego',NULL,'Vargas','2013-09-19','M','Costarricense',1),(20,'7-3404-4380','Camila',NULL,'Sanchez','2012-09-19','F','Costarricense',1),(21,'504771818712','Juan',NULL,'Diaz','2018-09-19','F','Costarricense',1),(22,'2-6396-5424','Luis',NULL,'Diaz','2012-09-19','F','Costarricense',1),(23,'5-2160-9148','Juan',NULL,'Sanchez','2016-09-19','M','Costarricense',1),(24,'504010086807','Ana',NULL,'Diaz','2012-09-19','M','Costarricense',1),(25,'4-2157-2492','Javier',NULL,'Sanchez','2015-09-19','F','Costarricense',1),(26,'3-4084-6524','Valentina',NULL,'Flores','2018-09-19','F','Costarricense',1),(27,'504371482805','Camila',NULL,'Perez','2016-09-19','M','Costarricense',1),(28,'3-1543-1367','Juan',NULL,'Rodriguez','2018-09-19','F','Costarricense',1),(29,'1-2140-4205','Valentina',NULL,'Gomez','2013-09-19','F','Costarricense',1),(30,'7-2691-1188','Ana',NULL,'Gomez','2015-09-19','M','Costarricense',1),(31,'3-7975-9977','Camila',NULL,'Gomez','2017-09-19','F','Costarricense',1),(32,'1-2749-6220','Diego',NULL,'Ramirez','2012-09-19','M','Colombiano',1),(33,'1-7175-4395','Maria',NULL,'Gomez','2018-09-19','M','Costarricense',1),(34,'4-1514-9065','Javier',NULL,'Flores','2013-09-19','M','Costarricense',1),(35,'6-9827-5075','Maria',NULL,'Perez','2016-09-19','F','Costarricense',1),(36,'2-8739-5470','Diego',NULL,'Vargas','2016-09-19','M','Costarricense',1),(37,'5-3379-3298','Javier',NULL,'Flores','2013-09-19','M','Costarricense',1),(38,'4-2851-7191','Camila',NULL,'Gomez','2012-09-19','M','Costarricense',1),(39,'3-5507-3571','Luis',NULL,'Rodriguez','2014-09-19','F','Costarricense',1),(40,'5-7386-6136','Sofia',NULL,'Ramirez','2012-09-19','F','Costarricense',1),(41,'3-2919-1356','Valentina',NULL,'Rodriguez','2014-09-19','F','Costarricense',1),(42,'3-3491-2745','Diego',NULL,'Torres','2013-09-19','F','Costarricense',1),(43,'5-9102-7518','Sofia',NULL,'Flores','2013-09-19','M','Costarricense',1),(44,'504223509681','Ana',NULL,'Sanchez','2011-09-19','F','Costarricense',1),(45,'1-2458-6985','Camila',NULL,'Diaz','2011-09-19','F','Costarricense',1),(46,'3-6880-1371','Pedro',NULL,'Sanchez','2017-09-19','M','Costarricense',1),(47,'3-3730-3146','Sofia',NULL,'Rodriguez','2017-09-19','F','Panameño',1),(48,'504432495575','Ana',NULL,'Gomez','2018-09-19','F','Nicaragüense',1),(49,'2-8204-4018','Ana',NULL,'Flores','2017-09-19','F','Costarricense',1),(50,'1-6827-1444','Valentina',NULL,'Gomez','2016-09-19','F','Costarricense',1),(51,'3-2911-1447','Javier',NULL,'Rodriguez','2019-09-19','F','Costarricense',1),(52,'5-7892-8234','Pedro',NULL,'Ramirez','2018-09-19','M','Costarricense',1),(53,'3-6986-2601','Luis',NULL,'Gomez','2019-09-19','F','Costarricense',1),(54,'4-3924-2523','Valentina',NULL,'Vargas','2012-09-19','F','Costarricense',1),(55,'3-1638-4960','Luis',NULL,'Sanchez','2011-09-19','F','Costarricense',1),(56,'1-3704-3594','Ana',NULL,'Gomez','2015-09-19','M','Costarricense',1),(57,'2-4540-3851','Maria',NULL,'Sanchez','2018-09-19','M','Costarricense',1),(58,'7-8021-2028','Diego',NULL,'Perez','2011-09-19','M','Costarricense',1),(59,'1-9196-5592','Ana',NULL,'Rodriguez','2013-09-19','F','Costarricense',1),(60,'4-4655-6116','Camila',NULL,'Vargas','2017-09-19','F','Costarricense',1),(61,'6-9799-4091','Valentina',NULL,'Vargas','2014-09-19','F','Costarricense',1),(62,'7-8899-7946','Javier',NULL,'Ramirez','2016-09-19','M','Costarricense',1),(63,'4-5369-8420','Diego',NULL,'Sanchez','2011-09-19','F','Costarricense',1),(64,'5-3940-7914','Maria',NULL,'Perez','2016-09-19','M','Costarricense',1),(65,'6-2177-2487','Luis',NULL,'Rodriguez','2016-09-19','F','Costarricense',1),(66,'6-5046-9070','Juan',NULL,'Torres','2019-09-19','F','Costarricense',1),(67,'3-3394-1866','Pedro',NULL,'Martinez','2014-09-19','F','Costarricense',1),(68,'1-3752-1986','Camila',NULL,'Torres','2011-09-19','F','Costarricense',1),(69,'5-5121-5278','Juan',NULL,'Torres','2017-09-19','F','Costarricense',1),(70,'4-8469-5289','Maria',NULL,'Diaz','2018-09-19','F','Costarricense',1),(71,'1-5263-9641','Maria',NULL,'Perez','2016-09-19','M','Costarricense',1),(72,'4-1905-9868','Maria',NULL,'Vargas','2011-09-19','F','Costarricense',1),(73,'504974923698','Valentina',NULL,'Torres','2016-09-19','M','Colombiano',1),(74,'1-9686-6183','Luis',NULL,'Diaz','2012-09-19','M','Costarricense',1),(75,'504702523716','Pedro',NULL,'Ramirez','2014-09-19','F','Costarricense',1),(76,'3-3761-6357','Ana',NULL,'Perez','2013-09-19','F','Costarricense',1),(77,'4-5965-2416','Valentina',NULL,'Ramirez','2013-09-19','F','Costarricense',1),(78,'2-4590-5890','Valentina',NULL,'Vargas','2014-09-19','F','Costarricense',1),(79,'1-3537-3656','Maria',NULL,'Sanchez','2015-09-19','M','Costarricense',1),(80,'3-9572-9018','Pedro',NULL,'Rodriguez','2012-09-19','F','Panameño',1),(81,'2-3027-6295','Luis',NULL,'Rodriguez','2014-09-19','F','Costarricense',1),(82,'1-9471-7025','Javier',NULL,'Sanchez','2015-09-19','F','Costarricense',1),(83,'4-2419-3212','Camila',NULL,'Martinez','2012-09-19','F','Costarricense',1),(84,'7-1936-9515','Luis',NULL,'Flores','2019-09-19','F','Costarricense',1),(85,'6-6403-7448','Pedro',NULL,'Perez','2017-09-19','M','Costarricense',1),(86,'2-4058-9584','Sofia',NULL,'Flores','2011-09-19','M','Costarricense',1),(87,'6-6302-7827','Juan',NULL,'Gomez','2012-09-19','M','Costarricense',1),(88,'5-4044-8112','Sofia',NULL,'Martinez','2011-09-19','M','Panameño',1),(89,'2-4634-4136','Diego',NULL,'Martinez','2016-09-19','M','Costarricense',1),(90,'5-2432-8059','Luis',NULL,'Perez','2016-09-19','M','Costarricense',1),(91,'6-6642-9581','Sofia',NULL,'Vargas','2011-09-19','M','Costarricense',1),(92,'7-5492-8135','Ana',NULL,'Ramirez','2012-09-19','F','Costarricense',1),(93,'4-3752-2188','Valentina',NULL,'Gomez','2015-09-19','F','Costarricense',1),(94,'1-5257-3503','Maria',NULL,'Ramirez','2015-09-19','M','Costarricense',1),(95,'7-9002-6125','Valentina',NULL,'Torres','2015-09-19','F','Costarricense',1),(96,'3-7363-5679','Ana',NULL,'Rodriguez','2019-09-19','F','Costarricense',1),(97,'504964398830','Valentina',NULL,'Torres','2017-09-19','F','Costarricense',1),(98,'7-5092-3905','Pedro',NULL,'Rodriguez','2015-09-19','M','Nicaragüense',1),(99,'4-9462-3988','Sofia',NULL,'Torres','2016-09-19','M','Costarricense',1),(100,'6-7104-1852','Sofia',NULL,'Gomez','2012-09-19','F','Costarricense',1);
+INSERT INTO `estudiante` VALUES (1,'504902127718','Diego',NULL,'Torres',NULL,'2014-09-19',NULL,'M','Colombiano',1,11),(2,'117183916','Valentina',NULL,'Gomez',NULL,'2016-09-19',NULL,'M','Costarricense',1,9),(3,'157163698','Diego',NULL,'Torres',NULL,'2012-09-19',NULL,'F','Costarricense',1,13),(4,'354115378','Camila',NULL,'Perez',NULL,'2019-09-19',NULL,'M','Costarricense',1,6),(5,'130489150','Luis',NULL,'Sanchez',NULL,'2018-09-19',NULL,'M','Costarricense',1,7),(6,'660843781','Luis',NULL,'Rodriguez',NULL,'2016-09-19',NULL,'F','Costarricense',1,9),(7,'433096873','Luis',NULL,'Gomez',NULL,'2014-09-19',NULL,'M','Costarricense',1,11),(8,'646588797','Juan',NULL,'Flores',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(9,'280392190','Pedro',NULL,'Ramirez',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(10,'504258367485','Valentina',NULL,'Rodriguez',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(11,'270106347','Maria',NULL,'Rodriguez',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(12,'310608115','Camila',NULL,'Perez',NULL,'2015-09-19',NULL,'M','Costarricense',1,NULL),(13,'552364967','Javier',NULL,'Rodriguez',NULL,'2017-09-19',NULL,'M','Panameño',1,NULL),(14,'504607612124','Sofia',NULL,'Vargas',NULL,'2016-09-19',NULL,'F','Nicaragüense',1,NULL),(15,'629958144','Diego',NULL,'Diaz',NULL,'2013-09-19',NULL,'F','Nicaragüense',1,NULL),(16,'291728462','Pedro',NULL,'Rodriguez',NULL,'2019-09-19',NULL,'M','Costarricense',1,NULL),(17,'530123020','Ana',NULL,'Sanchez',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(18,'160736298','Javier',NULL,'Diaz',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(19,'777198199','Diego',NULL,'Vargas',NULL,'2013-09-19',NULL,'M','Costarricense',1,NULL),(20,'734044380','Camila',NULL,'Sanchez',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(21,'504771818712','Juan',NULL,'Diaz',NULL,'2018-09-19',NULL,'F','Costarricense',1,NULL),(22,'263965424','Luis',NULL,'Diaz',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(23,'521609148','Juan',NULL,'Sanchez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(24,'504010086807','Ana',NULL,'Diaz',NULL,'2012-09-19',NULL,'M','Costarricense',1,NULL),(25,'421572492','Javier',NULL,'Sanchez',NULL,'2015-09-19',NULL,'F','Costarricense',1,NULL),(26,'340846524','Valentina',NULL,'Flores',NULL,'2018-09-19',NULL,'F','Costarricense',1,NULL),(27,'504371482805','Camila',NULL,'Perez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(28,'315431367','Juan',NULL,'Rodriguez',NULL,'2018-09-19',NULL,'F','Costarricense',1,NULL),(29,'121404205','Valentina',NULL,'Gomez',NULL,'2013-09-19',NULL,'F','Costarricense',1,NULL),(30,'726911188','Ana',NULL,'Gomez',NULL,'2015-09-19',NULL,'M','Costarricense',1,NULL),(31,'379759977','Camila',NULL,'Gomez',NULL,'2017-09-19',NULL,'F','Costarricense',1,NULL),(32,'127496220','Diego',NULL,'Ramirez',NULL,'2012-09-19',NULL,'M','Colombiano',1,NULL),(33,'171754395','Maria',NULL,'Gomez',NULL,'2018-09-19',NULL,'M','Costarricense',1,NULL),(34,'415149065','Javier',NULL,'Flores',NULL,'2013-09-19',NULL,'M','Costarricense',1,NULL),(35,'698275075','Maria',NULL,'Perez',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(36,'287395470','Diego',NULL,'Vargas',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(37,'533793298','Javier',NULL,'Flores',NULL,'2013-09-19',NULL,'M','Costarricense',1,NULL),(38,'428517191','Camila',NULL,'Gomez',NULL,'2012-09-19',NULL,'M','Costarricense',1,NULL),(39,'355073571','Luis',NULL,'Rodriguez',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(40,'573866136','Sofia',NULL,'Ramirez',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(41,'329191356','Valentina',NULL,'Rodriguez',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(42,'334912745','Diego',NULL,'Torres',NULL,'2013-09-19',NULL,'F','Costarricense',1,NULL),(43,'591027518','Sofia',NULL,'Flores',NULL,'2013-09-19',NULL,'M','Costarricense',1,NULL),(44,'504223509681','Ana',NULL,'Sanchez',NULL,'2011-09-19',NULL,'F','Costarricense',1,NULL),(45,'124586985','Camila',NULL,'Diaz',NULL,'2011-09-19',NULL,'F','Costarricense',1,NULL),(46,'368801371','Pedro',NULL,'Sanchez',NULL,'2017-09-19',NULL,'M','Costarricense',1,NULL),(47,'337303146','Sofia',NULL,'Rodriguez',NULL,'2017-09-19',NULL,'F','Panameño',1,NULL),(48,'504432495575','Ana',NULL,'Gomez',NULL,'2018-09-19',NULL,'F','Nicaragüense',1,NULL),(49,'282044018','Ana',NULL,'Flores',NULL,'2017-09-19',NULL,'F','Costarricense',1,NULL),(50,'168271444','Valentina',NULL,'Gomez',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(51,'329111447','Javier',NULL,'Rodriguez',NULL,'2019-09-19',NULL,'F','Costarricense',1,NULL),(52,'578928234','Pedro',NULL,'Ramirez',NULL,'2018-09-19',NULL,'M','Costarricense',1,NULL),(53,'369862601','Luis',NULL,'Gomez',NULL,'2019-09-19',NULL,'F','Costarricense',1,NULL),(54,'439242523','Valentina',NULL,'Vargas',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(55,'316384960','Luis',NULL,'Sanchez',NULL,'2011-09-19',NULL,'F','Costarricense',1,NULL),(56,'137043594','Ana',NULL,'Gomez',NULL,'2015-09-19',NULL,'M','Costarricense',1,NULL),(57,'245403851','Maria',NULL,'Sanchez',NULL,'2018-09-19',NULL,'M','Costarricense',1,NULL),(58,'780212028','Diego',NULL,'Perez',NULL,'2011-09-19',NULL,'M','Costarricense',1,NULL),(59,'191965592','Ana',NULL,'Rodriguez',NULL,'2013-09-19',NULL,'F','Costarricense',1,NULL),(60,'446556116','Camila',NULL,'Vargas',NULL,'2017-09-19',NULL,'F','Costarricense',1,NULL),(61,'697994091','Valentina',NULL,'Vargas',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(62,'788997946','Javier',NULL,'Ramirez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(63,'453698420','Diego',NULL,'Sanchez',NULL,'2011-09-19',NULL,'F','Costarricense',1,NULL),(64,'539407914','Maria',NULL,'Perez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(65,'621772487','Luis',NULL,'Rodriguez',NULL,'2016-09-19',NULL,'F','Costarricense',1,NULL),(66,'650469070','Juan',NULL,'Torres',NULL,'2019-09-19',NULL,'F','Costarricense',1,NULL),(67,'333941866','Pedro',NULL,'Martinez',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(68,'137521986','Camila',NULL,'Torres',NULL,'2011-09-19',NULL,'F','Costarricense',1,NULL),(69,'551215278','Juan',NULL,'Torres',NULL,'2017-09-19',NULL,'F','Costarricense',1,NULL),(70,'484695289','Maria',NULL,'Diaz',NULL,'2018-09-19',NULL,'F','Costarricense',1,NULL),(71,'152639641','Maria',NULL,'Perez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(72,'419059868','Maria',NULL,'Vargas',NULL,'2011-09-19',NULL,'F','Costarricense',1,NULL),(73,'504974923698','Valentina',NULL,'Torres',NULL,'2016-09-19',NULL,'M','Colombiano',1,NULL),(74,'196866183','Luis',NULL,'Diaz',NULL,'2012-09-19',NULL,'M','Costarricense',1,NULL),(75,'504702523716','Pedro',NULL,'Ramirez',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(76,'337616357','Ana',NULL,'Perez',NULL,'2013-09-19',NULL,'F','Costarricense',1,NULL),(77,'459652416','Valentina',NULL,'Ramirez',NULL,'2013-09-19',NULL,'F','Costarricense',1,NULL),(78,'245905890','Valentina',NULL,'Vargas',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(79,'135373656','Maria',NULL,'Sanchez',NULL,'2015-09-19',NULL,'M','Costarricense',1,NULL),(80,'395729018','Pedro',NULL,'Rodriguez',NULL,'2012-09-19',NULL,'F','Panameño',1,NULL),(81,'230276295','Luis',NULL,'Rodriguez',NULL,'2014-09-19',NULL,'F','Costarricense',1,NULL),(82,'194717025','Javier',NULL,'Sanchez',NULL,'2015-09-19',NULL,'F','Costarricense',1,NULL),(83,'424193212','Camila',NULL,'Martinez',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(84,'719369515','Luis',NULL,'Flores',NULL,'2019-09-19',NULL,'F','Costarricense',1,NULL),(85,'664037448','Pedro',NULL,'Perez',NULL,'2017-09-19',NULL,'M','Costarricense',1,NULL),(86,'240589584','Sofia',NULL,'Flores',NULL,'2011-09-19',NULL,'M','Costarricense',1,NULL),(87,'663027827','Juan',NULL,'Gomez',NULL,'2012-09-19',NULL,'M','Costarricense',1,NULL),(88,'540448112','Sofia',NULL,'Martinez',NULL,'2011-09-19',NULL,'M','Panameño',1,NULL),(89,'246344136','Diego',NULL,'Martinez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(90,'524328059','Luis',NULL,'Perez',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(91,'666429581','Sofia',NULL,'Vargas',NULL,'2011-09-19',NULL,'M','Costarricense',1,NULL),(92,'754928135','Ana',NULL,'Ramirez',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL),(93,'437522188','Valentina',NULL,'Gomez',NULL,'2015-09-19',NULL,'F','Costarricense',1,NULL),(94,'152573503','Maria',NULL,'Ramirez',NULL,'2015-09-19',NULL,'M','Costarricense',1,NULL),(95,'790026125','Valentina',NULL,'Torres',NULL,'2015-09-19',NULL,'F','Costarricense',1,NULL),(96,'373635679','Ana',NULL,'Rodriguez',NULL,'2019-09-19',NULL,'F','Costarricense',1,NULL),(97,'504964398830','Valentina',NULL,'Torres',NULL,'2017-09-19',NULL,'F','Costarricense',1,NULL),(98,'750923905','Pedro',NULL,'Rodriguez',NULL,'2015-09-19',NULL,'M','Nicaragüense',1,NULL),(99,'494623988','Sofia',NULL,'Torres',NULL,'2016-09-19',NULL,'M','Costarricense',1,NULL),(100,'671041852','Sofia',NULL,'Gomez',NULL,'2012-09-19',NULL,'F','Costarricense',1,NULL);
 /*!40000 ALTER TABLE `estudiante` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -308,8 +321,8 @@ DROP TABLE IF EXISTS `estudiante_encargado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estudiante_encargado` (
-  `estudiante_id` int(11) NOT NULL,
-  `encargado_id` int(11) NOT NULL,
+  `estudiante_id` int NOT NULL,
+  `encargado_id` int NOT NULL,
   PRIMARY KEY (`estudiante_id`,`encargado_id`),
   KEY `fk_estudiante_encargado_encargado` (`encargado_id`),
   CONSTRAINT `fk_estudiante_encargado_encargado` FOREIGN KEY (`encargado_id`) REFERENCES `encargado` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -323,7 +336,6 @@ CREATE TABLE `estudiante_encargado` (
 
 LOCK TABLES `estudiante_encargado` WRITE;
 /*!40000 ALTER TABLE `estudiante_encargado` DISABLE KEYS */;
-INSERT INTO `estudiante_encargado` VALUES (1,70),(1,76),(2,10),(2,36),(3,4),(3,29),(4,13),(4,47),(5,21),(5,52),(6,27),(6,71),(7,18),(7,63),(8,52),(8,68),(9,6),(9,49),(10,26),(10,76),(11,5),(11,12),(12,58),(12,60),(13,4),(13,22),(14,24),(14,68),(15,8),(15,62),(16,30),(16,41),(17,3),(17,65),(18,71),(18,73),(19,7),(19,54),(20,17),(20,36),(21,32),(22,79),(23,80),(24,46),(25,59),(26,34),(27,27),(28,5),(29,64),(30,22),(31,55),(32,38),(33,78),(34,9),(35,77),(36,48),(37,53),(38,51),(39,14),(40,35),(41,17),(42,7),(43,50),(44,21),(45,65),(46,75),(47,72),(48,49),(49,15),(50,69),(51,11),(52,20),(53,67),(54,16),(55,28),(56,44),(57,57),(58,74),(59,19),(60,62),(61,2),(62,26),(63,42),(64,25),(65,18),(66,58),(67,23),(68,30),(69,39),(70,61),(71,40),(72,56),(73,33),(74,45),(75,37),(76,31),(77,13),(78,66),(79,43),(80,1);
 /*!40000 ALTER TABLE `estudiante_encargado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -335,17 +347,17 @@ DROP TABLE IF EXISTS `evaluacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `evaluacion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo_evaluacion_id` int(11) NOT NULL,
-  `ciclo_id` int(11) NOT NULL,
-  `nombre` varchar(45) DEFAULT NULL,
-  `puntos_totales` tinyint(3) unsigned NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `tipo_evaluacion_id` int NOT NULL,
+  `ciclo_id` int NOT NULL,
+  `nombre` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `puntos_totales` tinyint unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_evaluacion_ciclo` (`ciclo_id`),
   KEY `fk_evaluacion_tipo_evaluacion` (`tipo_evaluacion_id`),
   CONSTRAINT `fk_evaluacion_ciclo` FOREIGN KEY (`ciclo_id`) REFERENCES `ciclo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_evaluacion_tipo_evaluacion` FOREIGN KEY (`tipo_evaluacion_id`) REFERENCES `tipo_evaluacion` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,13 +378,13 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) NOT NULL,
-  `connection` text NOT NULL,
-  `queue` text NOT NULL,
-  `payload` longtext NOT NULL,
-  `exception` longtext NOT NULL,
-  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -395,15 +407,15 @@ DROP TABLE IF EXISTS `grado`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `grado` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `anio_lectivo_id` int(11) NOT NULL,
-  `nivel_academico_id` int(11) NOT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `anio_lectivo_id` int NOT NULL,
+  `nivel_academico_id` int NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_anio_nivel_unique` (`anio_lectivo_id`,`nivel_academico_id`),
-  KEY `fk_grado_niveles_academicos` (`nivel_academico_id`),
+  KEY `fk_grado_nivel_academico` (`nivel_academico_id`),
   CONSTRAINT `fk_grado_anio_lectivo` FOREIGN KEY (`anio_lectivo_id`) REFERENCES `anio_lectivo` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `fk_grado_niveles_academicos` FOREIGN KEY (`nivel_academico_id`) REFERENCES `niveles_academicos` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `fk_grado_nivel_academico` FOREIGN KEY (`nivel_academico_id`) REFERENCES `nivel_academico` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -425,16 +437,16 @@ DROP TABLE IF EXISTS `job_batches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_batches` (
-  `id` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `total_jobs` int(11) NOT NULL,
-  `pending_jobs` int(11) NOT NULL,
-  `failed_jobs` int(11) NOT NULL,
-  `failed_job_ids` longtext NOT NULL,
-  `options` mediumtext DEFAULT NULL,
-  `cancelled_at` int(11) DEFAULT NULL,
-  `created_at` int(11) NOT NULL,
-  `finished_at` int(11) DEFAULT NULL,
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_jobs` int NOT NULL,
+  `pending_jobs` int NOT NULL,
+  `failed_jobs` int NOT NULL,
+  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `cancelled_at` int DEFAULT NULL,
+  `created_at` int NOT NULL,
+  `finished_at` int DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -456,13 +468,13 @@ DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `jobs` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `queue` varchar(255) NOT NULL,
-  `payload` longtext NOT NULL,
-  `attempts` tinyint(3) unsigned NOT NULL,
-  `reserved_at` int(10) unsigned DEFAULT NULL,
-  `available_at` int(10) unsigned NOT NULL,
-  `created_at` int(10) unsigned NOT NULL,
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `queue` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `attempts` tinyint unsigned NOT NULL,
+  `reserved_at` int unsigned DEFAULT NULL,
+  `available_at` int unsigned NOT NULL,
+  `created_at` int unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `jobs_queue_index` (`queue`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -485,18 +497,18 @@ DROP TABLE IF EXISTS `maestro`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `maestro` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `usuario_id` int(11) NOT NULL,
-  `primer_nombre` varchar(50) NOT NULL,
-  `segundo_nombre` varchar(50) DEFAULT NULL,
-  `primer_apellido` varchar(50) NOT NULL,
-  `telefono` varchar(20) DEFAULT NULL,
-  `correo` varchar(100) DEFAULT NULL,
-  `nacionalidad` varchar(50) DEFAULT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int unsigned NOT NULL,
+  `primer_nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `segundo_nombre` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `primer_apellido` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `telefono` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `correo` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nacionalidad` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `usuario_id_UNIQUE` (`usuario_id`),
-  CONSTRAINT `fk_maestro_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_maestro_usuario_id_idx` (`usuario_id`),
+  CONSTRAINT `fk_maestro_usuario_id` FOREIGN KEY (`usuario_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -518,9 +530,9 @@ DROP TABLE IF EXISTS `maestro_competencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `maestro_competencia` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `maestro_id` int(11) NOT NULL,
-  `materia_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `maestro_id` int NOT NULL,
+  `materia_id` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_maestro_materia_unique` (`maestro_id`,`materia_id`),
   KEY `fk_maestro_competencia_materia` (`materia_id`),
@@ -547,11 +559,11 @@ DROP TABLE IF EXISTS `materia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `materia` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `tipo` tinyint(1) NOT NULL COMMENT '0 para general y 1 para especialidad',
-  `nombre` varchar(50) NOT NULL,
-  `descripcion` varchar(255) DEFAULT NULL,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
+  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `descripcion` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -574,11 +586,11 @@ DROP TABLE IF EXISTS `migrations`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) NOT NULL,
-  `batch` int(11) NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -587,33 +599,33 @@ CREATE TABLE `migrations` (
 
 LOCK TABLES `migrations` WRITE;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
-INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2025_09_19_213542_add_remember_token_to_usuario_table',1);
+INSERT INTO `migrations` VALUES (1,'0001_01_01_000000_create_users_table',1),(2,'0001_01_01_000001_create_cache_table',1),(3,'0001_01_01_000002_create_jobs_table',1),(4,'2025_09_19_213542_add_remember_token_to_usuario_table',1),(5,'2025_09_20_232533_update_users_table_for_custom_fields',2),(6,'2025_09_21_011718_add_indexes_to_estudiante_table',3);
 /*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `niveles_academicos`
+-- Table structure for table `nivel_academico`
 --
 
-DROP TABLE IF EXISTS `niveles_academicos`;
+DROP TABLE IF EXISTS `nivel_academico`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `niveles_academicos` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
-  `orden` tinyint(4) NOT NULL,
+CREATE TABLE `nivel_academico` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
+  `orden` tinyint NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `niveles_academicos`
+-- Dumping data for table `nivel_academico`
 --
 
-LOCK TABLES `niveles_academicos` WRITE;
-/*!40000 ALTER TABLE `niveles_academicos` DISABLE KEYS */;
-INSERT INTO `niveles_academicos` VALUES (1,'Primer Grado',1),(2,'Segundo Grado',2),(3,'Tercer Grado',3),(4,'Cuarto Grado',4),(5,'Quinto Grado',5),(6,'Sexto Grado',6);
-/*!40000 ALTER TABLE `niveles_academicos` ENABLE KEYS */;
+LOCK TABLES `nivel_academico` WRITE;
+/*!40000 ALTER TABLE `nivel_academico` DISABLE KEYS */;
+INSERT INTO `nivel_academico` VALUES (1,'Primer Grado',1),(2,'Segundo Grado',2),(3,'Tercer Grado',3),(4,'Cuarto Grado',4),(5,'Quinto Grado',5),(6,'Sexto Grado',6);
+/*!40000 ALTER TABLE `nivel_academico` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -624,16 +636,16 @@ DROP TABLE IF EXISTS `nota`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `nota` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `evaluacion_id` int(11) NOT NULL,
-  `estudiante_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `evaluacion_id` int NOT NULL,
+  `estudiante_id` int NOT NULL,
   `puntos_obtenidos` decimal(5,2) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_nota_evaluacion` (`evaluacion_id`),
   KEY `fk_nota_estudiante` (`estudiante_id`),
   CONSTRAINT `fk_nota_estudiante` FOREIGN KEY (`estudiante_id`) REFERENCES `estudiante` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `fk_nota_evaluacion` FOREIGN KEY (`evaluacion_id`) REFERENCES `evaluacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=128 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -654,8 +666,8 @@ DROP TABLE IF EXISTS `password_reset_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -678,8 +690,8 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(50) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `nombre_UNIQUE` (`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -703,16 +715,16 @@ DROP TABLE IF EXISTS `sesion_asistencia`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sesion_asistencia` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `carga_academica_id` int(11) NOT NULL,
-  `ciclo_id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `carga_academica_id` int NOT NULL,
+  `ciclo_id` int NOT NULL,
   `fecha` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_sesion_asistencia_carga_academica` (`carga_academica_id`),
   KEY `fk_sesion_asistencia_ciclo` (`ciclo_id`),
   CONSTRAINT `fk_sesion_asistencia_carga_academica` FOREIGN KEY (`carga_academica_id`) REFERENCES `carga_academica` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_sesion_asistencia_ciclo` FOREIGN KEY (`ciclo_id`) REFERENCES `ciclo` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -733,12 +745,12 @@ DROP TABLE IF EXISTS `sessions`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `sessions` (
-  `id` varchar(255) NOT NULL,
-  `user_id` bigint(20) unsigned DEFAULT NULL,
-  `ip_address` varchar(45) DEFAULT NULL,
-  `user_agent` text DEFAULT NULL,
-  `payload` longtext NOT NULL,
-  `last_activity` int(11) NOT NULL,
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `sessions_user_id_index` (`user_id`),
   KEY `sessions_last_activity_index` (`last_activity`)
@@ -751,7 +763,7 @@ CREATE TABLE `sessions` (
 
 LOCK TABLES `sessions` WRITE;
 /*!40000 ALTER TABLE `sessions` DISABLE KEYS */;
-INSERT INTO `sessions` VALUES ('fH4LF1czvg6yF234sGpee4PozrxJm56t1db59dki',1,'127.0.0.1','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36','YTo1OntzOjY6Il90b2tlbiI7czo0MDoiVlJvV0NENEFOQXVlU0p1a1p5SlI0S0lRMmFVNnpueEFWSE5wSTRidiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6MzoidXJsIjthOjA6e31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=',1758318118);
+INSERT INTO `sessions` VALUES ('A7fddCBmI13qK8gQLyEvqLibXh9TSnDnBYZaMj2w',NULL,'10.204.232.148','Go-http-client/2.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiWnNvS21ONHZBOVFvZW1EcU5FVEE1bDlVank2TWFoVm85M2g4dmtieSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758438081),('DRPjXeJprv11gfXOH9KWrKOSk0qTqTJpEd9aVvhR',NULL,'127.0.0.1','Go-http-client/1.1','YToyOntzOjY6Il90b2tlbiI7czo0MDoiek9vZFNuQjZuNm9QdGNlV1JPeko1SGlqZHQ1dU11bkVydHllV25GZiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',1758441245),('FrvsvICAtZsNiHYuMTe8M4HaRNnxF3eyrFplsfBt',NULL,'10.204.232.148','Go-http-client/2.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiaFowNVNwdGJnaGdoQjZYYXVCcXYwNXVSSVB6Ulo4ZjMyMU84WVhvYyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20vbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758438082),('moGyj7TWYhieI9m8HHm0AmS2KReRiMQFwpYzrDvw',NULL,'10.204.44.75','Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36','YTozOntzOjY6Il90b2tlbiI7czo0MDoiQ3dGN0VRYzREa3BqZFBDVEc5cGtXdWZvTDdHSUtIRG1yUWpqMWpEOSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20vbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758441226),('PL10mMoajWxBtaEIFQ6pwOB4bGgo3wcS1RrnqpT9',NULL,'10.204.232.148','Go-http-client/2.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiTmNZVUU2VTR1dWtQTnFUczZSd3NkcHNJZFhWbWtLSmR3TXlBeUZTciI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758441131),('PtVdCMQTLB5zxZE5G2IyypgVukO4oqgy5W4MlsB1',NULL,'127.0.0.1','Go-http-client/1.1','YToyOntzOjY6Il90b2tlbiI7czo0MDoiQXFYVmhQN1JCeE9XanJsYkpneEpVQlA3clFuUkpPWlVlMWZ1cDJiUyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',1758438077),('UK11zSYNSDF1E2HsXhMdrKERVXSagZ5WI5OW9IGc',NULL,'10.204.232.148','Go-http-client/2.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoieDVIQTZ4ZVNrT2tZcjZTV01TSWRHdk84MG1kckcxNkNWZlRjN3RHUyI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20vbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758441252),('vR1R64IrgYQnNi0en9BqR5mZ9c2qLXOLC1gQl4w6',NULL,'10.204.232.148','Go-http-client/2.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiNlJjZlJZTnNobm5xSzI2THpMczMwT1pqV29QWUxyZ0x4WkxER0thWCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjg6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758441251),('xfsy4MWFlp8WyZEU5Wd4T796MWeeK2ANdOUEcYAc',NULL,'10.204.232.148','Go-http-client/2.0','YTozOntzOjY6Il90b2tlbiI7czo0MDoiNmtzdWlFeDZCUmNreFJWNld5RGVMMEhEVmU2a1ZJOEdveWkyRWI4OCI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzQ6Imh0dHBzOi8vc2lnZWRyYS5vbnJlbmRlci5jb20vbG9naW4iO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX19',1758441132),('z6gT3IkBExPaL59iwFHogztrHKThkdLugu2CmcKm',NULL,'127.0.0.1','Go-http-client/1.1','YToyOntzOjY6Il90b2tlbiI7czo0MDoiajM5UGZvRGcyeGU2UWVOVWQxeFhxNUdOV0JNSWhEaTZMcmZqOVM5eCI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319fQ==',1758441122);
 /*!40000 ALTER TABLE `sessions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -763,8 +775,8 @@ DROP TABLE IF EXISTS `tipo_ciclo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_ciclo` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -787,9 +799,9 @@ DROP TABLE IF EXISTS `tipo_evaluacion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tipo_evaluacion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(45) NOT NULL,
-  `activo` tinyint(4) NOT NULL DEFAULT 1,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(45) COLLATE utf8mb4_general_ci NOT NULL,
+  `activo` tinyint NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -812,17 +824,21 @@ DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `cedula` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) NOT NULL,
-  `remember_token` varchar(100) DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '1',
+  `requiere_cambio_contrasena` tinyint(1) NOT NULL DEFAULT '1',
+  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `users_cedula_unique` (`cedula`),
   UNIQUE KEY `users_email_unique` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -831,36 +847,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'703030132','Deibis Admin',NULL,NULL,'$2y$12$JD/9prdnorDJPo4lbBk4ZumwUnY8TK2U2G528m88TKIpvUV1tUpna',1,1,NULL,'2025-09-20 23:40:05','2025-09-21 00:50:03'),(2,'201230987','Usuario 201230987',NULL,NULL,'$2y$12$ReK.U1phzyYlfBfnBoc87.P2dRDS.LH2r4wS8YLLMEC0u7u29pBxe',1,1,NULL,'2025-09-20 23:40:06','2025-09-20 23:40:06'),(3,'304560789','Carlos Rojas',NULL,NULL,'$2y$12$XanwLg/rf9kxqxaWQ54eS.qvK5pWx1wvr/AEFgMCJEOe.ZvEPtC4.',1,1,NULL,'2025-09-20 23:40:07','2025-09-20 23:40:07'),(4,'401110222','Luisa Fernandez',NULL,NULL,'$2y$12$LCfurETkEoInY.isDA0B4.mDBJPE1RnmGletJCUhBTFIb5t.rf9we',1,1,NULL,'2025-09-20 23:40:09','2025-09-20 23:40:09'),(5,'503330444','Ana Brenes',NULL,NULL,'$2y$12$7fl6PVu3uokRxlXvK8j7/efDZiaGcavY1s/dCfvh02OFMJ6CNjgc.',1,1,NULL,'2025-09-20 23:40:10','2025-09-20 23:40:10'),(6,'605550666','Jorge Solis',NULL,NULL,'$2y$12$/RSkiusrVQNi9W.38JwOF.5z8ve4sAvYtwlfJMjDur7JS3rZV4cx2',1,1,NULL,'2025-09-20 23:40:12','2025-09-20 23:40:12'),(7,'707770888','Marta Ugalde',NULL,NULL,'$2y$12$fV/.YGdbVwcEDX3HHCocEONCpWb7jLETRAjVyIJ/QG6oaCPQpNgF6',1,1,NULL,'2025-09-20 23:40:13','2025-09-20 23:40:13'),(8,'109990110','Pedro Campos',NULL,NULL,'$2y$12$rKJSfQy9B10yMzmq//vRzeiApsrdbhUk.AuLGqbthWyGaAIUJAv6.',1,1,NULL,'2025-09-20 23:40:15','2025-09-20 23:40:15'),(9,'201210343','Sofia Mora',NULL,NULL,'$2y$12$35EYNPfuyRnQcyDoIk/V5e.lq56FWoivmvmF0HBnn.Spj2qQBQvum',1,1,NULL,'2025-09-20 23:40:16','2025-09-20 23:40:16'),(10,'305650787','Ricardo Jimenez',NULL,NULL,'$2y$12$ZpBpcJdkWoPx6TQTQPCbGOp/g3vE0HUdPiGIyJf50ZatSfd43xFCW',1,1,NULL,'2025-09-20 23:40:18','2025-09-20 23:40:18'),(11,'408980121','Elena Villalobos',NULL,NULL,'$2y$12$fRuf23obeU4qMAXjxiJ4zeyh6m/GGBXEBSJW5g5qwprzL6cohJhHG',1,1,NULL,'2025-09-20 23:40:20','2025-09-20 23:40:20'),(12,'503450678','Mario Quesada',NULL,NULL,'$2y$12$vkjTxgcUOndFQ/UzwVNfT.1xprVioDP1bow6RP3o.pRNaDKYddfdK',1,1,NULL,'2025-09-20 23:40:21','2025-09-20 23:40:21');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `usuario`
---
-
-DROP TABLE IF EXISTS `usuario`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `usuario` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `cedula` varchar(30) NOT NULL,
-  `contrasena` varchar(255) NOT NULL,
-  `requiere_cambio_contrasena` tinyint(1) DEFAULT 1,
-  `activo` tinyint(1) NOT NULL DEFAULT 1,
-  `remember_token` varchar(100) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cedula_UNIQUE` (`cedula`)
-) ENGINE=InnoDB AUTO_INCREMENT=140 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `usuario`
---
-
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` VALUES (1,'1-0876-0543','$2y$12$EsYHrE8r0ZmmjkVFCFe3iOxJNXy0incNc9wJV91i69ITslOTPLIpC',1,1,'jRj4MwjvBnSYPO0ZlMihtB0gqD9Atl8LYTUSz7jhlJFlTbhTDsx4NUpH0bUv'),(2,'2-0123-0987','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(3,'3-0456-0789','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(4,'4-0111-0222','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(5,'5-0333-0444','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(6,'6-0555-0666','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(7,'7-0777-0888','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(8,'1-0999-0110','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(9,'2-0121-0343','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(10,'3-0565-0787','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(11,'4-0898-0121','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(12,'5-0345-0678','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(13,'5-1090-5561','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(14,'5-6351-3785','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(15,'121800140651','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(16,'6-8609-9175','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(17,'2-3429-9002','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(18,'5-8928-4779','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(19,'1-4786-0258','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(20,'3-8638-1532','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(21,'3-5393-4591','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(22,'1-0241-0862','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(23,'4-5960-3771','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(24,'3-4893-3773','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(25,'7-5520-8754','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(26,'7-7312-7195','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(27,'7-0954-8929','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(28,'2-5243-9867','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(29,'6-1307-1261','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(30,'6-3581-3461','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(31,'2-2475-5076','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(32,'4-8904-0856','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(33,'4-3661-2489','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(34,'7-4814-4551','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(35,'6-4619-9363','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(36,'5-4601-2924','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(37,'4-4134-4720','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(38,'2-5560-2310','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(39,'6-2448-0008','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(40,'3-9261-5891','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(41,'1-8403-9967','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(42,'3-2266-1645','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(43,'2-6726-7027','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(44,'3-3658-7175','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(45,'3-0169-1924','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(46,'121980644844','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(47,'7-9945-2729','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(48,'1-2896-1886','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(49,'6-8056-6109','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(50,'3-8721-2888','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(51,'2-8776-5719','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(52,'3-4035-7679','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(53,'6-3191-0720','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(54,'6-7776-4970','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(55,'2-8925-6534','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(56,'7-1633-8578','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(57,'3-7195-3272','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(58,'3-5926-7485','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(59,'121578583858','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(60,'121255928480','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(61,'5-4230-1489','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(62,'7-2341-3736','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(63,'5-0431-0913','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(64,'3-8333-0771','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(65,'2-3330-0708','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(66,'4-7509-0650','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(67,'2-6099-5541','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(68,'121041996494','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(69,'6-8906-0219','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(70,'1-2959-1146','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(71,'1-3620-5588','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(72,'7-1985-3989','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(73,'6-7965-5863','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(74,'7-1273-7849','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(75,'3-1648-7483','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(76,'7-2162-1061','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(77,'1-8115-7831','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(78,'1-8373-0183','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(79,'6-4813-8743','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(80,'121015063000','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(81,'3-2073-7860','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(82,'2-9904-4029','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(83,'1-9153-5489','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(84,'121346363306','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(85,'5-9950-0535','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(86,'2-4127-3073','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(87,'4-9581-0783','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(88,'3-2090-9882','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(89,'5-0910-6350','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(90,'121603907943','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(91,'6-8530-9878','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL),(92,'7-5446-9123','$2a$12$4o5fSc32V5E2aGo9N8J16u2Wgq2i.j.4R.u.tIpllBP9iH84XSCyi',1,1,NULL);
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -871,12 +859,13 @@ DROP TABLE IF EXISTS `usuario_roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `usuario_roles` (
-  `usuario_id` int(11) NOT NULL,
-  `rol_id` int(11) NOT NULL,
+  `usuario_id` int unsigned NOT NULL,
+  `rol_id` int NOT NULL,
   PRIMARY KEY (`usuario_id`,`rol_id`),
-  KEY `fk_usuario_roles_rol` (`rol_id`),
+  KEY `fk_usuario_roles_rol_idx` (`rol_id`),
+  KEY `fk_usuario_roles_usuario_idx` (`usuario_id`),
   CONSTRAINT `fk_usuario_roles_rol` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_usuario_roles_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_usuario_roles_usuario` FOREIGN KEY (`usuario_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -886,9 +875,10 @@ CREATE TABLE `usuario_roles` (
 
 LOCK TABLES `usuario_roles` WRITE;
 /*!40000 ALTER TABLE `usuario_roles` DISABLE KEYS */;
-INSERT INTO `usuario_roles` VALUES (1,1),(2,1),(3,2),(4,2),(5,2),(6,2),(7,2),(8,2),(9,2),(10,2),(11,2),(12,2),(13,3),(14,3),(15,3),(16,3),(17,3),(18,3),(19,3),(20,3),(21,3),(22,3),(23,3),(24,3),(25,3),(26,3),(27,3),(28,3),(29,3),(30,3),(31,3),(32,3),(33,3),(34,3),(35,3),(36,3),(37,3),(38,3),(39,3),(40,3),(41,3),(42,3),(43,3),(44,3),(45,3),(46,3),(47,3),(48,3),(49,3),(50,3),(51,3),(52,3),(53,3),(54,3),(55,3),(56,3),(57,3),(58,3),(59,3),(60,3),(61,3),(62,3),(63,3),(64,3),(65,3),(66,3),(67,3),(68,3),(69,3),(70,3),(71,3),(72,3),(73,3),(74,3),(75,3),(76,3),(77,3),(78,3),(79,3),(80,3),(81,3),(82,3),(83,3),(84,3),(85,3),(86,3),(87,3),(88,3),(89,3),(90,3),(91,3),(92,3);
+INSERT INTO `usuario_roles` VALUES (1,1),(2,1),(3,2),(4,2),(5,2),(6,2),(7,2),(8,2),(9,2),(10,2),(11,2),(12,2);
 /*!40000 ALTER TABLE `usuario_roles` ENABLE KEYS */;
 UNLOCK TABLES;
+SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -899,4 +889,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-09-19 15:44:19
+-- Dump completed on 2025-09-21  2:07:08
