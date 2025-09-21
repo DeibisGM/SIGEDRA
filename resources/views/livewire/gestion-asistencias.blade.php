@@ -11,7 +11,7 @@
     <!-- Filtros Avanzados -->
     <div x-show="filtersOpen" class="mb-6">
         <div class="bg-white p-4 rounded-lg border border-sigedra-border">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                 <!-- Filtro por fecha -->
                 <div>
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
@@ -97,6 +97,17 @@
                         </ul>
                     </div>
                 </div>
+
+                <!-- Filtro por Maestro -->
+                 <div>
+                    <x-input-label for="maestro">Maestro</x-input-label>
+                    <select wire:model.defer="selectedMaestro" id="maestro" class="mt-1 block w-full pl-3 pr-10 py-2 border-sigedra-border bg-white rounded-md shadow-sm focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm">
+                        <option value="">Todos los maestros</option>
+                        @foreach($allMaestros as $maestro)
+                            <option value="{{ $maestro->id }}">{{ $maestro->nombre_completo }}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
             <div class="flex justify-end gap-3 mt-4">
                 <x-buttons.secondary wire:click="clearFilters">Limpiar Filtros</x-buttons.secondary>
@@ -112,7 +123,7 @@
             <span class="font-semibold">Filtros aplicados:</span>
             @if($activeFilters['startDate'] || $activeFilters['endDate'])
                 <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
-                    Fecha: {{ $activeFilters['startDate'] ?: '...' }} - {{ $activeFilters['endDate'] ?: '...' }}
+                    Fecha: {{ $activeFilters['startDate'] ? \Carbon\Carbon::parse($activeFilters['startDate'])->format('d/m/y') : '...' }} - {{ $activeFilters['endDate'] ? \Carbon\Carbon::parse($activeFilters['endDate'])->format('d/m/y') : '...' }}
                 </span>
             @endif
             @if(!empty($activeFilters['selectedGrades']))
@@ -123,6 +134,11 @@
             @if(!empty($activeFilters['selectedMaterias']))
                  <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
                     Materias: {{ count($activeFilters['selectedMaterias']) }}
+                </span>
+            @endif
+             @if($activeFilters['selectedMaestro'])
+                 <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
+                    Maestro: {{ $allMaestros->firstWhere('id', $activeFilters['selectedMaestro'])->nombre_completo }}
                 </span>
             @endif
         </div>
@@ -139,8 +155,9 @@
                 <x-slot:head>
                     <tr>
                         <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Fecha</th>
-                        <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[20%]">Curso</th>
-                        <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[20%]">Grado</th>
+                        <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Curso</th>
+                        <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Grado</th>
+                        <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Maestro</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">P</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">T</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">A</th>
@@ -156,6 +173,7 @@
                                 <td class="px-6 py-3 text-base font-medium text-gray-800">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->curso }}">{{ $asistencia->curso }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->grado }}">{{ $asistencia->grado }}</td>
+                                <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->maestro_nombre }}">{{ $asistencia->maestro_nombre }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->presentes }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->tardias }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->ausentes }}</td>
@@ -179,7 +197,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="8" class="px-6 py-8 text-center text-base text-gray-500">
+                                <td colspan="9" class="px-6 py-8 text-center text-base text-gray-500">
                                     No se encontraron registros de asistencia que coincidan con los filtros aplicados.
                                 </td>
                             </tr>
@@ -189,6 +207,9 @@
                             <tr wire:key="skeleton-{{ $i }}" class="bg-white animate-pulse">
                                 <td class="px-6 py-3">
                                     <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                                </td>
+                                <td class="px-6 py-3">
+                                    <div class="h-4 bg-gray-200 rounded w-full"></div>
                                 </td>
                                 <td class="px-6 py-3">
                                     <div class="h-4 bg-gray-200 rounded w-full"></div>

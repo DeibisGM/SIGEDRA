@@ -19,6 +19,7 @@ class GestionAsistencias extends Component
     public $endDate = '';
     public $selectedGrades = [];
     public $selectedMaterias = [];
+    public $selectedMaestro = '';
 
     // Properties for active filters
     public $activeFilters = [];
@@ -26,10 +27,17 @@ class GestionAsistencias extends Component
     // Filter options
     public $allGrados = [];
     public $allMaterias = [];
+    public $allMaestros = [];
 
     public function mount()
     {
         $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
+
+        $this->allMaestros = DB::table('maestro')
+            ->where('activo', 1)
+            ->select('id', DB::raw("CONCAT(primer_nombre, ' ', primer_apellido) as nombre_completo"))
+            ->orderBy('nombre_completo')
+            ->get();
 
         $gradosData = DB::table('grado')
             ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
@@ -55,6 +63,7 @@ class GestionAsistencias extends Component
             'endDate' => $this->endDate,
             'selectedGrades' => $this->selectedGrades,
             'selectedMaterias' => $this->selectedMaterias,
+            'selectedMaestro' => $this->selectedMaestro,
         ];
         $this->resetPage();
     }
@@ -65,6 +74,7 @@ class GestionAsistencias extends Component
         $this->endDate = '';
         $this->selectedGrades = [];
         $this->selectedMaterias = [];
+        $this->selectedMaestro = '';
 
         $this->applyFilters();
     }
@@ -81,13 +91,16 @@ class GestionAsistencias extends Component
                 ->join('grado', 'carga_academica.grado_id', '=', 'grado.id')
                 ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
                 ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
+                ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
                 ->select(
                     'sesion_asistencia.id',
                     'sesion_asistencia.fecha',
                     'materia.nombre as curso',
                     DB::raw("CONCAT(nivel_academico.nombre, ' ', anio_lectivo.anio) as grado"),
+                    DB::raw("CONCAT(maestro.primer_nombre, ' ', maestro.primer_apellido) as maestro_nombre"),
                     'carga_academica.grado_id',
                     'carga_academica.materia_id',
+                    'carga_academica.maestro_id',
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 1 THEN 1 ELSE 0 END) as presentes"), // Presente
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 3 THEN 1 ELSE 0 END) as tardias"), // Tardía
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 2 THEN 1 ELSE 0 END) as ausentes"), // Ausente
@@ -99,8 +112,10 @@ class GestionAsistencias extends Component
                     'sesion_asistencia.fecha',
                     'materia.nombre',
                     'grado',
+                    'maestro_nombre',
                     'carga_academica.grado_id',
-                    'carga_academica.materia_id'
+                    'carga_academica.materia_id',
+                    'carga_academica.maestro_id'
                 )
                 ->orderBy('sesion_asistencia.fecha', 'desc');
 
@@ -116,6 +131,9 @@ class GestionAsistencias extends Component
             }
             if (!empty($this->activeFilters['selectedMaterias'])) {
                 $query->whereIn('carga_academica.materia_id', $this->activeFilters['selectedMaterias']);
+            }
+            if ($this->activeFilters['selectedMaestro']) {
+                $query->where('carga_academica.maestro_id', $this->activeFilters['selectedMaestro']);
             }
 
 
