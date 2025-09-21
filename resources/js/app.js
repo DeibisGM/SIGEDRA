@@ -5,9 +5,11 @@ import 'preline';
 import flatpickr from "flatpickr";
 
 import Alpine from 'alpinejs';
+
 window.Alpine = Alpine;
 
-Alpine.start();
+// We don't start Alpine manually. Livewire will handle it.
+// Alpine.start();
 
 document.addEventListener('DOMContentLoaded', function () {
     flatpickr(".flatpickr", {});

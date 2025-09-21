@@ -9,7 +9,7 @@
     </div>
 
     <!-- Filtros Avanzados -->
-    <div x-show="filtersOpen" x-collapse class="mb-6">
+    <div x-show="filtersOpen" class="mb-6">
         <div class="bg-white p-4 rounded-lg border border-sigedra-border">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 <!-- Filtro por fecha -->
