@@ -703,7 +703,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
-INSERT INTO `roles` VALUES (1,'Administrador'),(3,'Encargado'),(2,'Profesor');
+INSERT INTO `roles` VALUES (1,'Administrador'),(3,'Encargado'),(2,'Maestro');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 

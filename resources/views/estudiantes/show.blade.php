@@ -102,7 +102,7 @@
 
             <!-- Pestaña: Bitácora -->
             <div x-show="tab === 'bitacora'">
-                <p class="text-gray-600">Aquí se mostrarán las observaciones y anotaciones de los profesores sobre el estudiante.</p>
+                <p class="text-gray-600">Aquí se mostrarán las observaciones y anotaciones de los maestros sobre el estudiante.</p>
             </div>
         </div>
     </div>

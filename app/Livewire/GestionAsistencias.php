@@ -31,7 +31,19 @@ class GestionAsistencias extends Component
 
     public function mount()
     {
-        $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
+        $user = auth()->user();
+        if ($user->hasRole('Maestro')) {
+            $this->allMaterias = DB::table('materia')
+                ->join('carga_academica', 'materia.id', '=', 'carga_academica.materia_id')
+                ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
+                ->where('maestro.usuario_id', $user->id)
+                ->select('materia.id', 'materia.nombre')
+                ->distinct()
+                ->orderBy('materia.nombre')
+                ->get();
+        } else {
+            $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
+        }
 
         $this->allMaestros = DB::table('maestro')
             ->where('activo', 1)
@@ -134,6 +146,11 @@ class GestionAsistencias extends Component
             }
             if ($this->activeFilters['selectedMaestro']) {
                 $query->where('carga_academica.maestro_id', $this->activeFilters['selectedMaestro']);
+            }
+
+            $user = auth()->user();
+            if ($user->hasRole('Maestro')) {
+                $query->where('maestro.usuario_id', $user->id);
             }
 
 

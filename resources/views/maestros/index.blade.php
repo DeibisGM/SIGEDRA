@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Listado de Profesores') }}
+            {{ __('Listado de Maestros') }}
         </h2>
     </x-slot>
 
@@ -20,24 +20,24 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse ($profesores as $profesor)
+                                @forelse ($maestros as $maestro)
                                     <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $profesor->primer_nombre }} {{ $profesor->primer_apellido }}
+                                            {{ $maestro->primer_nombre }} {{ $maestro->primer_apellido }}
                                         </th>
                                         <td class="px-6 py-4">
-                                            {{ $profesor->correo }}
+                                            {{ $maestro->correo }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            {{ $profesor->user->cedula ?? 'N/A' }}
+                                            {{ $maestro->user->cedula ?? 'N/A' }}
                                         </td>
                                         <td class="px-6 py-4">
-                                            <a href="{{ route('profesores.show', $profesor->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ver Detalles</a>
+                                            <a href="{{ route('maestros.show', $maestro->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ver Detalles</a>
                                         </td>
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center">No hay profesores registrados.</td>
+                                        <td colspan="4" class="px-6 py-4 text-center">No hay maestros registrados.</td>
                                     </tr>
                                 @endforelse
                             </tbody>

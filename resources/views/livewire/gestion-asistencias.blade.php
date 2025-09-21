@@ -11,7 +11,7 @@
     <!-- Filtros Avanzados -->
     <div x-show="filtersOpen" class="mb-6">
         <div class="bg-white p-4 rounded-lg border border-sigedra-border">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 {{ auth()->user()->hasRole('Maestro') ? 'lg:grid-cols-4' : 'lg:grid-cols-5' }} gap-4">
                 <!-- Filtro por fecha -->
                 <div>
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
@@ -98,6 +98,7 @@
                     </div>
                 </div>
 
+                @if(!auth()->user()->hasRole('Maestro'))
                 <!-- Filtro por Maestro -->
                  <div>
                     <x-input-label for="maestro">Maestro</x-input-label>
@@ -108,6 +109,7 @@
                         @endforeach
                     </select>
                 </div>
+                @endif
             </div>
             <div class="flex justify-end gap-3 mt-4">
                 <x-buttons.secondary wire:click="clearFilters">Limpiar Filtros</x-buttons.secondary>
