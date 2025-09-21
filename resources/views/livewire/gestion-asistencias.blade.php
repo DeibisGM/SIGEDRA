@@ -16,12 +16,12 @@
                 <div>
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
                     <div class="relative mt-1">
-                        <x-text-input wire:model.defer="startDate" id="start_date" class="block w-full flatpickr pl-3 pr-10 py-2 border-sigedra-border shadow-sm sm:text-sm" type="text" name="start_date" placeholder="Seleccionar fecha de inicio" autocomplete="off" />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                             <i class="ph ph-calendar text-lg text-gray-400"></i>
-                        </div>
-                         <div x-show="@this.startDate != ''" class="absolute inset-y-0 right-0 flex items-center pr-10">
-                            <button x-on:click="$wire.set('startDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
+                        <x-text-input wire:model.defer="startDate" id="start_date" class="block w-full flatpickr pl-3 pr-10 py-2 border-sigedra-border shadow-sm sm:text-sm" type="text" name="start_date" placeholder="Seleccionar fecha" autocomplete="off" />
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <button x-show="!$wire.startDate" type="button" class="pointer-events-none">
+                                <i class="ph ph-calendar text-lg text-gray-400"></i>
+                            </button>
+                            <button x-show="$wire.startDate" x-on:click="$wire.set('startDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
                                 <i class="ph ph-x-circle text-lg"></i>
                             </button>
                         </div>
@@ -30,12 +30,12 @@
                 <div>
                     <x-input-label for="end_date">Fecha de fin</x-input-label>
                      <div class="relative mt-1">
-                        <x-text-input wire:model.defer="endDate" id="end_date" class="block w-full flatpickr pl-3 pr-10 py-2 border-sigedra-border shadow-sm sm:text-sm" type="text" name="end_date" placeholder="Seleccionar fecha de fin" autocomplete="off" />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                             <i class="ph ph-calendar text-lg text-gray-400"></i>
-                        </div>
-                        <div x-show="@this.endDate != ''" class="absolute inset-y-0 right-0 flex items-center pr-10">
-                            <button x-on:click="$wire.set('endDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
+                        <x-text-input wire:model.defer="endDate" id="end_date" class="block w-full flatpickr pl-3 pr-10 py-2 border-sigedra-border shadow-sm sm:text-sm" type="text" name="end_date" placeholder="Seleccionar fecha" autocomplete="off" />
+                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <button x-show="!$wire.endDate" type="button" class="pointer-events-none">
+                                <i class="ph ph-calendar text-lg text-gray-400"></i>
+                            </button>
+                            <button x-show="$wire.endDate" x-on:click="$wire.set('endDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
                                 <i class="ph ph-x-circle text-lg"></i>
                             </button>
                         </div>
@@ -46,13 +46,7 @@
                 <div x-data="{ open: false }" class="relative">
                     <x-input-label for="grades">Grado</x-input-label>
                     <button @click="open = !open" type="button" class="relative mt-1 w-full text-left bg-white border border-sigedra-border rounded-md shadow-sm pl-3 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm flex items-center">
-                        <span class="block truncate flex-grow">
-                            @if (empty($selectedGrades))
-                                Todos los grados
-                            @else
-                                {{ count($selectedGrades) }} grados seleccionados
-                            @endif
-                        </span>
+                        <span class="block truncate flex-grow">Seleccionar grados...</span>
                         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <i class="ph ph-caret-down text-lg text-gray-400"></i>
                         </span>
@@ -85,13 +79,7 @@
                 <div x-data="{ open: false }" class="relative">
                     <x-input-label for="subjects">Materia</x-input-label>
                     <button @click="open = !open" type="button" class="relative mt-1 w-full text-left bg-white border border-sigedra-border rounded-md shadow-sm pl-3 pr-10 py-2 focus:outline-none focus:ring-1 focus:ring-sigedra-primary focus:border-sigedra-primary sm:text-sm flex items-center">
-                        <span class="block truncate flex-grow">
-                             @if (empty($selectedMaterias))
-                                Todas las materias
-                            @else
-                                {{ count($selectedMaterias) }} materias seleccionadas
-                            @endif
-                        </span>
+                        <span class="block truncate flex-grow">Seleccionar materias...</span>
                         <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                             <i class="ph ph-caret-down text-lg text-gray-400"></i>
                         </span>
@@ -117,6 +105,33 @@
         </div>
     </div>
 
+    <!-- Active Filters Summary -->
+    @if(collect($activeFilters)->filter()->isNotEmpty())
+    <div class="mb-4 bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-lg flex items-center justify-between">
+        <div class="flex items-center gap-x-3 flex-wrap">
+            <span class="font-semibold">Filtros aplicados:</span>
+            @if($activeFilters['startDate'] || $activeFilters['endDate'])
+                <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
+                    Fecha: {{ $activeFilters['startDate'] ?: '...' }} - {{ $activeFilters['endDate'] ?: '...' }}
+                </span>
+            @endif
+            @if(!empty($activeFilters['selectedGrades']))
+                 <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
+                    Grados: {{ count($activeFilters['selectedGrades']) }}
+                </span>
+            @endif
+            @if(!empty($activeFilters['selectedMaterias']))
+                 <span class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
+                    Materias: {{ count($activeFilters['selectedMaterias']) }}
+                </span>
+            @endif
+        </div>
+        <button wire:click="clearFilters" class="text-blue-800 hover:text-blue-900 font-semibold text-sm">
+            Limpiar todo
+        </button>
+    </div>
+    @endif
+
 
     <div class="relative">
         <div wire:loading.class="opacity-50 pointer-events-none" class="transition-opacity">
@@ -126,11 +141,11 @@
                         <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Fecha</th>
                         <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[20%]">Curso</th>
                         <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[20%]">Grado</th>
-                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">P</th>
-                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">T</th>
-                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">A</th>
+                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">P</th>
+                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">T</th>
+                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">A</th>
                         <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">ASIST. %</th>
-                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Acciones</th>
+                        <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Acciones</th>
                     </tr>
                 </x-slot:head>
 

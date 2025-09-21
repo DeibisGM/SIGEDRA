@@ -14,11 +14,14 @@ class GestionAsistencias extends Component
     public $perPage = 10;
     public $isReady = false;
 
-    // Filter properties
+    // Properties for form binding
     public $startDate = '';
     public $endDate = '';
     public $selectedGrades = [];
     public $selectedMaterias = [];
+
+    // Properties for active filters
+    public $activeFilters = [];
 
     // Filter options
     public $allGrados = [];
@@ -37,6 +40,7 @@ class GestionAsistencias extends Component
             ->get();
 
         $this->allGrados = $gradosData->groupBy('anio');
+        $this->applyFilters(); // Apply empty filters on initial load
     }
 
     public function loadAsistencias()
@@ -46,8 +50,12 @@ class GestionAsistencias extends Component
 
     public function applyFilters()
     {
-        // This method now only exists to trigger a network request.
-        // The deferred properties will be sent along with this request.
+        $this->activeFilters = [
+            'startDate' => $this->startDate,
+            'endDate' => $this->endDate,
+            'selectedGrades' => $this->selectedGrades,
+            'selectedMaterias' => $this->selectedMaterias,
+        ];
         $this->resetPage();
     }
 
@@ -97,17 +105,17 @@ class GestionAsistencias extends Component
                 ->orderBy('sesion_asistencia.fecha', 'desc');
 
             // Apply filters
-            if ($this->startDate) {
-                $query->where('sesion_asistencia.fecha', '>=', $this->startDate);
+            if ($this->activeFilters['startDate']) {
+                $query->where('sesion_asistencia.fecha', '>=', $this->activeFilters['startDate']);
             }
-            if ($this->endDate) {
-                $query->where('sesion_asistencia.fecha', '<=', $this->endDate);
+            if ($this->activeFilters['endDate']) {
+                $query->where('sesion_asistencia.fecha', '<=', $this->activeFilters['endDate']);
             }
-            if (!empty($this->selectedGrades)) {
-                $query->whereIn('carga_academica.grado_id', $this->selectedGrades);
+            if (!empty($this->activeFilters['selectedGrades'])) {
+                $query->whereIn('carga_academica.grado_id', $this->activeFilters['selectedGrades']);
             }
-            if (!empty($this->selectedMaterias)) {
-                $query->whereIn('carga_academica.materia_id', $this->selectedMaterias);
+            if (!empty($this->activeFilters['selectedMaterias'])) {
+                $query->whereIn('carga_academica.materia_id', $this->activeFilters['selectedMaterias']);
             }
 
 
