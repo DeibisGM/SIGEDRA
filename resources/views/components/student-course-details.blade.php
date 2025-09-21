@@ -7,7 +7,7 @@
         <x-slot:head>
             <tr>
                 <th class="px-6 py-3 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Materia</th>
-                <th class="px-6 py-3 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Profesor</th>
+                <th class="px-6 py-3 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Maestro</th>
                 <th class="px-6 py-3 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">I Periodo</th>
                 <th class="px-6 py-3 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">II Periodo</th>
                 <th class="px-6 py-3 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Promedio</th>
@@ -18,7 +18,7 @@
             @forelse ($courses as $course)
             <tr class="hover:bg-gray-50">
                 <td class="px-6 py-4 font-medium text-gray-800">{{ $course['materia'] }}</td>
-                <td class="px-6 py-4 text-gray-800">{{ $course['profesor'] }}</td>
+                <td class="px-6 py-4 text-gray-800">{{ $course['maestro'] }}</td>
                 <td class="px-6 py-4 text-center text-gray-800">{{ $course['periodo_1'] }}</td>
                 <td class="px-6 py-4 text-center text-gray-800">{{ $course['periodo_2'] }}</td>
                 <td class="px-6 py-4 text-center font-bold text-gray-800">{{ $course['promedio'] }}</td>

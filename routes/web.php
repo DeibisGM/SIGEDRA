@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ProfesorController;
+use App\Http\Controllers\MaestroController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\EstudianteController;
 use Illuminate\Support\Facades\Route;
@@ -35,8 +35,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/info-php', function () { phpinfo(); });
 
-    // Profesor routes
-    Route::resource('profesores', ProfesorController::class)->only(['index', 'show']);
+    // Maestro routes
+    Route::resource('maestros', MaestroController::class)->only(['index', 'show']);
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');

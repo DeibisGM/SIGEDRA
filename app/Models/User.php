@@ -66,6 +66,22 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user has a specific role.
+     *
+     * @param string $roleName
+     * @return bool
+     */
+    public function hasRole(string $roleName): bool
+    {
+        foreach ($this->roles as $role) {
+            if ($role->nombre === $roleName) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Get the attributes that should be cast.
      * @return array<string, string>
      */

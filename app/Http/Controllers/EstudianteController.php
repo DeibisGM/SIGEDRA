@@ -36,10 +36,10 @@ class EstudianteController extends Controller
 
         // Manteniendo los datos de ejemplo para las otras secciones del perfil como se solicitó.
         $current_courses = [
-            ['materia' => 'Matemáticas', 'profesor' => 'Ana Rojas', 'periodo_1' => 85, 'periodo_2' => 90, 'promedio' => 87.5, 'estado' => 'Aprobado'],
-            ['materia' => 'Ciencias', 'profesor' => 'Carlos Perez', 'periodo_1' => 78, 'periodo_2' => 82, 'promedio' => 80, 'estado' => 'Aprobado'],
-            ['materia' => 'Español', 'profesor' => 'Lucía Jimenez', 'periodo_1' => 92, 'periodo_2' => 88, 'promedio' => 90, 'estado' => 'Aprobado'],
-            ['materia' => 'Estudios Sociales', 'profesor' => 'Pedro Solano', 'periodo_1' => 65, 'periodo_2' => 72, 'promedio' => 68.5, 'estado' => 'Reprobado'],
+            ['materia' => 'Matemáticas', 'maestro' => 'Ana Rojas', 'periodo_1' => 85, 'periodo_2' => 90, 'promedio' => 87.5, 'estado' => 'Aprobado'],
+            ['materia' => 'Ciencias', 'maestro' => 'Carlos Perez', 'periodo_1' => 78, 'periodo_2' => 82, 'promedio' => 80, 'estado' => 'Aprobado'],
+            ['materia' => 'Español', 'maestro' => 'Lucía Jimenez', 'periodo_1' => 92, 'periodo_2' => 88, 'promedio' => 90, 'estado' => 'Aprobado'],
+            ['materia' => 'Estudios Sociales', 'maestro' => 'Pedro Solano', 'periodo_1' => 65, 'periodo_2' => 72, 'promedio' => 68.5, 'estado' => 'Reprobado'],
         ];
 
         $academic_history = [
