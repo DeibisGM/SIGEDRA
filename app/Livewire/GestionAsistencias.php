@@ -26,14 +26,17 @@ class GestionAsistencias extends Component
 
     public function mount()
     {
-        $this->allGrados = DB::table('grado')
+        $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
+
+        $gradosData = DB::table('grado')
             ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
             ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
-            ->select('grado.id', DB::raw("CONCAT(nivel_academico.nombre, ' ', anio_lectivo.anio) as nombre"))
-            ->orderBy('nombre')
+            ->select('grado.id', 'nivel_academico.nombre', 'anio_lectivo.anio', 'nivel_academico.orden')
+            ->orderBy('anio_lectivo.anio', 'desc')
+            ->orderBy('nivel_academico.orden', 'asc')
             ->get();
 
-        $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
+        $this->allGrados = $gradosData->groupBy('anio');
     }
 
     public function loadAsistencias()
