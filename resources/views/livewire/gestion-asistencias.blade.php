@@ -15,11 +15,31 @@
                 <!-- Filtro por fecha -->
                 <div>
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
-                    <x-text-input wire:model.defer="startDate" id="start_date" class="block mt-1 w-full flatpickr" type="text" name="start_date" placeholder="Seleccionar fecha de inicio" />
+                    <div class="relative mt-1">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="ph ph-calendar text-lg text-gray-400"></i>
+                        </div>
+                        <x-text-input wire:model.defer="startDate" id="start_date" class="block w-full flatpickr pl-10 pr-10" type="text" name="start_date" placeholder="Seleccionar fecha de inicio" />
+                        <div x-show="$wire.startDate" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <button x-on:click="$wire.set('startDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
+                                <i class="ph ph-x-circle text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div>
                     <x-input-label for="end_date">Fecha de fin</x-input-label>
-                    <x-text-input wire:model.defer="endDate" id="end_date" class="block mt-1 w-full flatpickr" type="text" name="end_date" placeholder="Seleccionar fecha de fin" />
+                     <div class="relative mt-1">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <i class="ph ph-calendar text-lg text-gray-400"></i>
+                        </div>
+                        <x-text-input wire:model.defer="endDate" id="end_date" class="block w-full flatpickr pl-10 pr-10" type="text" name="end_date" placeholder="Seleccionar fecha de fin" />
+                        <div x-show="$wire.endDate" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                            <button x-on:click="$wire.set('endDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
+                                <i class="ph ph-x-circle text-lg"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Filtro por Grado -->

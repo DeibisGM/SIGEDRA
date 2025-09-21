@@ -64,7 +64,7 @@
     </x-modal>
 
     <!-- Pre-create Modal -->
-    <x-modal name="pre-create-modal" focusable>
+    <x-modal name="pre-create-modal" focusable x-cloak style="display: none;">
         <div class="p-6" x-data="{ subject: 'Matemáticas Avanzadas', date: '' }">
             <h2 class="text-lg font-medium text-gray-900">
                 Seleccionar Curso y Fecha
