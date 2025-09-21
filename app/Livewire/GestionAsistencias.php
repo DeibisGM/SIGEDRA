@@ -11,17 +11,47 @@ class GestionAsistencias extends Component
 {
     use WithPagination;
 
-    public $search = '';
     public $perPage = 10;
     public $isReady = false;
+
+    // Filter properties
+    public $startDate = '';
+    public $endDate = '';
+    public $selectedGrades = [];
+    public $selectedMaterias = [];
+
+    // Filter options
+    public $allGrados = [];
+    public $allMaterias = [];
+
+    public function mount()
+    {
+        $this->allGrados = DB::table('grado')
+            ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
+            ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
+            ->select('grado.id', DB::raw("CONCAT(nivel_academico.nombre, ' ', anio_lectivo.anio) as nombre"))
+            ->orderBy('nombre')
+            ->get();
+
+        $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
+    }
 
     public function loadAsistencias()
     {
         $this->isReady = true;
     }
 
-    public function updatingSearch()
+    public function applyFilters()
     {
+        $this->resetPage();
+    }
+
+    public function clearFilters()
+    {
+        $this->startDate = '';
+        $this->endDate = '';
+        $this->selectedGrades = [];
+        $this->selectedMaterias = [];
         $this->resetPage();
     }
 
@@ -42,6 +72,8 @@ class GestionAsistencias extends Component
                     'sesion_asistencia.fecha',
                     'materia.nombre as curso',
                     DB::raw("CONCAT(nivel_academico.nombre, ' ', anio_lectivo.anio) as grado"),
+                    'carga_academica.grado_id',
+                    'carga_academica.materia_id',
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 1 THEN 1 ELSE 0 END) as presentes"), // Presente
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 3 THEN 1 ELSE 0 END) as tardias"), // Tardía
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 2 THEN 1 ELSE 0 END) as ausentes"), // Ausente
@@ -52,16 +84,26 @@ class GestionAsistencias extends Component
                     'sesion_asistencia.id',
                     'sesion_asistencia.fecha',
                     'materia.nombre',
-                    'grado'
+                    'grado',
+                    'carga_academica.grado_id',
+                    'carga_academica.materia_id'
                 )
                 ->orderBy('sesion_asistencia.fecha', 'desc');
 
-            if ($this->search) {
-                $query->where(function ($q) {
-                    $q->where('materia.nombre', 'like', '%' . $this->search . '%')
-                      ->orWhere('sesion_asistencia.fecha', 'like', '%' . $this->search . '%');
-                });
+            // Apply filters
+            if ($this->startDate) {
+                $query->where('sesion_asistencia.fecha', '>=', $this->startDate);
             }
+            if ($this->endDate) {
+                $query->where('sesion_asistencia.fecha', '<=', $this->endDate);
+            }
+            if (!empty($this->selectedGrades)) {
+                $query->whereIn('carga_academica.grado_id', $this->selectedGrades);
+            }
+            if (!empty($this->selectedMaterias)) {
+                $query->whereIn('carga_academica.materia_id', $this->selectedMaterias);
+            }
+
 
             $asistencias = $query->paginate($this->perPage);
 
