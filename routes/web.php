@@ -26,14 +26,11 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Existing Routes
     Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
     Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudianteController::class, 'create'])->name('estudiantes.create');
     Route::get('/estudiantes/{id}', [EstudianteController::class, 'show'])->name('estudiantes.show');
-
-    Route::get('/info-php', function () { phpinfo(); });
 
     // Maestro routes
     Route::resource('maestros', MaestroController::class)->only(['index', 'show']);
@@ -44,5 +41,3 @@ Route::middleware('auth')->group(function () {
 
 
 require __DIR__.'/auth.php';
-
-// Este comentario fue añadido por el agente IA para demostrar sus capacidades.

@@ -190,10 +190,10 @@ class GestionAsistencias extends Component
                 $query->where('maestro.usuario_id', $user->id);
             }
 
-            // Get filtered records count before pagination
-            $this->filteredRecords = $query->clone()->count();
-
             $asistencias = $query->paginate($this->perPage);
+
+            // Get total from paginator
+            $this->filteredRecords = $asistencias->total();
 
             $queryEndTime = microtime(true);
             $queryDuration = ($queryEndTime - $startTime) * 1000;

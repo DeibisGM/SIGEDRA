@@ -17,9 +17,10 @@
     @if ($isReady)
     <div class="mb-4 bg-gray-100 border border-gray-200 text-gray-800 px-4 py-3 rounded-lg">
         @if (collect($activeFilters)->filter()->isNotEmpty())
-            Mostrando <span class="font-bold">{{ $filteredRecords }}</span> registros de un total de <span class="font-bold">{{ $totalRecords }}</span>.
+        <span class="font-bold">{{ $filteredRecords }}</span> del total de <span class="font-bold">{{ $totalRecords }}</span> registros en el sistema cumplen con el filtro.
+
         @else
-            Mostrando un total de <span class="font-bold">{{ $totalRecords }}</span> registros.
+            Se encontraron un total de <span class="font-bold">{{ $totalRecords }}</span> registros.
         @endif
     </div>
     @endif
@@ -74,21 +75,6 @@
                             <x-empty-state message="No se encontraron registros de asistencia que coincidan con los filtros aplicados." />
                         @endforelse
 
-                        @if ($asistencias->count() > 0 && $asistencias->count() < $perPage)
-                            @for ($i = 0; $i < $perPage - $asistencias->count(); $i++)
-                                <tr class="bg-white">
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                    <td class="px-6 py-3 text-base">&nbsp;</td>
-                                </tr>
-                            @endfor
-                        @endif
                     @else
                         <x-attendance-skeleton-table />
                     @endif
