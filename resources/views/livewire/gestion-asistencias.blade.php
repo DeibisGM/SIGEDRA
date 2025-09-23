@@ -14,17 +14,18 @@
     <!-- Active Filters Summary -->
     <x-active-filters-summary :activeFilters="$activeFilters" :allMaestros="$allMaestros" />
 
+    @if ($isReady)
+    <div class="mb-4 bg-gray-100 border border-gray-200 text-gray-800 px-4 py-3 rounded-lg">
+        @if (collect($activeFilters)->filter()->isNotEmpty())
+            Mostrando <span class="font-bold">{{ $filteredRecords }}</span> registros de un total de <span class="font-bold">{{ $totalRecords }}</span>.
+        @else
+            Mostrando un total de <span class="font-bold">{{ $totalRecords }}</span> registros.
+        @endif
+    </div>
+    @endif
+
     <div class="relative">
         <div class="transition-opacity">
-            @if ($isReady)
-            <div class="px-4 py-2 text-sm text-gray-600 bg-gray-50 rounded-t-lg border-x border-t">
-                @if (collect($activeFilters)->filter()->isNotEmpty())
-                    Mostrando <span class="font-bold">{{ $filteredRecords }}</span> registros de un total de <span class="font-bold">{{ $totalRecords }}</span>.
-                @else
-                    Mostrando un total de <span class="font-bold">{{ $totalRecords }}</span> registros.
-                @endif
-            </div>
-            @endif
             <x-table>
                 <x-slot:head>
                     <tr>
@@ -43,7 +44,7 @@
                 <x-slot:body>
                     @if ($isReady)
                         @forelse ($asistencias as $asistencia)
-                            <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50">
+                            <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50" wire:loading.remove>
                                 <td class="px-6 py-3 text-base font-medium text-gray-800">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->curso }}">{{ $asistencia->curso }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->grado }}">{{ $asistencia->grado }}</td>
@@ -70,12 +71,12 @@
                                 </td>
                             </tr>
                         @empty
-                            <x-empty-state message="No se encontraron registros de asistencia que coincidan con los filtros aplicados." />
+                            <x-empty-state message="No se encontraron registros de asistencia que coincidan con los filtros aplicados." wire:loading.remove />
                         @endforelse
 
                         @if ($asistencias->count() > 0 && $asistencias->count() < $perPage)
                             @for ($i = 0; $i < $perPage - $asistencias->count(); $i++)
-                                <tr class="bg-white">
+                                <tr class="bg-white" wire:loading.remove>
                                     <td class="px-6 py-3 text-base">&nbsp;</td>
                                     <td class="px-6 py-3 text-base">&nbsp;</td>
                                     <td class="px-6 py-3 text-base">&nbsp;</td>
@@ -88,14 +89,14 @@
                                 </tr>
                             @endfor
                         @endif
+
+                        <x-attendance-skeleton-table wire:loading />
                     @else
                         <x-attendance-skeleton-table />
                     @endif
                 </x-slot:body>
             </x-table>
         </div>
-        <div wire:loading.flex class="absolute inset-0 items-center justify-center bg-transparent">
-            <i class="ph ph-spinner-gap text-4xl text-sigedra-primary animate-spin"></i>
         </div>
     </div>
 
