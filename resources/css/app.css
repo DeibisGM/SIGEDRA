@@ -7,6 +7,10 @@
 @tailwind components;
 @tailwind utilities;
 
+[x-cloak] {
+    display: none !important;
+}
+
 /* Se definen estilos base para estandarizar la tipografía en toda la aplicación */
 @layer base {
     body {
