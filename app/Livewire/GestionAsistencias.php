@@ -24,6 +24,12 @@ class GestionAsistencias extends Component
     // Properties for active filters
     public $activeFilters = [];
 
+    public $totalRecords;
+    public $filteredRecords;
+
+    public $confirmingDeletion = false;
+    public $recordIdToDelete;
+
     // Filter options
     public $allGrados = [];
     public $allMaterias = [];
@@ -60,6 +66,18 @@ class GestionAsistencias extends Component
             ->get();
 
         $this->allGrados = $gradosData->groupBy('anio');
+
+        $user = auth()->user();
+        $query = DB::table('sesion_asistencia')
+            ->join('carga_academica', 'sesion_asistencia.carga_academica_id', '=', 'carga_academica.id')
+            ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id');
+
+        if ($user->hasRole('Maestro')) {
+            $query->where('maestro.usuario_id', $user->id);
+        }
+        $this->totalRecords = $query->distinct('sesion_asistencia.id')->count('sesion_asistencia.id');
+
+
         $this->applyFilters(); // Apply empty filters on initial load
     }
 
@@ -78,6 +96,21 @@ class GestionAsistencias extends Component
             'selectedMaestro' => $this->selectedMaestro,
         ];
         $this->resetPage();
+    }
+
+    public function confirmDeletion($id)
+    {
+        $this->recordIdToDelete = $id;
+        $this->confirmingDeletion = true;
+    }
+
+    public function delete()
+    {
+        // First delete related attendance records
+        DB::table('asistencia')->where('sesion_asistencia_id', $this->recordIdToDelete)->delete();
+        DB::table('sesion_asistencia')->where('id', $this->recordIdToDelete)->delete();
+
+        $this->confirmingDeletion = false;
     }
 
     public function clearFilters()
@@ -108,8 +141,10 @@ class GestionAsistencias extends Component
                     'sesion_asistencia.id',
                     'sesion_asistencia.fecha',
                     'materia.nombre as curso',
-                    DB::raw("CONCAT(nivel_academico.nombre, ' ', anio_lectivo.anio) as grado"),
-                    DB::raw("CONCAT(maestro.primer_nombre, ' ', maestro.primer_apellido) as maestro_nombre"),
+                    'nivel_academico.nombre as nivel_academico_nombre',
+                    'anio_lectivo.anio as anio_lectivo_anio',
+                    'maestro.primer_nombre as maestro_primer_nombre',
+                    'maestro.primer_apellido as maestro_primer_apellido',
                     'carga_academica.grado_id',
                     'carga_academica.materia_id',
                     'carga_academica.maestro_id',
@@ -123,8 +158,10 @@ class GestionAsistencias extends Component
                     'sesion_asistencia.id',
                     'sesion_asistencia.fecha',
                     'materia.nombre',
-                    'grado',
-                    'maestro_nombre',
+                    'nivel_academico.nombre',
+                    'anio_lectivo.anio',
+                    'maestro.primer_nombre',
+                    'maestro.primer_apellido',
                     'carga_academica.grado_id',
                     'carga_academica.materia_id',
                     'carga_academica.maestro_id'
@@ -153,8 +190,10 @@ class GestionAsistencias extends Component
                 $query->where('maestro.usuario_id', $user->id);
             }
 
-
             $asistencias = $query->paginate($this->perPage);
+
+            // Get total from paginator
+            $this->filteredRecords = $asistencias->total();
 
             $queryEndTime = microtime(true);
             $queryDuration = ($queryEndTime - $startTime) * 1000;
