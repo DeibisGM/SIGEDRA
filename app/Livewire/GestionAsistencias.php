@@ -136,8 +136,10 @@ class GestionAsistencias extends Component
                     'sesion_asistencia.id',
                     'sesion_asistencia.fecha',
                     'materia.nombre',
-                    'grado',
-                    'maestro_nombre',
+                    'nivel_academico.nombre',
+                    'anio_lectivo.anio',
+                    'maestro.primer_nombre',
+                    'maestro.primer_apellido',
                     'carga_academica.grado_id',
                     'carga_academica.materia_id',
                     'carga_academica.maestro_id'
