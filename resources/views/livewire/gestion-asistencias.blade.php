@@ -44,11 +44,11 @@
                 <x-slot:body>
                     @if ($isReady)
                         @forelse ($asistencias as $asistencia)
-                            <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50" wire:loading.remove>
+                            <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50">
                                 <td class="px-6 py-3 text-base font-medium text-gray-800">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->curso }}">{{ $asistencia->curso }}</td>
-                                <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->grado }}">{{ $asistencia->grado }}</td>
-                                <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->maestro_nombre }}">{{ $asistencia->maestro_nombre }}</td>
+                                <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->nivel_academico_nombre }} {{ $asistencia->anio_lectivo_anio }}">{{ $asistencia->nivel_academico_nombre }} {{ $asistencia->anio_lectivo_anio }}</td>
+                                <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->maestro_primer_nombre }} {{ $asistencia->maestro_primer_apellido }}">{{ $asistencia->maestro_primer_nombre }} {{ $asistencia->maestro_primer_apellido }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->presentes }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->tardias }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->ausentes }}</td>
@@ -64,19 +64,19 @@
                                         <x-buttons.secondary href="#" title="Ver Detalles">
                                             <i class="ph ph-eye text-lg"></i>
                                         </x-buttons.secondary>
-                                        <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-attendance-deletion-{{ $asistencia->id }}')" title="Eliminar Asistencia">
+                                        <x-buttons.danger-secondary wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia">
                                             <i class="ph ph-trash text-lg"></i>
                                         </x-buttons.danger-secondary>
                                     </div>
                                 </td>
                             </tr>
                         @empty
-                            <x-empty-state message="No se encontraron registros de asistencia que coincidan con los filtros aplicados." wire:loading.remove />
+                            <x-empty-state message="No se encontraron registros de asistencia que coincidan con los filtros aplicados." />
                         @endforelse
 
                         @if ($asistencias->count() > 0 && $asistencias->count() < $perPage)
                             @for ($i = 0; $i < $perPage - $asistencias->count(); $i++)
-                                <tr class="bg-white" wire:loading.remove>
+                                <tr class="bg-white">
                                     <td class="px-6 py-3 text-base">&nbsp;</td>
                                     <td class="px-6 py-3 text-base">&nbsp;</td>
                                     <td class="px-6 py-3 text-base">&nbsp;</td>
@@ -89,13 +89,14 @@
                                 </tr>
                             @endfor
                         @endif
-
-                        <x-attendance-skeleton-table wire:loading />
                     @else
                         <x-attendance-skeleton-table />
                     @endif
                 </x-slot:body>
             </x-table>
+        </div>
+        <div wire:loading.flex class="absolute inset-0 items-center justify-center bg-white bg-opacity-50">
+            <i class="ph ph-spinner-gap text-4xl text-sigedra-primary animate-spin"></i>
         </div>
         </div>
     </div>
@@ -106,4 +107,24 @@
             {{ $asistencias->links('vendor.pagination.sigedra-pagination') }}
         </div>
     @endif
+
+    <!-- Delete Confirmation Modal -->
+    <x-modal name="confirm-deletion" :show="$confirmingDeletion" focusable>
+        <div class="p-6">
+            <h2 class="text-lg font-medium text-gray-900">
+                ¿Estás seguro de que deseas eliminar este registro de asistencia?
+            </h2>
+            <p class="mt-1 text-base text-gray-600">
+                Una vez eliminado, no se podrá recuperar.
+            </p>
+            <div class="mt-6 flex justify-end">
+                <x-buttons.secondary x-on:click="$wire.set('confirmingDeletion', false)">
+                    Cancelar
+                </x-buttons.secondary>
+                <x-danger-button class="ms-3" wire:click="delete">
+                    Eliminar
+                </x-danger-button>
+            </div>
+        </div>
+    </x-modal>
 </div>

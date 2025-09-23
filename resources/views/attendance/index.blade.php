@@ -40,6 +40,6 @@
     <div class="space-y-6">
         @livewire('gestion-asistencias')
 
-        <x-pre-create-modal />
+        <x-pre-create-modal x-cloak />
     </div>
 @endsection
