@@ -14,9 +14,18 @@
     <!-- Active Filters Summary -->
     <x-active-filters-summary :activeFilters="$activeFilters" :allMaestros="$allMaestros" />
 
+    @if ($isReady)
+    <div class="mb-4 text-sm text-gray-600">
+        @if (collect($activeFilters)->filter()->isNotEmpty())
+            Mostrando <span class="font-bold">{{ $filteredRecords }}</span> registros de un total de <span class="font-bold">{{ $totalRecords }}</span>.
+        @else
+            Mostrando un total de <span class="font-bold">{{ $totalRecords }}</span> registros.
+        @endif
+    </div>
+    @endif
 
     <div class="relative">
-        <div wire:loading.class="opacity-50 pointer-events-none" class="transition-opacity">
+        <div class="transition-opacity">
             <x-table>
                 <x-slot:head>
                     <tr>
@@ -35,7 +44,7 @@
                 <x-slot:body>
                     @if ($isReady)
                         @forelse ($asistencias as $asistencia)
-                            <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-.hover:bg-gray-50">
+                            <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50">
                                 <td class="px-6 py-3 text-base font-medium text-gray-800">{{ \Carbon\Carbon::parse($asistencia->fecha)->format('d/m/Y') }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->curso }}">{{ $asistencia->curso }}</td>
                                 <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->grado }}">{{ $asistencia->grado }}</td>
@@ -76,7 +85,7 @@
     </div>
 
 
-    @if ($isReady && $asistencias->hasPages())
+    @if ($isReady)
         <div class="mt-8">
             {{ $asistencias->links('vendor.pagination.sigedra-pagination') }}
         </div>

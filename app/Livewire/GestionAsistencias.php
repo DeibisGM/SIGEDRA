@@ -24,6 +24,9 @@ class GestionAsistencias extends Component
     // Properties for active filters
     public $activeFilters = [];
 
+    public $totalRecords;
+    public $filteredRecords;
+
     // Filter options
     public $allGrados = [];
     public $allMaterias = [];
@@ -60,6 +63,16 @@ class GestionAsistencias extends Component
             ->get();
 
         $this->allGrados = $gradosData->groupBy('anio');
+
+        $user = auth()->user();
+        $query = DB::table('sesion_asistencia');
+        if ($user->hasRole('Maestro')) {
+            $query->join('carga_academica', 'sesion_asistencia.carga_academica_id', '=', 'carga_academica.id')
+                  ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
+                  ->where('maestro.usuario_id', $user->id);
+        }
+        $this->totalRecords = $query->count();
+
         $this->applyFilters(); // Apply empty filters on initial load
     }
 
@@ -153,6 +166,8 @@ class GestionAsistencias extends Component
                 $query->where('maestro.usuario_id', $user->id);
             }
 
+            // Get filtered records count before pagination
+            $this->filteredRecords = $query->clone()->count();
 
             $asistencias = $query->paginate($this->perPage);
 
