@@ -30,6 +30,10 @@ class GestionAsistencias extends Component
     public $confirmingDeletion = false;
     public $recordIdToDelete;
 
+    // Properties for viewing a session
+    public $viewingSession = null;
+    public $studentDetails = [];
+
     // Filter options
     public $allGrados = [];
     public $allMaterias = [];
@@ -122,6 +126,47 @@ class GestionAsistencias extends Component
         $this->selectedMaestro = '';
 
         $this->applyFilters();
+    }
+
+    public function viewSession($sessionId)
+    {
+        $this->viewingSession = DB::table('sesion_asistencia')
+            ->join('carga_academica', 'sesion_asistencia.carga_academica_id', '=', 'carga_academica.id')
+            ->join('materia', 'carga_academica.materia_id', '=', 'materia.id')
+            ->join('grado', 'carga_academica.grado_id', '=', 'grado.id')
+            ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
+            ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
+            ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
+            ->where('sesion_asistencia.id', $sessionId)
+            ->select(
+                'sesion_asistencia.id',
+                'sesion_asistencia.fecha',
+                'materia.nombre as subject',
+                'nivel_academico.nombre as nivel_academico_nombre',
+                'anio_lectivo.anio as anio_lectivo_anio',
+                DB::raw("CONCAT(maestro.primer_nombre, ' ', maestro.primer_apellido) as maestro_nombre")
+            )
+            ->first();
+
+        $this->studentDetails = DB::table('asistencia')
+            ->join('estudiante', 'asistencia.estudiante_id', '=', 'estudiante.id')
+            ->join('estado_asistencia', 'asistencia.estado_asistencia_id', '=', 'estado_asistencia.id')
+            ->where('asistencia.sesion_asistencia_id', $sessionId)
+            ->select(
+                'estudiante.id',
+                'estudiante.cedula',
+                DB::raw("CONCAT(estudiante.primer_nombre, ' ', COALESCE(estudiante.segundo_nombre, ''), ' ', estudiante.primer_apellido, ' ', COALESCE(estudiante.segundo_apellido, '')) as nombre_completo"),
+                'estado_asistencia.nombre as estado',
+                'asistencia.observaciones'
+            )
+            ->orderBy('estudiante.primer_apellido')
+            ->get();
+    }
+
+    public function closeSessionView()
+    {
+        $this->viewingSession = null;
+        $this->studentDetails = [];
     }
 
     public function render()

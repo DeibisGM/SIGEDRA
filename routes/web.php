@@ -28,7 +28,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
-    Route::get('/asistencia/{id}', [AttendanceController::class, 'show'])->name('attendance.show');
     Route::get('/estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
     Route::get('/estudiantes/crear', [EstudianteController::class, 'create'])->name('estudiantes.create');
     Route::get('/estudiantes/{id}', [EstudianteController::class, 'show'])->name('estudiantes.show');

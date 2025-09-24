@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="px-6 py-3 text-base font-medium">
                                     <div class="w-full flex items-center justify-center gap-x-2">
-                                        <x-buttons.secondary href="{{ route('attendance.show', ['id' => $asistencia->id, 'startDate' => $this->startDate, 'endDate' => $this->endDate, 'selectedGrades' => $this->selectedGrades, 'selectedMaterias' => $this->selectedMaterias, 'selectedMaestro' => $this->selectedMaestro]) }}" title="Ver Detalles">
+                                        <x-buttons.secondary wire:click.prevent="viewSession({{ $asistencia->id }})" title="Ver Detalles">
                                             <i class="ph ph-eye text-lg"></i>
                                         </x-buttons.secondary>
                                         <x-buttons.danger-secondary wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia">
@@ -112,4 +112,83 @@
             </div>
         </div>
     </x-modal>
+
+    <!-- Session Details Overlay -->
+    @if ($viewingSession)
+    <div
+        x-data="{ show: @entangle('viewingSession') }"
+        x-show="show"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 transform translate-x-full"
+        x-transition:enter-end="opacity-100 transform translate-x-0"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 transform translate-x-0"
+        x-transition:leave-end="opacity-0 transform translate-x-full"
+        class="fixed inset-0 bg-white z-50 overflow-y-auto"
+    >
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Header -->
+            <div class="flex items-center gap-x-4 mb-8">
+                <button wire:click="closeSessionView" class="text-sigedra-primary hover:text-sigedra-primary-dark transition-colors">
+                    <i class="ph ph-arrow-left text-2xl"></i>
+                </button>
+                <div class="flex flex-col md:flex-row md:items-baseline md:gap-x-4">
+                    <h1 class="text-2xl font-bold text-sigedra-primary">Detalle de la Sesión de Asistencia</h1>
+                    <span class="text-base text-sigedra-text-medium">
+                        {{ \Carbon\Carbon::parse($viewingSession->fecha)->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Session Info -->
+            <div class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <x-details-field label="Curso" value="{{ $viewingSession->subject }}" />
+                    <x-details-field label="Grado" value="{{ $viewingSession->nivel_academico_nombre }} {{ $viewingSession->anio_lectivo_anio }}" />
+                    <x-details-field label="Maestro" value="{{ $viewingSession->maestro_nombre }}" />
+                </div>
+
+                <!-- Student Table -->
+                <x-table class="-mx-4 md:mx-0">
+                    <x-slot:head>
+                        <tr>
+                            <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">#</th>
+                            <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Cédula</th>
+                            <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Nombre completo</th>
+                            <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Estado</th>
+                            <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[35%]">Observaciones</th>
+                        </tr>
+                    </x-slot:head>
+
+                    <x-slot:body>
+                        @forelse ($studentDetails as $student)
+                        <tr class="bg-white hover:bg-gray-50">
+                            <td class="px-6 py-3 text-base font-medium text-gray-800">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-3 text-base text-gray-800">{{ $student->cedula }}</td>
+                            <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $student->nombre_completo }}">{{ $student->nombre_completo }}</td>
+                            <td class="px-6 py-3 text-base text-gray-800">
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium
+                                    @switch($student->estado)
+                                        @case('Presente') bg-green-100 text-green-800 @break
+                                        @case('Ausente') bg-red-100 text-red-800 @break
+                                        @case('Tardía') bg-yellow-100 text-yellow-800 @break
+                                        @default bg-gray-100 text-gray-800
+                                    @endswitch
+                                ">
+                                    {{ $student->estado }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-3 text-base text-gray-800">{{ $student->observaciones ?? 'N/A' }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5" class="px-6 py-3 text-center text-sm text-sigedra-text-medium">No hay estudiantes registrados en esta sesión de asistencia.</td>
+                        </tr>
+                        @endforelse
+                    </x-slot:body>
+                </x-table>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
