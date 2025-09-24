@@ -81,13 +81,11 @@
                 </x-slot:body>
             </x-table>
         </div>
-        <div wire:loading.flex wire:target.except="viewSession" class="absolute inset-0 items-center justify-center bg-white bg-opacity-50">
-            <i class="ph ph-spinner-gap text-4xl text-sigedra-primary animate-spin"></i>
         </div>
     </div>
 
-    <!-- Loading overlay for viewing session -->
-    <div wire:loading.delay.longer.flex wire:target="viewSession" class="absolute inset-0 items-center justify-center bg-white bg-opacity-75 z-40">
+    <!-- Global Loading Indicator -->
+    <div wire:loading.flex class="absolute inset-0 items-center justify-center bg-white bg-opacity-75 z-40">
         <i class="ph ph-spinner-gap text-4xl text-sigedra-primary animate-spin"></i>
     </div>
 
