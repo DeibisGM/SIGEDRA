@@ -1,4 +1,4 @@
-<div wire:init="loadAsistencias" x-data="{ filtersOpen: false }">
+<div wire:init="loadAsistencias" x-data="{ filtersOpen: false }" class="relative">
     <!-- Barra de Búsqueda y Filtros -->
     <div class="flex justify-end items-center mb-4">
         <x-buttons.secondary @click="filtersOpen = !filtersOpen" class="w-full md:w-auto justify-center text-sm" title="Filtros">
@@ -86,6 +86,11 @@
         </div>
     </div>
 
+    <!-- Loading overlay for viewing session -->
+    <div wire:loading.delay.longer.flex wire:target="viewSession" class="absolute inset-0 items-center justify-center bg-white bg-opacity-75 z-40">
+        <i class="ph ph-spinner-gap text-4xl text-sigedra-primary animate-spin"></i>
+    </div>
+
 
     @if ($isReady)
         <div class="mt-8">
@@ -124,9 +129,9 @@
         x-transition:leave="transition ease-in duration-200"
         x-transition:leave-start="opacity-100 transform translate-x-0"
         x-transition:leave-end="opacity-0 transform translate-x-full"
-        class="fixed inset-0 bg-white z-50 overflow-y-auto"
+        class="absolute inset-0 bg-white z-50 overflow-y-auto"
     >
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="px-4 sm:px-6 lg:px-8 py-8">
             <!-- Header -->
             <div class="flex items-center gap-x-4 mb-8">
                 <button wire:click="closeSessionView" class="text-sigedra-primary hover:text-sigedra-primary-dark transition-colors">
