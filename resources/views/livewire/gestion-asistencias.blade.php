@@ -81,7 +81,7 @@
                 </x-slot:body>
             </x-table>
         </div>
-        <div wire:loading.flex class="absolute inset-0 items-center justify-center bg-white bg-opacity-50">
+        <div wire:loading.flex wire:target.except="viewSession" class="absolute inset-0 items-center justify-center bg-white bg-opacity-50">
             <i class="ph ph-spinner-gap text-4xl text-sigedra-primary animate-spin"></i>
         </div>
     </div>
