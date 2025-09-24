@@ -80,13 +80,17 @@ class AttendanceController extends Controller
         // 3. Get the students and their attendance for this session
         $students = DB::table('asistencia')
             ->join('estudiante', 'asistencia.estudiante_id', '=', 'estudiante.id')
-            ->join('estado_asistencia', 'asistencia.estado_asistencia_id', '=', 'estado_asistencia.id')
             ->where('asistencia.sesion_asistencia_id', $id)
             ->select(
                 'estudiante.id',
                 'estudiante.cedula',
                 DB::raw("CONCAT(estudiante.primer_nombre, ' ', COALESCE(estudiante.segundo_nombre, ''), ' ', estudiante.primer_apellido, ' ', COALESCE(estudiante.segundo_apellido, '')) as nombre_completo"),
-                'estado_asistencia.nombre as estado',
+                DB::raw("CASE
+                            WHEN asistencia.estado_asistencia_id = 1 THEN 'Presente'
+                            WHEN asistencia.estado_asistencia_id = 2 THEN 'Ausente'
+                            WHEN asistencia.estado_asistencia_id = 3 THEN 'Tardía'
+                            ELSE 'Desconocido'
+                        END as estado"),
                 'asistencia.observaciones'
             )
             ->orderBy('estudiante.primer_apellido')
