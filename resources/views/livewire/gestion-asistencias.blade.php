@@ -81,7 +81,6 @@
                 </x-slot:body>
             </x-table>
         </div>
-        </div>
     </div>
 
     <!-- Global Loading Indicator -->
