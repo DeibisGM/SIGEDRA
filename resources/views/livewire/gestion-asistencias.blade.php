@@ -62,7 +62,7 @@
                                 </td>
                                 <td class="px-6 py-3 text-base font-medium">
                                     <div class="w-full flex items-center justify-center gap-x-2">
-                                        <x-buttons.secondary href="#" title="Ver Detalles">
+                                        <x-buttons.secondary href="{{ route('attendance.show', ['id' => $asistencia->id, 'startDate' => $this->startDate, 'endDate' => $this->endDate, 'selectedGrades' => $this->selectedGrades, 'selectedMaterias' => $this->selectedMaterias, 'selectedMaestro' => $this->selectedMaestro]) }}" title="Ver Detalles">
                                             <i class="ph ph-eye text-lg"></i>
                                         </x-buttons.secondary>
                                         <x-buttons.danger-secondary wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia">
