@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\On;
 
 class GestionAsistencias extends Component
 {
@@ -161,12 +162,16 @@ class GestionAsistencias extends Component
             )
             ->orderBy('estudiante.primer_apellido')
             ->get();
+
+        $this->dispatch('view-changed', isViewingSession: true, sessionId: $sessionId);
     }
 
+    #[On('close-session-view')]
     public function closeSessionView()
     {
         $this->viewingSession = null;
         $this->studentDetails = [];
+        $this->dispatch('view-changed', isViewingSession: false);
     }
 
     public function render()

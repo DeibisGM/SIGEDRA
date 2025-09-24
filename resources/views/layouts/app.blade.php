@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>SIGEDRA - @yield('title')</title>
 
+    <link rel="icon" href="{{ asset('images/icon.svg') }}" type="image/svg+xml">
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -24,8 +26,8 @@
 
     <aside id="application-sidebar" class="-translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
         <header class="h-[70px] flex-shrink-0 flex items-center justify-between px-6 border-b bg-sigedra-light-colored-bg">
-            <a class="flex items-center text-xl font-bold text-sigedra-secondary" href="{{ route('home') }}">
-                SIGEDRA
+            <a class="flex items-center" href="{{ route('home') }}">
+                <img src="{{ asset('images/logo.svg') }}" alt="SIGEDRA Logo" class="h-[1.375rem]">
             </a>
             <button type="button" id="sidebar-close-button" class="lg:hidden text-gray-500 hover:text-gray-600">
                 <i class="ph ph-x text-xl"></i>
@@ -78,7 +80,7 @@
     <div id="sidebar-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
 
     <!-- ===== Content Area ===== -->
-    <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll">
+    <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll" x-data="{ isViewingSession: false, sessionId: null }" @view-changed.window="isViewingSession = $event.detail.isViewingSession; sessionId = $event.detail.sessionId">
         <!-- Primary Header -->
         <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
             <div class="container mx-auto px-4 flex items-center justify-between h-full">
@@ -89,7 +91,16 @@
                         <i class="ph ph-list text-xl"></i>
                     </button>
                     <!-- Breadcrumbs -->
-                    @yield('breadcrumbs')
+                    <div x-show="!isViewingSession" class="w-full">
+                        @yield('breadcrumbs')
+                    </div>
+                    <div x-show="isViewingSession" x-cloak class="w-full text-base text-gray-500 whitespace-nowrap truncate">
+                        <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
+                        <span class="mx-2">/</span>
+                        <span @click="$dispatch('close-session-view')" class="cursor-pointer hover:text-gray-700">Historial de asistencia</span>
+                        <span class="mx-2">/</span>
+                        <span x-text="sessionId"></span>
+                    </div>
                 </div>
                 <div class="ms-4 flex items-center gap-x-4">
                     <!-- User Dropdown -->
@@ -151,7 +162,7 @@
         </header>
 
         <!-- Secondary Header -->
-        <header class="bg-white shadow-sm">
+        <header class="bg-white shadow-sm" x-show="!isViewingSession" x-cloak>
             <div class="container mx-auto px-4 py-5 flex items-center justify-between">
                 <div>
                     <h1 class="text-xl font-bold text-gray-800 leading-tight">
@@ -169,7 +180,7 @@
 
         <!-- Main Content -->
         <main class="flex-grow bg-sigedra-bg">
-            <div class="container mx-auto px-4 py-0 pb-24">
+            <div class="container mx-auto px-4 pb-24" :class="isViewingSession ? 'py-5' : 'py-0'">
                 @yield('content')
             </div>
         </main>
