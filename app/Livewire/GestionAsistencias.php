@@ -20,7 +20,7 @@ class GestionAsistencias extends Component
     public $endDate = '';
     public $selectedGrades = [];
     public $selectedMaterias = [];
-    public $selectedMaestro = '';
+    public $selectedMaestros = [];
 
     // Properties for active filters
     public $activeFilters = [];
@@ -98,7 +98,7 @@ class GestionAsistencias extends Component
             'endDate' => $this->endDate,
             'selectedGrades' => $this->selectedGrades,
             'selectedMaterias' => $this->selectedMaterias,
-            'selectedMaestro' => $this->selectedMaestro,
+            'selectedMaestros' => $this->selectedMaestros,
         ];
         $this->resetPage();
     }
@@ -124,9 +124,10 @@ class GestionAsistencias extends Component
         $this->endDate = '';
         $this->selectedGrades = [];
         $this->selectedMaterias = [];
-        $this->selectedMaestro = '';
+        $this->selectedMaestros = [];
 
         $this->applyFilters();
+        $this->dispatch('filters-cleared');
     }
 
     public function viewSession($sessionId)
@@ -201,6 +202,7 @@ class GestionAsistencias extends Component
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 1 THEN 1 ELSE 0 END) as presentes"), // Presente
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 3 THEN 1 ELSE 0 END) as tardias"), // Tardía
                     DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 2 THEN 1 ELSE 0 END) as ausentes"), // Ausente
+                    DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 4 THEN 1 ELSE 0 END) as justificadas"), // Justificada (Asumiendo ID 4)
                     DB::raw("COUNT(asistencia.id) as total_estudiantes")
                 )
                 ->leftJoin('asistencia', 'asistencia.sesion_asistencia_id', '=', 'sesion_asistencia.id')
@@ -231,8 +233,8 @@ class GestionAsistencias extends Component
             if (!empty($this->activeFilters['selectedMaterias'])) {
                 $query->whereIn('carga_academica.materia_id', $this->activeFilters['selectedMaterias']);
             }
-            if ($this->activeFilters['selectedMaestro']) {
-                $query->where('carga_academica.maestro_id', $this->activeFilters['selectedMaestro']);
+            if (!empty($this->activeFilters['selectedMaestros'])) {
+                $query->whereIn('carga_academica.maestro_id', $this->activeFilters['selectedMaestros']);
             }
 
             $user = auth()->user();
