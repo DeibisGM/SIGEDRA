@@ -2,19 +2,39 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Estudiante extends Model
 {
+    use HasFactory;
+
     protected $table = 'estudiante';
     public $timestamps = false;
 
+    protected $fillable = [
+        'cedula',
+        'primer_nombre',
+        'segundo_nombre',
+        'primer_apellido',
+        'segundo_apellido',
+        'fecha_nacimiento',
+        'direccion',
+        'genero',
+        'nacionalidad',
+        'activo',
+    ];
+
+    protected $casts = [
+        'fecha_nacimiento' => 'date',
+        'activo' => 'boolean',
+    ];
+
     /**
-     * Define la relación para obtener los grados a los que está asignado un estudiante.
-     * Se usa BelongsToMany porque la tabla 'asignacion_estudiante_grado' es una tabla pivote
-     * que conecta estudiantes y grados.
+     * Relación para obtener los grados a los que está o ha estado asignado.
      */
     public function grados(): BelongsToMany
     {
@@ -23,17 +43,36 @@ class Estudiante extends Model
 
     /**
      * Accesor para obtener el nombre completo del estudiante.
-     * Esto permite usar `$estudiante->nombre_completo` en cualquier parte.
      */
     protected function nombreCompleto(): Attribute
     {
         return Attribute::make(
-            get: fn ($value, array $attributes) => trim(
-                $attributes['primer_nombre'] . ' ' .
-                ($attributes['segundo_nombre'] ?? '') . ' ' .
-                $attributes['primer_apellido'] . ' ' .
-                ($attributes['segundo_apellido'] ?? '')
+            get: fn () => trim(
+                $this->primer_nombre . ' ' .
+                ($this->segundo_nombre ? $this->segundo_nombre . ' ' : '') .
+                $this->primer_apellido . ' ' .
+                ($this->segundo_apellido ? $this->segundo_apellido . ' ' : '')
             )
+        );
+    }
+
+    /**
+     * Accesor para calcular la edad del estudiante.
+     */
+    protected function edad(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::parse($this->fecha_nacimiento)->age
+        );
+    }
+
+    /**
+     * Accesor para las iniciales del avatar.
+     */
+    protected function avatarInitials(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => mb_substr($this->primer_nombre, 0, 1) . mb_substr($this->primer_apellido, 0, 1)
         );
     }
 }

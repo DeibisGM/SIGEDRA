@@ -4,7 +4,7 @@
 
 @section('breadcrumbs')
     <div class="text-base text-gray-500 whitespace-nowrap truncate">
-        <a href="{{ route('home') }}" class="hover:text-gray-700">Inicio</a>
+        <a href="{{ route('dashboard') }}" class="hover:text-gray-700">Inicio</a>
         <span class="mx-2">/</span>
         <span>Dashboard</span>
     </div>

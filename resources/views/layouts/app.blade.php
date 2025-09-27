@@ -26,7 +26,7 @@
 
     <aside id="application-sidebar" class="-translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-white border-e flex flex-col lg:flex lg:translate-x-0 lg:end-auto h-full">
         <header class="h-[70px] flex-shrink-0 flex items-center justify-between px-6 border-b bg-sigedra-light-colored-bg">
-            <a class="flex items-center" href="{{ route('home') }}">
+            <a class="flex items-center" href="{{ route('dashboard') }}">
                 <img src="{{ asset('images/logo.svg') }}" alt="SIGEDRA Logo" class="h-[1.2rem]">
             </a>
             <button type="button" id="sidebar-close-button" class="lg:hidden text-gray-500 hover:text-gray-600">
@@ -36,7 +36,7 @@
 
         @php
         $navLinks = [
-        ['route' => 'home', 'active_pattern' => 'home', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
+        ['route' => 'dashboard', 'active_pattern' => 'dashboard', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
         ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
         ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
         ['route' => 'maestros.index', 'active_pattern' => 'maestros.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Maestros'],
@@ -106,11 +106,11 @@
                     <!-- User Dropdown -->
                     <div x-data="{ open: false }" class="relative">
                         @php
-                            $userName = Auth::user()->name;
-                            $userEmail = Auth::user()->email;
-                            $userInitials = collect(explode(' ', $userName))->map(function ($word) {
-                                return mb_substr($word, 0, 1);
-                            })->take(2)->implode('');
+                        $userName = Auth::user()->name;
+                        $userEmail = Auth::user()->email;
+                        $userInitials = collect(explode(' ', $userName))->map(function ($word) {
+                        return mb_substr($word, 0, 1);
+                        })->take(2)->implode('');
                         @endphp
                         <button @click="open = !open" class="flex items-center gap-x-2 focus:outline-none rounded-md hover:bg-gray-100">
                             <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-gray-700">

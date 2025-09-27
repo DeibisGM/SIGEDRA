@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +25,7 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
+        // Definir una longitud de string por defecto para migraciones en MySQL
+        Schema::defaultStringLength(191);
     }
 }

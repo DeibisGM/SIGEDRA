@@ -9,7 +9,7 @@ use Illuminate\View\View;
 class MaestroController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Muestra una lista de todos los maestros.
      */
     public function index(): View
     {
@@ -18,11 +18,11 @@ class MaestroController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Muestra los detalles de un maestro específico usando Route-Model Binding.
      */
     public function show(Maestro $maestro): View
     {
-        $maestro->load('user');
+        $maestro->load('user'); // Asegura que la relación con el usuario esté cargada
         return view('maestros.show', compact('maestro'));
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class NivelAcademico extends Model
 {
-    protected $table = 'nivel_academico'; // Set the correct table name
-    public $timestamps = false; // Disable timestamps
+    protected $table = 'nivel_academico';
+    public $timestamps = false;
+    protected $fillable = ['nombre', 'orden'];
 }

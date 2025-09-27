@@ -2,96 +2,52 @@
 
 namespace App\Livewire;
 
+use App\Models\Grado;
+use App\Models\Maestro;
+use App\Models\Materia;
+use App\Models\SesionAsistencia;
+use App\Models\Asistencia;
+use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use Livewire\Attributes\On;
 
 class GestionAsistencias extends Component
 {
     use WithPagination;
 
-    public $perPage = 10;
-    public $isReady = false;
+    public bool $isReady = false;
+    public int $perPage = 10;
+    public bool $confirmingDeletion = false;
+    public ?int $recordIdToDelete = null;
 
-    // Properties for form binding
-    public $startDate = '';
-    public $endDate = '';
-    public $selectedGrades = [];
-    public $selectedMaterias = [];
-    public $selectedMaestros = [];
+    // Propiedades para los filtros
+    public string $startDate = '';
+    public string $endDate = '';
+    public array $selectedGrades = [];
+    public array $selectedMaterias = [];
+    public array $selectedMaestros = [];
+    public array $activeFilters = [];
 
-    // Properties for active filters
-    public $activeFilters = [];
+    // Propiedades para la vista de detalle
+    public bool $isViewingSession = false;
+    public ?SesionAsistencia $viewingSession = null;
+    public Collection $studentDetails;
 
-    public $totalRecords;
-    public $filteredRecords;
-
-    public $confirmingDeletion = false;
-    public $recordIdToDelete;
-
-    // Properties for viewing a session
-    public $viewingSession = null;
-    public $studentDetails = [];
-
-    // Filter options
-    public $allGrados = [];
-    public $allMaterias = [];
-    public $allMaestros = [];
-
-    public function mount()
+    public function mount(): void
     {
-        $user = auth()->user();
-        if ($user->hasRole('Maestro')) {
-            $this->allMaterias = DB::table('materia')
-                ->join('carga_academica', 'materia.id', '=', 'carga_academica.materia_id')
-                ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
-                ->where('maestro.usuario_id', $user->id)
-                ->select('materia.id', 'materia.nombre')
-                ->distinct()
-                ->orderBy('materia.nombre')
-                ->get();
-        } else {
-            $this->allMaterias = DB::table('materia')->orderBy('nombre')->get();
-        }
-
-        $this->allMaestros = DB::table('maestro')
-            ->where('activo', 1)
-            ->select('id', DB::raw("CONCAT(primer_nombre, ' ', primer_apellido) as nombre_completo"))
-            ->orderBy('nombre_completo')
-            ->get();
-
-        $gradosData = DB::table('grado')
-            ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
-            ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
-            ->select('grado.id', 'nivel_academico.nombre', 'anio_lectivo.anio', 'nivel_academico.orden')
-            ->orderBy('anio_lectivo.anio', 'desc')
-            ->orderBy('nivel_academico.orden', 'asc')
-            ->get();
-
-        $this->allGrados = $gradosData->groupBy('anio');
-
-        $user = auth()->user();
-        $query = DB::table('sesion_asistencia')
-            ->join('carga_academica', 'sesion_asistencia.carga_academica_id', '=', 'carga_academica.id')
-            ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id');
-
-        if ($user->hasRole('Maestro')) {
-            $query->where('maestro.usuario_id', $user->id);
-        }
-        $this->totalRecords = $query->distinct('sesion_asistencia.id')->count('sesion_asistencia.id');
-
-
-        $this->applyFilters(); // Apply empty filters on initial load
+        // Inicializamos las propiedades que Livewire necesita gestionar.
+        // Las colecciones de filtros ya no se cargan aquí.
+        $this->studentDetails = collect();
+        $this->applyFilters();
     }
 
-    public function loadAsistencias()
+    public function loadAsistencias(): void
     {
         $this->isReady = true;
     }
 
-    public function applyFilters()
+    public function applyFilters(): void
     {
         $this->activeFilters = [
             'startDate' => $this->startDate,
@@ -103,157 +59,104 @@ class GestionAsistencias extends Component
         $this->resetPage();
     }
 
-    public function confirmDeletion($id)
+    public function clearFilters(): void
+    {
+        $this->reset(['startDate', 'endDate', 'selectedGrades', 'selectedMaterias', 'selectedMaestros']);
+        $this->applyFilters();
+        $this->dispatch('filters-cleared');
+    }
+
+    public function confirmDeletion(int $id): void
     {
         $this->recordIdToDelete = $id;
         $this->confirmingDeletion = true;
     }
 
-    public function delete()
+    public function delete(): void
     {
-        // First delete related attendance records
-        DB::table('asistencia')->where('sesion_asistencia_id', $this->recordIdToDelete)->delete();
-        DB::table('sesion_asistencia')->where('id', $this->recordIdToDelete)->delete();
-
+        if ($this->recordIdToDelete) {
+            SesionAsistencia::destroy($this->recordIdToDelete);
+        }
         $this->confirmingDeletion = false;
+        $this->resetPage();
     }
 
-    public function clearFilters()
+    public function viewSession(int $sessionId): void
     {
-        $this->startDate = '';
-        $this->endDate = '';
-        $this->selectedGrades = [];
-        $this->selectedMaterias = [];
-        $this->selectedMaestros = [];
+        $this->viewingSession = SesionAsistencia::with([
+            'cargaAcademica.materia',
+            'cargaAcademica.grado.nivelAcademico',
+            'cargaAcademica.grado.anioAcademico',
+            'cargaAcademica.maestro'
+        ])->find($sessionId);
 
-        $this->applyFilters();
-        $this->dispatch('filters-cleared');
-    }
+        $this->studentDetails = Asistencia::where('sesion_asistencia_id', $sessionId)
+            ->with(['estudiante', 'estadoAsistencia'])
+            ->get()
+            ->sortBy('estudiante.primer_apellido');
 
-    public function viewSession($sessionId)
-    {
-        $this->viewingSession = DB::table('sesion_asistencia')
-            ->join('carga_academica', 'sesion_asistencia.carga_academica_id', '=', 'carga_academica.id')
-            ->join('materia', 'carga_academica.materia_id', '=', 'materia.id')
-            ->join('grado', 'carga_academica.grado_id', '=', 'grado.id')
-            ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
-            ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
-            ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
-            ->where('sesion_asistencia.id', $sessionId)
-            ->select(
-                'sesion_asistencia.id',
-                'sesion_asistencia.fecha',
-                'materia.nombre as subject',
-                'nivel_academico.nombre as nivel_academico_nombre',
-                'anio_lectivo.anio as anio_lectivo_anio',
-                DB::raw("CONCAT(maestro.primer_nombre, ' ', maestro.primer_apellido) as maestro_nombre")
-            )
-            ->first();
-
-        $this->studentDetails = DB::table('asistencia')
-            ->join('estudiante', 'asistencia.estudiante_id', '=', 'estudiante.id')
-            ->join('estado_asistencia', 'asistencia.estado_asistencia_id', '=', 'estado_asistencia.id')
-            ->where('asistencia.sesion_asistencia_id', $sessionId)
-            ->select(
-                'estudiante.id',
-                'estudiante.cedula',
-                DB::raw("CONCAT(estudiante.primer_nombre, ' ', COALESCE(estudiante.segundo_nombre, ''), ' ', estudiante.primer_apellido, ' ', COALESCE(estudiante.segundo_apellido, '')) as nombre_completo"),
-                'estado_asistencia.nombre as estado',
-                'asistencia.observaciones'
-            )
-            ->orderBy('estudiante.primer_apellido')
-            ->get();
-
+        $this->isViewingSession = true;
         $this->dispatch('view-changed', isViewingSession: true, sessionId: $sessionId);
     }
 
     #[On('close-session-view')]
-    public function closeSessionView()
+    public function closeSessionView(): void
     {
+        $this->isViewingSession = false;
         $this->viewingSession = null;
-        $this->studentDetails = [];
+        $this->studentDetails = collect();
         $this->dispatch('view-changed', isViewingSession: false);
     }
 
     public function render()
     {
-        $asistencias = [];
+        // --- Carga de Opciones para Filtros (SOLO EN RENDER) ---
+        $user = auth()->user();
+        if ($user->hasRole('Maestro')) {
+            $allMaterias = Materia::whereHas('cargasAcademicas.maestro', fn($q) => $q->where('usuario_id', $user->id))->orderBy('nombre')->get();
+        } else {
+            $allMaterias = Materia::orderBy('nombre')->get();
+        }
+
+        $allMaestros = Maestro::where('activo', 1)->orderBy('primer_nombre')->get();
+        $allGrados = Grado::with(['nivelAcademico', 'anioAcademico'])
+            ->get()
+            ->sortByDesc('anioAcademico.anio')
+            ->groupBy('anioAcademico.anio');
+        // --- FIN DE CARGA DE FILTROS ---
+
+        $asistencias = collect();
         if ($this->isReady) {
-            $startTime = microtime(true);
-
-            $query = DB::table('sesion_asistencia')
-                ->join('carga_academica', 'sesion_asistencia.carga_academica_id', '=', 'carga_academica.id')
-                ->join('materia', 'carga_academica.materia_id', '=', 'materia.id')
-                ->join('grado', 'carga_academica.grado_id', '=', 'grado.id')
-                ->join('nivel_academico', 'grado.nivel_academico_id', '=', 'nivel_academico.id')
-                ->join('anio_lectivo', 'grado.anio_lectivo_id', '=', 'anio_lectivo.id')
-                ->join('maestro', 'carga_academica.maestro_id', '=', 'maestro.id')
-                ->select(
-                    'sesion_asistencia.id',
-                    'sesion_asistencia.fecha',
-                    'materia.nombre as curso',
-                    'nivel_academico.nombre as nivel_academico_nombre',
-                    'anio_lectivo.anio as anio_lectivo_anio',
-                    'maestro.primer_nombre as maestro_primer_nombre',
-                    'maestro.primer_apellido as maestro_primer_apellido',
-                    'carga_academica.grado_id',
-                    'carga_academica.materia_id',
-                    'carga_academica.maestro_id',
-                    DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 1 THEN 1 ELSE 0 END) as presentes"), // Presente
-                    DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 3 THEN 1 ELSE 0 END) as tardias"), // Tardía
-                    DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 2 THEN 1 ELSE 0 END) as ausentes"), // Ausente
-                    DB::raw("SUM(CASE WHEN asistencia.estado_asistencia_id = 4 THEN 1 ELSE 0 END) as justificadas"), // Justificada (Asumiendo ID 4)
-                    DB::raw("COUNT(asistencia.id) as total_estudiantes")
-                )
-                ->leftJoin('asistencia', 'asistencia.sesion_asistencia_id', '=', 'sesion_asistencia.id')
-                ->groupBy(
-                    'sesion_asistencia.id',
-                    'sesion_asistencia.fecha',
-                    'materia.nombre',
-                    'nivel_academico.nombre',
-                    'anio_lectivo.anio',
-                    'maestro.primer_nombre',
-                    'maestro.primer_apellido',
-                    'carga_academica.grado_id',
-                    'carga_academica.materia_id',
-                    'carga_academica.maestro_id'
-                )
-                ->orderBy('sesion_asistencia.fecha', 'desc');
-
-            // Apply filters
-            if ($this->activeFilters['startDate']) {
-                $query->where('sesion_asistencia.fecha', '>=', $this->activeFilters['startDate']);
-            }
-            if ($this->activeFilters['endDate']) {
-                $query->where('sesion_asistencia.fecha', '<=', $this->activeFilters['endDate']);
-            }
-            if (!empty($this->activeFilters['selectedGrades'])) {
-                $query->whereIn('carga_academica.grado_id', $this->activeFilters['selectedGrades']);
-            }
-            if (!empty($this->activeFilters['selectedMaterias'])) {
-                $query->whereIn('carga_academica.materia_id', $this->activeFilters['selectedMaterias']);
-            }
-            if (!empty($this->activeFilters['selectedMaestros'])) {
-                $query->whereIn('carga_academica.maestro_id', $this->activeFilters['selectedMaestros']);
-            }
-
-            $user = auth()->user();
-            if ($user->hasRole('Maestro')) {
-                $query->where('maestro.usuario_id', $user->id);
-            }
+            $query = SesionAsistencia::query()
+                ->with([
+                    'cargaAcademica.materia',
+                    'cargaAcademica.grado.nivelAcademico',
+                    'cargaAcademica.grado.anioAcademico',
+                    'cargaAcademica.maestro'
+                ])
+                ->withCount([
+                    'asistencias as presentes_count' => fn($q) => $q->where('estado_asistencia_id', 1),
+                    'asistencias as ausentes_count' => fn($q) => $q->where('estado_asistencia_id', 2),
+                    'asistencias as tardias_count' => fn($q) => $q->where('estado_asistencia_id', 3),
+                    'asistencias as justificadas_count' => fn($q) => $q->where('estado_asistencia_id', 4),
+                    'asistencias as total_estudiantes_count',
+                ])
+                ->when($this->activeFilters['startDate'], fn($q) => $q->where('fecha', '>=', $this->activeFilters['startDate']))
+                ->when($this->activeFilters['endDate'], fn($q) => $q->where('fecha', '<=', $this->activeFilters['endDate']))
+                ->when($this->activeFilters['selectedGrades'], fn($q) => $q->whereHas('cargaAcademica', fn($sq) => $sq->whereIn('grado_id', $this->activeFilters['selectedGrades'])))
+                ->when($this->activeFilters['selectedMaterias'], fn($q) => $q->whereHas('cargaAcademica', fn($sq) => $sq->whereIn('materia_id', $this->activeFilters['selectedMaterias'])))
+                ->when($this->activeFilters['selectedMaestros'], fn($q) => $q->whereHas('cargaAcademica', fn($sq) => $sq->whereIn('maestro_id', $this->activeFilters['selectedMaestros'])))
+                ->when($user->hasRole('Maestro'), fn($q) => $q->whereHas('cargaAcademica.maestro', fn($sq) => $sq->where('usuario_id', $user->id)))
+                ->orderBy('fecha', 'desc');
 
             $asistencias = $query->paginate($this->perPage);
-
-            // Get total from paginator
-            $this->filteredRecords = $asistencias->total();
-
-            $queryEndTime = microtime(true);
-            $queryDuration = ($queryEndTime - $startTime) * 1000;
-            Log::info('[PROFILING] Attendance query execution took: ' . round($queryDuration, 2) . 'ms');
         }
 
         return view('livewire.gestion-asistencias', [
             'asistencias' => $asistencias,
+            'allGrados' => $allGrados,
+            'allMaterias' => $allMaterias,
+            'allMaestros' => $allMaestros,
         ]);
     }
 }
