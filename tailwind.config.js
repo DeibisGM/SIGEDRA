@@ -2,11 +2,12 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 
 export default {
+    darkMode: 'class',
     content: [
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './storage/framework/views/*.php',
         './resources/views/**/*.blade.php',
-        './node_modules/preline/dist/*.js',
+        './node_modules/flowbite/**/*.js'
     ],
 
     theme: {
@@ -23,7 +24,7 @@ export default {
                 'sigedra-warning': '#F0AD4E',
                 'sigedra-bg': '#F9FAFB',
                 'sigedra-card': '#FFFFFF',
-                'sigedra-light-colored-bg': '#F7FAF4',
+                'sigedra-light-colored-bg': '#f5faf0',
                 'sigedra-input': '#F3F4F6',
                 'sigedra-border': '#E5E7EB',
 
@@ -45,5 +46,6 @@ export default {
 
     plugins: [
         require('@tailwindcss/forms'),
+        require('flowbite/plugin')
     ],
 };

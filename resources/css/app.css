@@ -1,7 +1,6 @@
 @import "../../node_modules/@phosphor-icons/web/src/regular/style.css";
 @import "../../node_modules/@phosphor-icons/web/src/fill/style.css";
-@import "flatpickr/dist/flatpickr.min.css";
-@import "./flatpickr-custom.css";
+@import "./flowbite-custom.css";
 
 @tailwind base;
 @tailwind components;

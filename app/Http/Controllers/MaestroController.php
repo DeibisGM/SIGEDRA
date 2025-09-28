@@ -13,8 +13,7 @@ class MaestroController extends Controller
      */
     public function index(): View
     {
-        $maestros = Maestro::with('user')->latest()->get();
-        return view('maestros.index', compact('maestros'));
+        return view('maestros.index');
     }
 
     /**

@@ -1,50 +1,38 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Listado de Maestros') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="relative overflow-x-auto">
-                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">Nombre</th>
-                                    <th scope="col" class="px-6 py-3">Email</th>
-                                    <th scope="col" class="px-6 py-3">Cédula</th>
-                                    <th scope="col" class="px-6 py-3">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($maestros as $maestro)
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $maestro->primer_nombre }} {{ $maestro->primer_apellido }}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            {{ $maestro->correo }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $maestro->user->cedula ?? 'N/A' }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            <a href="{{ route('maestros.show', $maestro->id) }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Ver Detalles</a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="px-6 py-4 text-center">No hay maestros registrados.</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</x-app-layout>
+@section('title', 'Maestros')
+
+@section('breadcrumbs')
+<div class="text-base text-gray-500 whitespace-nowrap truncate">
+    <a href="{{ route('maestros.index') }}" class="hover:text-gray-700">Maestros</a>
+    <span class="mx-2">/</span>
+    <span>Gestión de Maestros</span>
+</div>
+@endsection
+
+@section('module_title', 'Gestión de Maestros')
+@section('module_subtitle', 'Administra los maestros de la institución.')
+
+@section('header_actions')
+<div class="hidden md:flex items-center gap-3">
+    <div class="flex-grow"></div>
+
+    <x-buttons.primary as="a" href="#">
+        <i class="ph ph-plus-circle text-lg"></i>
+        <span class="ms-2">Crear Maestro</span>
+    </x-buttons.primary>
+</div>
+@endsection
+
+@section('content')
+@livewire('gestion-maestros')
+@endsection
+
+@section('footer_actions')
+<div class="md:hidden">
+    <x-buttons.primary as="a" href="#" class="w-full justify-center">
+        <i class="ph ph-plus-circle text-lg"></i>
+        <span class="ms-2">Crear Maestro</span>
+    </x-buttons.primary>
+</div>
+@endsection

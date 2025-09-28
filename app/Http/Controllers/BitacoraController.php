@@ -21,6 +21,7 @@ class BitacoraController extends Controller
                 'icon' => 'ph-user-circle-gear',
                 'color' => 'text-blue-500',
                 'user' => 'Nancy T.',
+                'user_avatar_initials' => 'NT',
                 'details' => 'Actualizó la foto de perfil.'
             ],
             [
@@ -29,6 +30,7 @@ class BitacoraController extends Controller
                 'icon' => 'ph-user-plus',
                 'color' => 'text-green-500',
                 'user' => 'Deibis Gutierrez',
+                'user_avatar_initials' => 'DG',
                 'details' => 'Creó al estudiante "Ana Rojas".'
             ],
             [
@@ -37,6 +39,7 @@ class BitacoraController extends Controller
                 'icon' => 'ph-sign-in',
                 'color' => 'text-green-600',
                 'user' => 'Deibis Gutierrez',
+                'user_avatar_initials' => 'DG',
                 'details' => 'Inicio de sesión exitoso.'
             ],
         ];

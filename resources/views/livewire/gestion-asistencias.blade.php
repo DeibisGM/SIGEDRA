@@ -142,6 +142,7 @@
                 <x-table>
                     <x-slot:head>
                         <tr>
+                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">#</th>
                             <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Fecha</th>
                             <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Materia</th>
                             <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Grado</th>
@@ -150,8 +151,8 @@
                             <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">T</th>
                             <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">A</th>
                             <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">J</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[8%]">ASIST. %</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[12%]">Acciones</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">ASIST. %</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Acciones</th>
                         </tr>
                     </x-slot:head>
 
@@ -159,6 +160,7 @@
                         @if ($isReady)
                         @forelse ($asistencias as $asistencia)
                         <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50">
+                            <td class="px-6 py-3 text-base font-medium text-gray-800">{{ ($asistencias->currentPage() - 1) * $asistencias->perPage() + $loop->iteration }}</td>
                             <td class="px-6 py-3 text-base font-medium text-gray-800">{{ $asistencia->fecha->format('d/m/Y') }}</td>
                             <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->cargaAcademica->materia->nombre }}">{{ $asistencia->cargaAcademica->materia->nombre }}</td>
                             <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}">{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}</td>

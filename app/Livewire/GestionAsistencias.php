@@ -37,7 +37,6 @@ class GestionAsistencias extends Component
     public function mount(): void
     {
         // Inicializamos las propiedades que Livewire necesita gestionar.
-        // Las colecciones de filtros ya no se cargan aquí.
         $this->studentDetails = collect();
         $this->applyFilters();
     }
@@ -110,7 +109,7 @@ class GestionAsistencias extends Component
 
     public function render()
     {
-        // --- Carga de Opciones para Filtros (SOLO EN RENDER) ---
+
         $user = auth()->user();
         if ($user->hasRole('Maestro')) {
             $allMaterias = Materia::whereHas('cargasAcademicas.maestro', fn($q) => $q->where('usuario_id', $user->id))->orderBy('nombre')->get();
@@ -123,7 +122,6 @@ class GestionAsistencias extends Component
             ->get()
             ->sortByDesc('anioAcademico.anio')
             ->groupBy('anioAcademico.anio');
-        // --- FIN DE CARGA DE FILTROS ---
 
         $asistencias = collect();
         if ($this->isReady) {

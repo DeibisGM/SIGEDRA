@@ -1,19 +1,20 @@
 import './bootstrap';
 import './sidebar.js';
-import 'preline';
-
-import flatpickr from "flatpickr";
+import 'flowbite';
+import { initDatepickerFix, addDatepickerStyles } from './datepicker-fix.js';
 
 import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-// We don't start Alpine manually. Livewire will handle it.
-// Alpine.start();
-
 document.addEventListener('DOMContentLoaded', function () {
-    flatpickr(".flatpickr", {});
+    // Aplicar estilos CSS inmediatamente
+    addDatepickerStyles();
 
+    // Inicializar el fix del datepicker
+    initDatepickerFix();
+
+    // El resto de tu lógica
     if (document.getElementById('attendanceChart')) {
         import('./report-charts.js')
             .then(module => {
@@ -22,4 +23,10 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(err => console.error('Chart loading failed:', err));
     }
+});
+
+// Reaplica el fix en navegación de Livewire
+document.addEventListener('livewire:navigated', () => {
+    addDatepickerStyles();
+    initDatepickerFix();
 });

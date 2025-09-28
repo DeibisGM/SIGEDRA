@@ -13,30 +13,24 @@
                 <!-- Filtro por fecha -->
                 <div>
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
-                    <div class="relative mt-1">
-                        <x-text-input wire:model.defer="startDate" id="start_date" class="block w-full truncate flatpickr pl-3 pr-10 py-2 border-sigedra-border shadow-sm sm:text-sm" type="text" name="start_date" placeholder="Seleccionar fecha" autocomplete="off" />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <button x-show="!$wire.startDate" type="button" class="pointer-events-none">
-                                <i class="ph ph-calendar text-lg text-gray-400"></i>
-                            </button>
-                            <button x-show="$wire.startDate" x-on:click="$wire.set('startDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
-                                <i class="ph ph-x-circle text-lg"></i>
-                            </button>
+                    <div class="relative mt-1 max-w-sm">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                            </svg>
                         </div>
+                        <input datepicker datepicker-buttons datepicker-autohide datepicker-format="yyyy-mm-dd" datepicker-autoselect-today wire:model.defer="startDate" id="start_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off">
                     </div>
                 </div>
                 <div>
                     <x-input-label for="end_date">Fecha de fin</x-input-label>
-                     <div class="relative mt-1">
-                        <x-text-input wire:model.defer="endDate" id="end_date" class="block w-full truncate flatpickr pl-3 pr-10 py-2 border-sigedra-border shadow-sm sm:text-sm" type="text" name="end_date" placeholder="Seleccionar fecha" autocomplete="off" />
-                        <div class="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <button x-show="!$wire.endDate" type="button" class="pointer-events-none">
-                                <i class="ph ph-calendar text-lg text-gray-400"></i>
-                            </button>
-                            <button x-show="$wire.endDate" x-on:click="$wire.set('endDate', '')" type="button" class="text-gray-400 hover:text-gray-600">
-                                <i class="ph ph-x-circle text-lg"></i>
-                            </button>
+                     <div class="relative mt-1 max-w-sm">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                            </svg>
                         </div>
+                        <input datepicker datepicker-buttons datepicker-autohide datepicker-format="yyyy-mm-dd" datepicker-autoselect-today wire:model.defer="endDate" id="end_date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off">
                     </div>
                 </div>
             </div>

@@ -80,7 +80,7 @@
     <div id="sidebar-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
 
     <!-- ===== Content Area ===== -->
-    <div class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll" x-data="{ isViewingSession: false, sessionId: null }" @view-changed.window="isViewingSession = $event.detail.isViewingSession; sessionId = $event.detail.sessionId">
+    <div id="main-content-area" class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll" x-data="{ isViewingSession: false, sessionId: null }" @view-changed.window="isViewingSession = $event.detail.isViewingSession; sessionId = $event.detail.sessionId">
         <!-- Primary Header -->
         <header class="sticky top-0 z-10 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b flex items-center">
             <div class="container mx-auto px-4 flex items-center justify-between h-full">
@@ -182,6 +182,7 @@
         <main class="flex-grow bg-sigedra-bg">
             <div class="container mx-auto px-4 pb-24" :class="isViewingSession ? 'py-5' : 'py-0'">
                 @yield('content')
+                {{ $slot ?? '' }}
             </div>
         </main>
     </div>
