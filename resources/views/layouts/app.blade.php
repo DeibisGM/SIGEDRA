@@ -161,12 +161,12 @@
             </div>
         </header>
 
-        <!-- Secondary Header -->
+        @hasSection('module_title')
         <header class="bg-white shadow-sm" x-show="!isViewingSession" x-cloak>
             <div class="container mx-auto px-4 py-5 flex items-center justify-between">
                 <div>
                     <h1 class="text-xl font-bold text-gray-800 leading-tight">
-                        @yield('module_title', 'Módulo')
+                        @yield('module_title')
                     </h1>
                     <p class="text-base text-gray-500 mt-1">
                         @yield('module_subtitle', '')
@@ -177,6 +177,8 @@
                 </div>
             </div>
         </header>
+        @endif
+
 
         <!-- Main Content -->
         <main class="flex-grow bg-sigedra-bg">

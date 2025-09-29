@@ -31,7 +31,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
 
-    Route::resource('estudiantes', EstudianteController::class)->except(['edit', 'update', 'destroy', 'store']);
+    // Rutas para Estudiantes (definidas manualmente para mayor claridad)
+    Route::get('estudiantes', [EstudianteController::class, 'index'])->name('estudiantes.index');
+    Route::get('estudiantes/create', [EstudianteController::class, 'create'])->name('estudiantes.create');
+    Route::get('estudiantes/{estudiante}', [EstudianteController::class, 'show'])->name('estudiantes.show');
+
+    //Maestro
     Route::resource('maestros', MaestroController::class)->only(['index', 'show']);
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
