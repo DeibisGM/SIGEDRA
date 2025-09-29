@@ -138,21 +138,21 @@
             <!-- Active Filters Summary -->
             <x-active-filters-summary :activeFilters="$activeFilters" :allMaestros="$allMaestros" />
 
-            <div class="relative hidden md:block">
+            <div class="relative overflow-x-auto hidden md:block">
                 <x-table>
                     <x-slot:head>
                         <tr>
-                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">#</th>
-                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Fecha</th>
-                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Materia</th>
-                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Grado</th>
-                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Maestro</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">P</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">T</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">A</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">J</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">ASIST. %</th>
-                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Acciones</th>
+                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">#</th>
+                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap">Fecha</th>
+                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[150px]">Materia</th>
+                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[150px]">Grado</th>
+                            <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[200px]">Maestro</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">P</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">T</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">A</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">J</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap">ASIST. %</th>
+                            <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap">Acciones</th>
                         </tr>
                     </x-slot:head>
 
@@ -161,18 +161,18 @@
                         @forelse ($asistencias as $asistencia)
                         <tr wire:key="asistencia-{{ $asistencia->id }}" class="bg-white hover:bg-gray-50">
                             <td class="px-6 py-3 text-base font-medium text-gray-800">{{ ($asistencias->currentPage() - 1) * $asistencias->perPage() + $loop->iteration }}</td>
-                            <td class="px-6 py-3 text-base font-medium text-gray-800">{{ $asistencia->fecha->format('d/m/Y') }}</td>
-                            <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->cargaAcademica->materia->nombre }}">{{ $asistencia->cargaAcademica->materia->nombre }}</td>
-                            <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}">{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}</td>
-                            <td class="px-6 py-3 text-base text-gray-800 truncate" title="{{ $asistencia->cargaAcademica->maestro->nombre_completo }}">{{ $asistencia->cargaAcademica->maestro->nombre_completo }}</td>
+                            <td class="px-6 py-3 text-base font-medium text-gray-800 whitespace-nowrap">{{ $asistencia->fecha->format('d/m/Y') }}</td>
+                            <td class="px-6 py-3 text-base text-gray-800" title="{{ $asistencia->cargaAcademica->materia->nombre }}">{{ $asistencia->cargaAcademica->materia->nombre }}</td>
+                            <td class="px-6 py-3 text-base text-gray-800" title="{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}">{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}</td>
+                            <td class="px-6 py-3 text-base text-gray-800" title="{{ $asistencia->cargaAcademica->maestro->nombre_completo }}">{{ $asistencia->cargaAcademica->maestro->nombre_completo }}</td>
                             <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->presentes_count }}</td>
                             <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->tardias_count }}</td>
                             <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->ausentes_count }}</td>
                             <td class="px-6 py-3 text-base text-gray-800 text-center">{{ $asistencia->justificadas_count }}</td>
-                            <td class="px-6 py-3 text-base text-gray-800 text-center">
+                            <td class="px-6 py-3 text-base text-gray-800 text-center whitespace-nowrap">
                                 {{ $asistencia->total_estudiantes_count > 0 ? round(($asistencia->presentes_count / $asistencia->total_estudiantes_count) * 100) . '%' : 'N/A' }}
                             </td>
-                            <td class="px-6 py-3 text-base font-medium">
+                            <td class="px-6 py-3 text-base font-medium whitespace-nowrap">
                                 <div class="w-full flex items-center justify-center gap-x-2">
                                     <x-buttons.secondary wire:click.prevent="viewSession({{ $asistencia->id }})" title="Ver Detalles">
                                         <i class="ph ph-eye text-lg"></i>

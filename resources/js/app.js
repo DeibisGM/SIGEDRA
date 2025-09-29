@@ -1,20 +1,14 @@
 import './bootstrap';
 import './sidebar.js';
-import 'flowbite';
-import { initDatepickerFix, addDatepickerStyles } from './datepicker-fix.js';
 
 import Alpine from 'alpinejs';
+import { initDatepickers } from './custom-datepicker.js';
 
 window.Alpine = Alpine;
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Aplicar estilos CSS inmediatamente
-    addDatepickerStyles();
+    initDatepickers();
 
-    // Inicializar el fix del datepicker
-    initDatepickerFix();
-
-    // El resto de tu lógica
     if (document.getElementById('attendanceChart')) {
         import('./report-charts.js')
             .then(module => {
@@ -25,8 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-// Reaplica el fix en navegación de Livewire
 document.addEventListener('livewire:navigated', () => {
-    addDatepickerStyles();
-    initDatepickerFix();
+    initDatepickers();
 });
