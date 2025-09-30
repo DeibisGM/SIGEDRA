@@ -20,14 +20,19 @@ class Maestro extends Model
         'primer_nombre',
         'segundo_nombre',
         'primer_apellido',
+        'segundo_apellido',
         'telefono',
         'correo',
         'nacionalidad',
+        'nombramiento_inicio',
+        'nombramiento_final',
         'activo',
     ];
 
     protected $casts = [
         'activo' => 'boolean',
+        'nombramiento_inicio' => 'date',
+        'nombramiento_final' => 'date',
     ];
 
     public function user(): BelongsTo
@@ -43,7 +48,15 @@ class Maestro extends Model
     protected function nombreCompleto(): Attribute
     {
         return Attribute::make(
-            get: fn () => trim($this->primer_nombre . ' ' . $this->primer_apellido)
+            get: fn () => trim($this->primer_nombre . ' ' . $this->segundo_nombre . ' ' .
+                $this->primer_apellido . ' ' .  $this->segundo_apellido)
+        );
+    }
+
+    protected function avatarInitials(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => mb_substr($this->primer_nombre, 0, 1) . mb_substr($this->primer_apellido, 0, 1)
         );
     }
 }

@@ -1,40 +1,102 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Detalles del Maestro') }}
-        </h2>
-    </x-slot>
+@extends('layouts.app')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
+@section('title', 'Detalles del Maestro')
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Información Personal</h3>
-                            <div class="mt-4 space-y-4">
-                                <x-details-field label="Nombre Completo" :value="$maestro->primer_nombre . ' ' . $maestro->segundo_nombre . ' ' . $maestro->primer_apellido" />
-                                <x-details-field label="Cédula" :value="$maestro->user->cedula ?? 'No asignada'" />
-                                <x-details-field label="Nacionalidad" :value="$maestro->nacionalidad" />
-                            </div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">Información de Contacto</h3>
-                            <div class="mt-4 space-y-4">
-                                <x-details-field label="Correo Electrónico" :value="$maestro->correo" />
-                                <x-details-field label="Teléfono" :value="$maestro->telefono" />
-                            </div>
-                        </div>
-                    </div>
+@section('breadcrumbs')
+<div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
+    <a href="{{ route('maestros.index') }}" class="hover:text-sigedra-text-dark">Maestros</a>
+    <span class="mx-2">/</span>
+    <span>Ver información</span>
+</div>
+@endsection
 
-                    <div class="mt-6 flex justify-end">
-                        <a href="{{ route('maestros.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150">
-                            Volver al listado
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
+@section('content')
+
+<h1 class="text-xl font-bold text-gray-800 leading-tight flex items-center justify-between my-4">
+    <div class="flex items-center space-x-2">
+        <a href="{{ route('maestros.index') }}"
+           class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
+           title="Volver al listado">
+            <i class="ph ph-arrow-left"></i>
+        </a>
+        <span>Información de maestro</span>
     </div>
-</x-app-layout>
+
+    <div class="flex-shrink-0 flex gap-3">
+        <x-buttons.primary as="a" href="#">
+            <i class="ph ph-pencil-simple text-lg"></i>
+            <span>Editar Información</span>
+        </x-buttons.primary>
+    </div>
+</h1>
+
+
+    <div class="space-y-6">
+        <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
+
+            <div class="flex flex-col md:flex-row items-start gap-6">
+                <!-- Avatar -->
+                <div class="flex-shrink-0">
+                <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-sigedra-primary text-white">
+                    <span class="text-3xl font-bold">{{ $maestro->avatar_initials }}</span>
+                </span>
+                </div>
+
+                <!-- Información Principal -->
+                <div class="flex-grow">
+                    <h1 class="text-3xl font-bold text-sigedra-primary">{{ $maestro->nombre_completo }}</h1>
+                    <div class="flex-grow">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-[auto_1fr_auto_1fr] gap-y-1 sm:gap-x-12 mt-1 text-base text-sigedra-text-medium">
+
+                            <div class="sm:col-span-2">Cédula: {{ $maestro->user->cedula ?? 'No asignada' }}</div>
+
+                            <div class="sm:col-span-2">Telefono: {{ $maestro->telefono }}</div>
+
+                            <div class="sm:col-span-2">Nacionalidad: {{$maestro->nacionalidad }}</div>
+
+                            <div class="sm:col-span-2">Correo: c.rojas@example.com</div>
+                        </div>
+
+                        <p class="mt-1 text-base text-sigedra-text-medium">
+                            Nombramiento desde: {{$maestro->nombramiento_inicio->format('d/m/Y') }}
+                        </p>
+                        <p class="mt-1 text-base text-sigedra-text-medium">
+                            Nombramiento hasta: {{$maestro->nombramiento_final->format('d/m/Y') }}
+                        </p>
+                    </div>
+
+
+                </div>
+
+                <div class="mt-3 flex items-center gap-x-3">
+                    @if($maestro->activo)
+                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">Activo</span>
+                    @else
+                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactivo</span>
+                    @endif
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+<x-card-header title="Información de cursos">
+    <x-buttons.primary as="a" href="#">
+        <i class="ph ph-pencil-simple text-lg"></i>
+        <span>Editar Cursos</span>
+    </x-buttons.primary>
+</x-card-header>
+
+<div class="space-y-6">
+    <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
+
+        Asignaciones cuando esten los modulos correspondientes
+    </div>
+</div>
+
+
+@endsection
+

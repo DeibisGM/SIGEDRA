@@ -18,10 +18,11 @@
                         <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->cedula ?? 'N/A' }}</td>
                         <td class="px-6 py-3 text-base font-medium">
                             <div class="w-full flex items-center justify-center">
-                                <x-secondary-button as="a" href="#">
+                               <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}">
                                     <i class="ph ph-eye text-lg"></i>
                                     <span>Ver Detalles</span>
-                                </x-secondary-button>
+                               </x-secondary-button>
+
                             </div>
                         </td>
                     </tr>
