@@ -1,3 +1,17 @@
-<button {{ $attributes->merge(['type' => 'button', 'class' => 'inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border rounded-md font-semibold text-xs text-gray-700 dark:text-gray-300 uppercase tracking-widest shadow-sm hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 disabled:opacity-25 transition ease-in-out duration-150']) }}>
+@props(['type' => 'button', 'href' => null])
+
+@if ($href)
+<a {{ $attributes->merge([
+    'href' => $href,
+    'class' => 'py-2 px-3 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-md border bg-sigedra-components-bg text-sigedra-text-medium hover:bg-sigedra-medium-bg focus:outline-none focus:bg-sigedra-medium-bg transition-colors'
+    ]) }}>
+    {{ $slot }}
+</a>
+@else
+<button {{ $attributes->merge([
+    'type' => $type,
+    'class' => 'py-2 px-3 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-md border bg-sigedra-components-bg text-sigedra-text-medium hover:bg-sigedra-medium-bg focus:outline-none focus:bg-sigedra-medium-bg transition-colors'
+    ]) }}>
     {{ $slot }}
 </button>
+@endif

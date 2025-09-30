@@ -17,12 +17,12 @@
 <div class="hidden md:flex items-center gap-3">
     <!-- Selector de Grado -->
     <div x-data="{ open: false }" class="relative">
-        <x-buttons.secondary @click="open = !open" class="flex items-center">
+        <x-secondary-button @click="open = !open" class="flex items-center">
             <i class="ph ph-graduation-cap text-lg"></i>
             <span class="ms-2">Cuarto Grado</span>
             <span class="text-xs text-gray-400 ms-1.5">({{ now()->year }})</span>
             <i class="ph ph-caret-down text-sm ms-2"></i>
-        </x-buttons.secondary>
+        </x-secondary-button>
         <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-56 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20" style="display: none;">
             <div class="py-1">
                 <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Primer Grado</a>
@@ -37,11 +37,11 @@
 
     <!-- Botón de Exportar -->
     <div x-data="{ open: false }" class="relative">
-        <x-buttons.primary @click="open = !open">
+        <x-primary-button @click="open = !open">
             <i class="ph ph-download-simple text-lg"></i>
             <span class="ms-2">Exportar</span>
             <i class="ph ph-caret-down text-sm ms-2"></i>
-        </x-buttons.primary>
+        </x-primary-button>
         <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-48 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20" style="display: none;">
             <div class="py-1">
                 <a href="#" class="flex items-center gap-x-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">

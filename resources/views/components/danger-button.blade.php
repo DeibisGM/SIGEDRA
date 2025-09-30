@@ -1,17 +1,17 @@
 @props(['type' => 'submit', 'href' => null])
 
 @if ($href)
-    <a {{ $attributes->merge([
-        'href' => $href,
-        'class' => 'inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150'
-        ]) }}>
-        {{ $slot }}
-    </a>
+<a {{ $attributes->merge([
+    'href' => $href,
+    'class' => 'py-2 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-sigedra-bg text-sigedra-text-dark hover:bg-red-600 hover:text-white focus:outline-none focus:bg-red-700 focus:text-white transition-all shadow-sm'
+    ]) }}>
+    {{ $slot }}
+</a>
 @else
-    <button {{ $attributes->merge([
-        'type' => $type,
-        'class' => 'inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150'
-        ]) }}>
-        {{ $slot }}
-    </button>
+<button {{ $attributes->merge([
+    'type' => $type,
+    'class' => 'py-2 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-sigedra-bg text-sigedra-text-dark hover:bg-red-600 hover:text-white focus:outline-none focus:bg-red-700 focus:text-white transition-all shadow-sm'
+    ]) }}>
+    {{ $slot }}
+</button>
 @endif

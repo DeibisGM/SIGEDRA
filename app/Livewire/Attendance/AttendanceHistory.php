@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Attendance;
 
 use App\Models\Grado;
 use App\Models\Maestro;
 use App\Models\Materia;
 use App\Models\SesionAsistencia;
-use App\Models\Asistencia;
-use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
 
-class GestionAsistencias extends Component
+class AttendanceHistory extends Component
 {
     use WithPagination;
 
@@ -21,7 +18,6 @@ class GestionAsistencias extends Component
     public bool $confirmingDeletion = false;
     public ?int $recordIdToDelete = null;
 
-    // Propiedades para los filtros
     public string $startDate = '';
     public string $endDate = '';
     public array $selectedGrades = [];
@@ -29,15 +25,8 @@ class GestionAsistencias extends Component
     public array $selectedMaestros = [];
     public array $activeFilters = [];
 
-    // Propiedades para la vista de detalle
-    public bool $isViewingSession = false;
-    public ?SesionAsistencia $viewingSession = null;
-    public Collection $studentDetails;
-
     public function mount(): void
     {
-        // Inicializamos las propiedades que Livewire necesita gestionar.
-        $this->studentDetails = collect();
         $this->applyFilters();
     }
 
@@ -77,40 +66,14 @@ class GestionAsistencias extends Component
             SesionAsistencia::destroy($this->recordIdToDelete);
         }
         $this->confirmingDeletion = false;
+        $this->recordIdToDelete = null;
         $this->resetPage();
-    }
-
-    public function viewSession(int $sessionId): void
-    {
-        $this->viewingSession = SesionAsistencia::with([
-            'cargaAcademica.materia',
-            'cargaAcademica.grado.nivelAcademico',
-            'cargaAcademica.grado.anioAcademico',
-            'cargaAcademica.maestro'
-        ])->find($sessionId);
-
-        $this->studentDetails = Asistencia::where('sesion_asistencia_id', $sessionId)
-            ->with(['estudiante', 'estadoAsistencia'])
-            ->get()
-            ->sortBy('estudiante.primer_apellido');
-
-        $this->isViewingSession = true;
-        $this->dispatch('view-changed', isViewingSession: true, sessionId: $sessionId);
-    }
-
-    #[On('close-session-view')]
-    public function closeSessionView(): void
-    {
-        $this->isViewingSession = false;
-        $this->viewingSession = null;
-        $this->studentDetails = collect();
-        $this->dispatch('view-changed', isViewingSession: false);
     }
 
     public function render()
     {
-
         $user = auth()->user();
+
         if ($user->hasRole('Maestro')) {
             $allMaterias = Materia::whereHas('cargasAcademicas.maestro', fn($q) => $q->where('usuario_id', $user->id))->orderBy('nombre')->get();
         } else {
@@ -150,7 +113,7 @@ class GestionAsistencias extends Component
             $asistencias = $query->paginate($this->perPage);
         }
 
-        return view('livewire.gestion-asistencias', [
+        return view('livewire.attendance.attendance-history', [
             'asistencias' => $asistencias,
             'allGrados' => $allGrados,
             'allMaterias' => $allMaterias,

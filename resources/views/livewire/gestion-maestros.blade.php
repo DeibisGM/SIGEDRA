@@ -18,10 +18,10 @@
                         <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->cedula ?? 'N/A' }}</td>
                         <td class="px-6 py-3 text-base font-medium">
                             <div class="w-full flex items-center justify-center">
-                                <x-buttons.secondary as="a" href="#">
+                                <x-secondary-button as="a" href="#">
                                     <i class="ph ph-eye text-lg"></i>
                                     <span>Ver Detalles</span>
-                                </x-buttons.secondary>
+                                </x-secondary-button>
                             </div>
                         </td>
                     </tr>
@@ -43,9 +43,9 @@
                         <p class="font-bold text-lg">{{ $maestro->primer_nombre }} {{ $maestro->primer_apellido }}</p>
                         <p class="text-sm text-gray-600">{{ $maestro->user->cedula ?? 'N/A' }}</p>
                     </div>
-                    <x-buttons.secondary as="a" href="#">
+                    <x-secondary-button as="a" href="#">
                         <i class="ph ph-eye text-lg"></i>
-                    </x-buttons.secondary>
+                    </x-secondary-button>
                 </div>
                 <div class="mt-4">
                     <p class="text-sm"><span class="font-semibold">Email:</span> {{ $maestro->correo }}</p>

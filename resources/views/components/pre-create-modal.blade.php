@@ -1,10 +1,10 @@
 <x-modal name="pre-create-modal">
     <div class="p-6" x-data="{ subject: 'Matemáticas Avanzadas', date: '' }">
-        <h2 class="text-lg font-medium text-gray-900">
+        <h2 class="text-lg font-medium text-sigedra-text-dark">
             Seleccionar Curso y Fecha
         </h2>
 
-        <p class="mt-1 text-base text-gray-600">
+        <p class="mt-1 text-base text-sigedra-text-medium">
             Por favor, selecciona la materia y la fecha para pasar lista.
         </p>
 
@@ -23,26 +23,26 @@
                 <x-input-label for="date" value="Fecha" />
                 <div class="relative mt-1 max-w-sm">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-4 h-4 text-sigedra-text-light dark:text-sigedra-text-light" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                         </svg>
                     </div>
-                    <input datepicker datepicker-buttons datepicker-autohide datepicker-format="yyyy-mm-dd" datepicker-autoselect-today id="date" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5" placeholder="Seleccionar fecha" x-model="date" required autocomplete="off">
+                    <input datepicker datepicker-buttons datepicker-autohide datepicker-format="yyyy-mm-dd" datepicker-autoselect-today id="date" type="text" class="bg-sigedra-light-colored-bg border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:ring-sigedra-primary focus:border-sigedra-primary block w-full ps-10 p-2.5" placeholder="Seleccionar fecha" x-model="date" required autocomplete="off">
                 </div>
             </div>
         </div>
 
         <div class="mt-6 flex justify-end gap-3">
-            <x-buttons.secondary x-on:click="$dispatch('close')">
+            <x-secondary-button x-on:click="$dispatch('close')">
                 Cancelar
-            </x-buttons.secondary>
+            </x-secondary-button>
 
-            <x-buttons.primary
+            <x-primary-button
                 as="button"
                 x-on:click="window.location.href = `{{ route('attendance.create') }}?materia=${subject}&fecha=${date}`"
             >
                 Continuar
-            </x-buttons.primary>
+            </x-primary-button>
         </div>
     </div>
 </x-modal>

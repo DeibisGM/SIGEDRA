@@ -3,8 +3,8 @@
 @section('title', 'Bitácora del Sistema')
 
 @section('breadcrumbs')
-<div class="text-base text-gray-500 whitespace-nowrap truncate">
-    <a href="{{ route('bitacora.index') }}" class="hover:text-gray-700">Bitácora</a>
+<div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
+    <a href="{{ route('bitacora.index') }}" class="hover:text-sigedra-text-dark">Bitácora</a>
     <span class="mx-2">/</span>
     <span>Registro de Actividad</span>
 </div>
@@ -25,10 +25,10 @@
 
     <!-- Botón de Filtros -->
     <div x-data="{ open: false }" class="relative">
-        <x-buttons.secondary @click="open = !open" class="flex items-center">
+        <x-secondary-button @click="open = !open" class="flex items-center">
             <i class="ph ph-faders text-lg"></i>
             <span class="ms-2 hidden md:block">Filtros Avanzados</span>
-        </x-buttons.secondary>
+        </x-secondary-button>
 
         <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-72 origin-top-right bg-white rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-20 p-4" style="display: none;">
             {{-- ... contenido del dropdown de filtros ... --}}
@@ -98,10 +98,10 @@
                     Mostrando <span class="font-semibold">1</span> a <span class="font-semibold">5</span> de <span class="font-semibold">25</span> resultados
                 </div>
                 <nav class="flex items-center space-x-2">
-                    <button type="button" class="px-2.5 py-1.5 text-sm font-medium text-gray-400 bg-white border border-gray-300 rounded-md cursor-not-allowed">
+                    <button type="button" class="px-2.5 py-1.5 text-sm font-medium text-sigedra-text-light bg-white border border-sigedra-border rounded-md cursor-not-allowed">
                         Anterior
                     </button>
-                    <button type="button" class="px-2.5 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50">
+                    <button type="button" class="px-2.5 py-1.5 text-sm font-medium text-sigedra-text-dark bg-white border border-sigedra-border rounded-md hover:bg-sigedra-light-colored-bg">
                         Siguiente
                     </button>
                 </nav>
