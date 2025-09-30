@@ -17,10 +17,11 @@
 <div class="hidden md:flex items-center gap-3">
     <div class="flex-grow"></div>
 
-    <x-buttons.primary as="a" href="{{ route('maestros.create') }}">
+     <x-primary-button as="a" href="{{ route('maestros.create') }}">
+
         <i class="ph ph-plus-circle text-lg"></i>
         <span class="ms-2">Crear Maestro</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </div>
 @endsection
 
@@ -30,9 +31,9 @@
 
 @section('footer_actions')
 <div class="md:hidden">
-    <x-buttons.primary as="a" href="#" class="w-full justify-center">
+    <x-primary-button as="a" href="#" class="w-full justify-center">
         <i class="ph ph-plus-circle text-lg"></i>
         <span class="ms-2">Crear Maestro</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </div>
 @endsection

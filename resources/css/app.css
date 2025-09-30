@@ -1,6 +1,6 @@
 @import "../../node_modules/@phosphor-icons/web/src/regular/style.css";
 @import "../../node_modules/@phosphor-icons/web/src/fill/style.css";
-@import "./flowbite-custom.css";
+@import "datepicker-custom.css";
 
 @tailwind base;
 @tailwind components;
@@ -10,13 +10,11 @@
     display: none !important;
 }
 
-/* Se definen estilos base para estandarizar la tipografía en toda la aplicación */
 @layer base {
     body {
         @apply bg-sigedra-bg font-sans text-base text-sigedra-text-dark antialiased;
     }
 
-    /* Estilos consistentes para todos los encabezados */
     h1, h2, h3, h4, h5, h6 {
         @apply font-bold text-sigedra-primary;
     }
@@ -33,7 +31,6 @@
         @apply text-xl; /* Subtítulos o títulos de tarjetas */
     }
 
-    /* Custom focus styles for buttons */
     button,
     [type='button'],
     [type='reset'],

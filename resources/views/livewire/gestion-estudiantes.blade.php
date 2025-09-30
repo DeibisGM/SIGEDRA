@@ -22,15 +22,9 @@
                         <td class="px-6 py-4 text-base text-gray-800 truncate max-w-xs" title="{{ $estudiante->direccion }}">{{ $estudiante->direccion ?? 'N/A' }}</td>
                         <td class="px-6 py-4 text-base font-medium">
                             <div class="w-full flex items-center justify-center gap-x-2">
-                                <x-buttons.secondary href="{{ route('estudiantes.show', $estudiante->id) }}" title="Ver Detalles del Estudiante">
-                                    <i class="ph ph-eye text-lg"></i>
-                                </x-buttons.secondary>
-                                <x-buttons.secondary href="#" title="Editar Estudiante">
-                                    <i class="ph ph-pencil-simple text-lg"></i>
-                                </x-buttons.secondary>
-                                <x-buttons.danger-secondary x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion-{{ $estudiante->id }}')" title="Eliminar Estudiante">
-                                    <i class="ph ph-trash text-lg"></i>
-                                </x-buttons.danger-secondary>
+                                <x-secondary-button href="{{ route('estudiantes.show', $estudiante->id) }}" title="Ver Detalles del Estudiante"><i class="ph ph-eye text-lg"></i></x-secondary-button>
+                                <x-secondary-button href="#" title="Editar Estudiante"><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button>
+                                <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion-{{ $estudiante->id }}')" title="Eliminar Estudiante"><i class="ph ph-trash text-lg"></i></x-danger-button>
                             </div>
                         </td>
                     </tr>

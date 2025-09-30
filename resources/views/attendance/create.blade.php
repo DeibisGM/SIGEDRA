@@ -3,8 +3,8 @@
 @section('title', 'Asistencia')
 
 @section('breadcrumbs')
-<div class="text-base text-gray-500 whitespace-nowrap truncate">
-    <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
+<div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
+    <a href="{{ route('attendance.index') }}" class="hover:text-sigedra-text-dark">Asistencia</a>
     <span class="mx-2">/</span>
     <span>Crear Asistencia</span>
 </div>
@@ -15,21 +15,21 @@
 
 @section('header_actions')
 <div class="hidden md:flex gap-3">
-    <x-buttons.secondary>Cancelar</x-buttons.secondary>
-    <x-buttons.primary>
+    <x-secondary-button>Cancelar</x-secondary-button>
+    <x-primary-button>
         <i class="ph ph-floppy-disk text-lg"></i>
         <span>Guardar Cambios</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </div>
 @endsection
 
 @section('footer_actions')
 <div class="flex gap-3 w-full">
-    <x-buttons.secondary class="w-full justify-center">Cancelar</x-buttons.secondary>
-    <x-buttons.primary class="w-full justify-center">
+    <x-secondary-button class="w-full justify-center">Cancelar</x-secondary-button>
+    <x-primary-button class="w-full justify-center">
         <i class="ph ph-floppy-disk text-lg"></i>
         <span>Guardar Cambios</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </div>
 @endsection
 
@@ -55,14 +55,14 @@
         </div>
         {{-- Action buttons --}}
         <div class="flex gap-3 w-full md:w-auto justify-end">
-            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm" title="Actualizar">
+            <x-secondary-button class="w-full md:w-auto justify-center text-sm" title="Actualizar">
                 <i class="ph ph-arrows-clockwise text-lg"></i>
                 <span class="sm:inline">Actualizar</span>
-            </x-buttons.secondary>
-            <x-buttons.secondary class="w-full md:w-auto justify-center text-sm" title="Marcar todos como presentes">
+            </x-secondary-button>
+            <x-secondary-button class="w-full md:w-auto justify-center text-sm" title="Marcar todos como presentes">
                 <i class="ph ph-check-square-offset text-lg"></i>
                 <span class="sm:inline">Todos presentes</span>
-            </x-buttons.secondary>
+            </x-secondary-button>
         </div>
     </div>
 

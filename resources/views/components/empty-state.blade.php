@@ -3,7 +3,7 @@
 ])
 
 <tr>
-    <td colspan="100%" class="px-6 py-8 text-center text-base text-gray-500">
+    <td colspan="100%" class="px-6 py-8 text-center text-base text-sigedra-text-medium">
         {{ $message }}
     </td>
 </tr>

@@ -39,14 +39,14 @@
 
             <!-- Acciones -->
             <div class="w-full md:w-auto flex-shrink-0 flex gap-3">
-                <x-buttons.secondary as="a" href="#">
+                <x-secondary-button as="a" href="#">
                     <i class="ph ph-printer text-lg"></i>
                     <span>Imprimir</span>
-                </x-buttons.secondary>
-                <x-buttons.primary as="a" href="#">
+                </x-secondary-button>
+                <x-primary-button as="a" href="#">
                     <i class="ph ph-pencil-simple text-lg"></i>
                     <span>Editar</span>
-                </x-buttons.primary>
+                </x-primary-button>
             </div>
         </div>
     </div>
