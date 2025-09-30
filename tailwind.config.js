@@ -3,20 +3,20 @@ import defaultTheme from 'tailwindcss/defaultTheme';
 
 // Definir grayscale primero
 const grayscale = {
-    '0': '#FFFFFF',      // Blanco puro
+    '0': '#FFFFFF',
     '25': '#FAFAFA',
-    '50': '#F2FAF5',      // Tono original '0'
-    '100': '#E1F3EE',     // Tono original '50'
-    '150': '#D4E6E0',
-    '200': '#BFD3CD',     // Tono original '100'
-    '300': '#9DB4AD',     // Tono original '200'
-    '400': '#7D958E',     // Tono original '300'
-    '500': '#5E7871',     // Tono original '400'
-    '600': '#405C54',     // Tono original '500'
-    '700': '#234139',     // Tono original '600'
-    '800': '#052821',     // Tono original '700'
-    '900': '#00110A',     // Tono original '800'
-    '950': '#000100',     // Tono original '900'
+    '50': '#fafafa',
+    '100': '#f2f2f2',
+    '150': '#e6e6e6',
+    '200': '#d4d4d4',
+    '300': '#b5b5b5',
+    '400': '#949494',
+    '500': '#787878',
+    '600': '#5c5c5c',
+    '700': '#404040',
+    '800': '#292929',
+    '900': '#121212',
+    '950': '#000100',
 };
 
 export default {
