@@ -15,28 +15,44 @@
         <!-- Password -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Contraseña')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
-
+            <div class="relative">
+                <x-text-input id="password" class="block mt-1 w-full pr-10"
+                              type="password"
+                              name="password"
+                              required autocomplete="current-password" />
+                <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
+                    <i id="togglePassword" class="ph ph-eye text-sigedra-text-medium cursor-pointer" style="font-size: 1.2rem"></i>
+                </div>
+            </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Remember Me -->
-        <div class="flex items-center justify-between mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border text-sigedra-primary shadow-sm focus:ring-sigedra-primary" name="remember">
-                <span class="ms-2 text-sm text-sigedra-text-medium">{{ __('Recuérdame') }}</span>
-            </label>
-
+        <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
                 <a class="underline text-sm text-sigedra-text-medium hover:text-sigedra-primary rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-sigedra-primary dark:focus:ring-offset-gray-800" href="{{ route('password.request') }}">
                     {{ __('¿Olvidaste tu contraseña?') }}
                 </a>
             @endif
         </div>
+
+        <script>
+            const passwordInput = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+
+            togglePassword.addEventListener('click', function () {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+
+                // Toggle icon class
+                if (type === 'password') {
+                    togglePassword.classList.remove('ph-eye-slash');
+                    togglePassword.classList.add('ph-eye');
+                } else {
+                    togglePassword.classList.remove('ph-eye');
+                    togglePassword.classList.add('ph-eye-slash');
+                }
+            });
+        </script>
 
         <div class="mt-6">
             <x-primary-button class="w-full justify-center">{{ __('Iniciar Sesión') }}</x-primary-button>

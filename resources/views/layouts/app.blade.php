@@ -17,7 +17,6 @@
     <!-- Scripts y Estilos -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- AÑADE ESTA LÍNEA PARA LOS ESTILOS DE LIVEWIRE --}}
     @livewireStyles
 </head>
 <body class="h-screen">
@@ -26,7 +25,7 @@
 
     @include('layouts.sidebar')
 
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-sigedra-medium-bg bg-opacity-50 z-50 hidden"></div>
 
     <!-- ===== Content Area ===== -->
     <div id="main-content-area" class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll" x-data="{ isViewingSession: false, sessionId: null }" @view-changed.window="isViewingSession = $event.detail.isViewingSession; sessionId = $event.detail.sessionId">
@@ -147,7 +146,6 @@
 </div>
 @endif
 
-{{-- ESTA LÍNEA YA LA TENÍAS, PERO ES CRUCIAL PARA LOS SCRIPTS DE LIVEWIRE --}}
 @livewireScripts
 
 </body>

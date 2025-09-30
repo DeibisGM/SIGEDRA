@@ -16,36 +16,39 @@
 
     <div class="relative overflow-x-auto hidden md:block">
         @if ($isReady)
-        <x-table>
+        {{-- CAMBIO: Añadido 'table-fixed w-full' --}}
+        <x-table class="table-fixed w-full">
             <x-slot:head>
                 <tr>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">#</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap bg-sigedra-medium-bg">Fecha</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[150px] bg-sigedra-medium-bg">Materia</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[150px] bg-sigedra-medium-bg">Grado</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[200px] bg-sigedra-medium-bg">Maestro</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">P</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">T</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">A</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">J</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap bg-sigedra-medium-bg">ASIST. %</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap bg-sigedra-medium-bg">Acciones</th>
+                    {{-- ANCHOS DE COLUMNA DE DATOS --}}
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">#</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap" style="width: 10%;">Fecha</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 15%;">Materia</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 15%;">Grado</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 20%;">Maestro</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">P</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">T</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">A</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">J</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap" style="width: 5%;">ASIST. %</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap" style="width: 10%;">Acciones</th>
                 </tr>
             </x-slot:head>
             <x-slot:body>
                 @forelse ($asistencias as $asistencia)
-                <tr wire:key="asistencia-{{ $asistencia->id }}" class="hover:bg-sigedra-light-colored-bg">
-                    <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark bg-sigedra-light-bg">{{ ($asistencias->currentPage() - 1) * $asistencias->perPage() + $loop->iteration }}</td>
-                    <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark whitespace-nowrap bg-sigedra-light-bg">{{ $asistencia->fecha->format('d/m/Y') }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark bg-sigedra-light-bg" title="{{ $asistencia->cargaAcademica->materia->nombre }}">{{ $asistencia->cargaAcademica->materia->nombre }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark bg-sigedra-light-bg" title="{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}">{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark bg-sigedra-light-bg" title="{{ $asistencia->cargaAcademica->maestro->nombre_completo }}">{{ $asistencia->cargaAcademica->maestro->nombre_completo }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center bg-sigedra-light-bg">{{ $asistencia->presentes_count }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center bg-sigedra-light-bg">{{ $asistencia->tardias_count }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center bg-sigedra-light-bg">{{ $asistencia->ausentes_count }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center bg-sigedra-light-bg">{{ $asistencia->justificadas_count }}</td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center whitespace-nowrap bg-sigedra-light-bg">{{ $asistencia->total_estudiantes_count > 0 ? round(($asistencia->presentes_count / $asistencia->total_estudiantes_count) * 100) . '%' : 'N/A' }}</td>
-                    <td class="px-6 py-3 text-center bg-sigedra-light-bg">
+                <tr wire:key="asistencia-{{ $asistencia->id }}" class="hover:bg-sigedra-medium-bg">
+                    {{-- Añadido 'overflow-hidden' a celdas para respetar 'table-fixed' --}}
+                    <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark overflow-hidden">{{ ($asistencias->currentPage() - 1) * $asistencias->perPage() + $loop->iteration }}</td>
+                    <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark whitespace-nowrap overflow-hidden">{{ $asistencia->fecha->format('d/m/Y') }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark overflow-hidden whitespace-nowrap" title="{{ $asistencia->cargaAcademica->materia->nombre }}">{{ $asistencia->cargaAcademica->materia->nombre }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark overflow-hidden whitespace-nowrap" title="{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}">{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark overflow-hidden whitespace-nowrap" title="{{ $asistencia->cargaAcademica->maestro->nombre_completo }}">{{ $asistencia->cargaAcademica->maestro->nombre_completo }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center overflow-hidden">{{ $asistencia->presentes_count }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center overflow-hidden">{{ $asistencia->tardias_count }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center overflow-hidden">{{ $asistencia->ausentes_count }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center overflow-hidden">{{ $asistencia->justificadas_count }}</td>
+                    <td class="px-6 py-3 text-base text-sigedra-text-dark text-center whitespace-nowrap overflow-hidden">{{ $asistencia->total_estudiantes_count > 0 ? round(($asistencia->presentes_count / $asistencia->total_estudiantes_count) * 100) . '%' : 'N/A' }}</td>
+                    <td class="px-6 py-3 text-center overflow-hidden">
                         <div class="flex items-center justify-center gap-x-2">
                             <x-secondary-button @click.prevent="$wire.dispatch('load-session', { sessionId: {{ $asistencia->id }} }); $dispatch('view-session')" title="Ver Detalles"><i class="ph ph-eye text-lg"></i></x-secondary-button>
                             <x-danger-button wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
@@ -58,39 +61,43 @@
             </x-slot:body>
         </x-table>
         @else
-        <x-table>
+        {{-- SKELETON LOADER --}}
+        {{-- CAMBIO: Añadido 'table-fixed w-full' --}}
+        <x-table class="table-fixed w-full">
             <x-slot:head>
                 <tr>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">#</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap bg-sigedra-medium-bg">Fecha</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[150px] bg-sigedra-medium-bg">Materia</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[150px] bg-sigedra-medium-bg">Grado</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider min-w-[200px] bg-sigedra-medium-bg">Maestro</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">P</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">T</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">A</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">J</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap bg-sigedra-medium-bg">ASIST. %</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap bg-sigedra-medium-bg">Acciones</th>
+                    {{-- ANCHOS DE COLUMNA DEL SKELETON --}}
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">#</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap" style="width: 10%;">Fecha</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 15%;">Materia</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 15%;">Grado</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 20%;">Maestro</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">P</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">T</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">A</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider" style="width: 5%;">J</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap" style="width: 5%;">ASIST. %</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider whitespace-nowrap" style="width: 10%;">Acciones</th>
                 </tr>
             </x-slot:head>
             <x-slot:body>
                 @for ($i = 0; $i < 10; $i++)
                 <tr class="animate-pulse">
-                    <td class="px-6 py-3 bg-sigedra-light-bg"><div class="h-5 w-8 bg-sigedra-light-colored-bg rounded-md"></div></td>
-                    <td class="px-6 py-3 bg-sigedra-light-bg"><div class="h-5 w-24 bg-sigedra-light-colored-bg rounded-md"></div></td>
-                    <td class="px-6 py-3 bg-sigedra-light-bg"><div class="h-5 w-32 bg-sigedra-light-colored-bg rounded-md"></div></td>
-                    <td class="px-6 py-3 bg-sigedra-light-bg"><div class="h-5 w-32 bg-sigedra-light-colored-bg rounded-md"></div></td>
-                    <td class="px-6 py-3 bg-sigedra-light-bg"><div class="h-5 w-48 bg-sigedra-light-colored-bg rounded-md"></div></td>
-                    <td class="px-6 py-3 text-center bg-sigedra-light-bg"><div class="h-5 w-6 bg-sigedra-light-colored-bg rounded-md mx-auto"></div></td>
-                    <td class="px-6 py-3 text-center bg-sigedra-light-bg"><div class="h-5 w-6 bg-sigedra-light-colored-bg rounded-md mx-auto"></div></td>
-                    <td class="px-6 py-3 text-center bg-sigedra-light-bg"><div class="h-5 w-6 bg-sigedra-light-colored-bg rounded-md mx-auto"></div></td>
-                    <td class="px-6 py-3 text-center bg-sigedra-light-bg"><div class="h-5 w-6 bg-sigedra-light-colored-bg rounded-md mx-auto"></div></td>
-                    <td class="px-6 py-3 text-center bg-sigedra-light-bg"><div class="h-5 w-12 bg-sigedra-light-colored-bg rounded-md mx-auto"></div></td>
-                    <td class="px-6 py-3 bg-sigedra-light-bg">
+                    {{-- CAMBIO CLAVE: Se añade 'overflow-hidden' a las celdas <td> del skeleton --}}
+                    <td class="px-6 py-3 bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-8 bg-gray-300 rounded-md"></div></td>
+                    <td class="px-6 py-3 bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-24 bg-gray-300 rounded-md"></div></td>
+                    <td class="px-6 py-3 bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-32 bg-gray-300 rounded-md"></div></td>
+                    <td class="px-6 py-3 bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-32 bg-gray-300 rounded-md"></div></td>
+                    <td class="px-6 py-3 bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-48 bg-gray-300 rounded-md"></div></td>
+                    <td class="px-6 py-3 text-center bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-6 bg-gray-300 rounded-md mx-auto"></div></td>
+                    <td class="px-6 py-3 text-center bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-6 bg-gray-300 rounded-md mx-auto"></div></td>
+                    <td class="px-6 py-3 text-center bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-6 bg-gray-300 rounded-md mx-auto"></div></td>
+                    <td class="px-6 py-3 text-center bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-6 bg-gray-300 rounded-md mx-auto"></div></td>
+                    <td class="px-6 py-3 text-center bg-sigedra-light-bg overflow-hidden"><div class="h-5 w-12 bg-gray-300 rounded-md mx-auto"></div></td>
+                    <td class="px-6 py-3 bg-sigedra-light-bg overflow-hidden">
                         <div class="flex items-center justify-center gap-x-2">
-                            <div class="h-8 w-8 bg-sigedra-light-colored-bg rounded-md"></div>
-                            <div class="h-8 w-8 bg-sigedra-light-colored-bg rounded-md"></div>
+                            <div class="h-8 w-8 bg-gray-300 rounded-md"></div>
+                            <div class="h-8 w-8 bg-gray-300 rounded-md"></div>
                         </div>
                     </td>
                 </tr>
@@ -139,13 +146,13 @@
             @for ($i = 0; $i < 3; $i++)
             <div class="bg-white border rounded-lg p-4 animate-pulse">
                 <div class="flex justify-between items-start">
-                    <div class="space-y-2"><div class="h-5 w-32 bg-sigedra-light-bg rounded-md"></div><div class="h-4 w-24 bg-sigedra-light-bg rounded-md"></div></div>
-                    <div class="text-right space-y-2"><div class="h-5 w-12 bg-sigedra-light-bg rounded-md"></div><div class="h-4 w-16 bg-sigedra-light-bg rounded-md"></div></div>
+                    <div class="space-y-2"><div class="h-5 w-32 bg-gray-300 rounded-md"></div><div class="h-4 w-24 bg-gray-300 rounded-md"></div></div>
+                    <div class="text-right space-y-2"><div class="h-5 w-12 bg-gray-300 rounded-md"></div><div class="h-4 w-16 bg-gray-300 rounded-md"></div></div>
                 </div>
-                <div class="mt-4 space-y-2"><div class="h-4 w-48 bg-sigedra-light-bg rounded-md"></div><div class="h-4 w-40 bg-sigedra-light-bg rounded-md"></div></div>
+                <div class="mt-4 space-y-2"><div class="h-4 w-48 bg-gray-300 rounded-md"></div><div class="h-4 w-40 bg-gray-300 rounded-md"></div></div>
                 <div class="mt-4 border-t pt-4 flex justify-between items-center">
-                    <div class="flex space-x-4"><div class="h-8 w-8 bg-sigedra-light-bg rounded-md"></div><div class="h-8 w-8 bg-sigedra-light-bg rounded-md"></div><div class="h-8 w-8 bg-sigedra-light-bg rounded-md"></div><div class="h-8 w-8 bg-sigedra-light-bg rounded-md"></div></div>
-                    <div class="flex space-x-2"><div class="h-8 w-8 bg-sigedra-light-bg rounded-md"></div><div class="h-8 w-8 bg-sigedra-light-bg rounded-md"></div></div>
+                    <div class="flex space-x-4"><div class="h-8 w-8 bg-gray-300 rounded-md"></div><div class="h-8 w-8 bg-gray-300 rounded-md"></div><div class="h-8 w-8 bg-gray-300 rounded-md"></div><div class="h-8 w-8 bg-gray-300 rounded-md"></div></div>
+                    <div class="flex space-x-2"><div class="h-8 w-8 bg-gray-300 rounded-md"></div><div class="h-8 w-8 bg-gray-300 rounded-md"></div></div>
                 </div>
             </div>
             @endfor

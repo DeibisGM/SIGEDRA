@@ -1,5 +1,6 @@
 /* resources/css/datepicker-custom.css */
 
+/* Estilos del datepicker */
 .datepicker,
 .datepicker-dropdown {
     @apply absolute z-[9999] transform-none m-0;
@@ -12,7 +13,6 @@
 #main-content-area {
     @apply relative;
 }
-
 
 .datepicker-header .datepicker-title,
 .datepicker-controls .button {
@@ -72,4 +72,23 @@
 .datepicker-footer .today-btn,
 .datepicker-footer .clear-btn {
     @apply flex-1 mx-1 bg-sigedra-light-colored-bg text-black rounded-md border border-gray-400 py-2 px-3 text-sm font-normal text-center;
+}
+
+/* Estilos compartidos para inputs y selects */
+.custom-datepicker,
+.custom-select-button {
+    @apply bg-sigedra-medium-bg text-sigedra-text-dark text-sm rounded-lg block w-full p-2.5;
+}
+
+.custom-datepicker {
+    @apply ps-10;
+}
+
+.custom-datepicker:focus,
+.custom-select-button:focus {
+    @apply ring-sigedra-primary border-sigedra-primary outline-none;
+}
+
+.custom-select-button {
+    @apply text-left relative;
 }
