@@ -19,10 +19,10 @@
     <div class="flex-grow"></div>
 
     {{-- Botón para crear un nuevo estudiante --}}
-    <x-buttons.primary as="a" href="{{ route('estudiantes.create') }}">
+    <x-primary-button as="a" href="{{ route('estudiantes.create') }}">
         <i class="ph ph-plus-circle text-lg"></i>
         <span class="ms-2">Crear Estudiante</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </div>
 @endsection
 

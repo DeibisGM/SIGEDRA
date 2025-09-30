@@ -16,14 +16,14 @@
 @section('header_actions')
 {{-- Botones de Acción --}}
 <div class="flex items-center justify-end mt-4 gap-3">
-    <x-buttons.secondary as="a" href="{{ route('estudiantes.index') }}">
+    <x-secondary-button as="a" href="{{ route('estudiantes.index') }}">
         Cancelar
-    </x-buttons.secondary>
+    </x-secondary-button>
 
-    <x-buttons.primary>
+    <x-primary-button>
         <i class="ph ph-plus-circle text-lg"></i>
         <span>Guardar Estudiante</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </div>
 @endsection
 

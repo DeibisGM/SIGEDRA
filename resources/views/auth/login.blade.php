@@ -39,9 +39,7 @@
         </div>
 
         <div class="mt-6">
-            <x-primary-button class="w-full justify-center">
-                {{ __('Iniciar Sesión') }}
-            </x-primary-button>
+            <x-primary-button class="w-full justify-center">{{ __('Iniciar Sesión') }}</x-primary-button>
         </div>
     </form>
 </x-guest-layout>

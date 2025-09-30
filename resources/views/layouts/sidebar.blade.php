@@ -1,4 +1,4 @@
-<aside id="application-sidebar" class="-translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-sigedra-card border-e flex flex-col lg:translate-x-0 lg:end-auto h-full">
+<aside id="application-sidebar" class="-translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-sigedra-bg border-e flex flex-col lg:translate-x-0 lg:end-auto h-full">
     <header class="h-[70px] flex-shrink-0 flex items-center justify-between px-6 border-b border-sigedra-border bg-sigedra-light-colored-bg">
         <a class="flex items-center" href="{{ route('dashboard') }}">
             <x-application-logo class="h-[1.2rem]" />
@@ -27,8 +27,8 @@
                 <a href="{{ route($link['route']) }}"
                    @class([
                 'flex items-center gap-x-3.5 py-2 px-3.5 rounded-lg text-base transition-colors duration-200',
-                'bg-sigedra-input text-sigedra-primary font-semibold' => request()->routeIs($link['active_pattern']),
-                'text-sigedra-text-medium hover:bg-sigedra-input hover:text-sigedra-primary' => !request()->routeIs($link['active_pattern']),
+                'bg-sigedra-medium-bg text-sigedra-primary font-semibold' => request()->routeIs($link['active_pattern']),
+                'text-sigedra-text-light hover:bg-sigedra-medium-bg hover:text-sigedra-primary' => !request()->routeIs($link['active_pattern']),
                 ])>
                 <i class="ph {{ $link['icon'] }} text-2xl"></i>
                 <span>{{ $link['label'] }}</span>
