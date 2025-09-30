@@ -17,7 +17,7 @@
 <div class="hidden md:flex items-center gap-3">
     <div class="flex-grow"></div>
 
-    <x-buttons.primary as="a" href="#">
+    <x-buttons.primary as="a" href="{{ route('maestros.create') }}">
         <i class="ph ph-plus-circle text-lg"></i>
         <span class="ms-2">Crear Maestro</span>
     </x-buttons.primary>

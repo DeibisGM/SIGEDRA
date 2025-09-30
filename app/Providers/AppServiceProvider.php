@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,10 @@ class AppServiceProvider extends ServiceProvider
 
         // Definir una longitud de string por defecto para migraciones en MySQL
         Schema::defaultStringLength(191);
+
+        // Extensión para permitir letras, y espacios, pero no números ni símbolos.
+        Validator::extend('alpha_spaces', function ($attribute, $value) {
+            return preg_match('/^[\pL\s]+$/u', $value);
+        });
     }
 }

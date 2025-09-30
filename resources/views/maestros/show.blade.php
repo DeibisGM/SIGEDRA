@@ -47,15 +47,16 @@
                     <h1 class="text-3xl font-bold text-sigedra-primary">{{ $maestro->nombre_completo }}</h1>
                     <div class="flex-grow">
 
-                        <p class="mt-1 text-base text-sigedra-text-medium flex">
-                            <span class="w-72"> Cédula: {{ $maestro->user->cedula ?? 'No asignada' }}</span>
-                            <span class="mr-2">|</span> Telefono: {{ $maestro->telefono }}
-                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-[auto_1fr_auto_1fr] gap-y-1 sm:gap-x-12 mt-1 text-base text-sigedra-text-medium">
 
-                        <p class="mt-1 text-base text-sigedra-text-medium flex">
-                            <span class="w-72"> Nacionalidad: {{$maestro->nacionalidad }}</span>
-                            <span class="mr-2">|</span> Correo: {{ $maestro->correo }}
-                        </p>
+                            <div class="sm:col-span-2">Cédula: {{ $maestro->user->cedula ?? 'No asignada' }}</div>
+
+                            <div class="sm:col-span-2">Telefono: {{ $maestro->telefono }}</div>
+
+                            <div class="sm:col-span-2">Nacionalidad: {{$maestro->nacionalidad }}</div>
+
+                            <div class="sm:col-span-2">Correo: c.rojas@example.com</div>
+                        </div>
 
                         <p class="mt-1 text-base text-sigedra-text-medium">
                             Nombramiento desde: {{$maestro->nombramiento_inicio->format('d/m/Y') }}
@@ -64,7 +65,6 @@
                             Nombramiento hasta: {{$maestro->nombramiento_final->format('d/m/Y') }}
                         </p>
                     </div>
-
 
 
                 </div>
