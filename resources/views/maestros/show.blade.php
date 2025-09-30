@@ -23,10 +23,10 @@
     </div>
 
     <div class="flex-shrink-0 flex gap-3">
-        <x-buttons.primary as="a" href="#">
+        <x-primary-button  as="a" href="#">
             <i class="ph ph-pencil-simple text-lg"></i>
             <span>Editar Información</span>
-        </x-buttons.primary>
+        </x-primary-button>
     </div>
 </h1>
 
@@ -84,10 +84,10 @@
     </div>
 
 <x-card-header title="Información de cursos">
-    <x-buttons.primary as="a" href="#">
+    <x-primary-button as="a" href="#">
         <i class="ph ph-pencil-simple text-lg"></i>
         <span>Editar Cursos</span>
-    </x-buttons.primary>
+    </x-primary-button>
 </x-card-header>
 
 <div class="space-y-6">

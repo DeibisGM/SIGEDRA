@@ -109,13 +109,13 @@
                 </div>
             </div>
         </header>
+
         <!-- Secondary Header -->
         <header class="bg-sigedra-light-bg shadow-sm" x-show="!isViewingSession" x-cloak>
             <div class="container mx-auto px-4 py-5 flex items-center justify-between">
                 <div>
                     <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">
-                       @yield('module_title')
-
+                        @yield('module_title', 'Módulo')
                     </h1>
                     <p class="text-base text-sigedra-text-medium mt-1">
                         @yield('module_subtitle', '')
@@ -126,8 +126,6 @@
                 </div>
             </div>
         </header>
-        @endif
-
 
         <!-- Main Content -->
         <main class="flex-grow bg-sigedra-bg">

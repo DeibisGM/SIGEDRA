@@ -4,10 +4,10 @@
         <x-table>
             <x-slot:head>
                 <tr>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Email</th>
-                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
-                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Acciones</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">Nombre</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">Email</th>
+                    <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">Cédula</th>
+                    <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider bg-sigedra-medium-bg">Acciones</th>
                 </tr>
             </x-slot:head>
             <x-slot:body>
