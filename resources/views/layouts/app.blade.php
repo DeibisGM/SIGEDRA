@@ -17,7 +17,6 @@
     <!-- Scripts y Estilos -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- AÑADE ESTA LÍNEA PARA LOS ESTILOS DE LIVEWIRE --}}
     @livewireStyles
 </head>
 <body class="h-screen">
@@ -26,7 +25,7 @@
 
     @include('layouts.sidebar')
 
-    <div id="sidebar-backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 hidden"></div>
+    <div id="sidebar-backdrop" class="fixed inset-0 bg-sigedra-medium-bg bg-opacity-50 z-50 hidden"></div>
 
     <!-- ===== Content Area ===== -->
     <div id="main-content-area" class="flex-1 flex flex-col h-full lg:ms-64 overflow-y-scroll" x-data="{ isViewingSession: false, sessionId: null }" @view-changed.window="isViewingSession = $event.detail.isViewingSession; sessionId = $event.detail.sessionId">
@@ -61,7 +60,7 @@
                         return mb_substr($word, 0, 1);
                         })->take(2)->implode('');
                         @endphp
-                        <button @click="open = !open" class="flex items-center gap-x-2 focus:outline-none rounded-md hover:bg-gray-100">
+                        <button @click="open = !open" class="flex items-center gap-x-2 focus:outline-none rounded-md">
                             <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-sigedra-text-dark">
                                 <span class="text-sm font-semibold">{{ $userInitials }}</span>
                             </span>
@@ -115,10 +114,10 @@
             <div class="container mx-auto px-4 py-5 flex items-center justify-between">
                 <div>
                     <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">
-                        @yield('module_title', 'Módulo')
+                        @yield('module_title')
                     </h1>
                     <p class="text-base text-sigedra-text-medium mt-1">
-                        @yield('module_subtitle', '')
+                        @yield('module_subtitle')
                     </p>
                 </div>
                 <div class="hidden sm:block">
@@ -129,7 +128,7 @@
 
         <!-- Main Content -->
         <main class="flex-grow bg-sigedra-bg">
-            <div class="container mx-auto px-4 pb-24" :class="isViewingSession ? 'py-5' : 'py-0'">
+            <div class="container mx-auto px-4 pb-24">
                 @yield('content')
                 {{ $slot ?? '' }}
             </div>
@@ -147,7 +146,6 @@
 </div>
 @endif
 
-{{-- ESTA LÍNEA YA LA TENÍAS, PERO ES CRUCIAL PARA LOS SCRIPTS DE LIVEWIRE --}}
 @livewireScripts
 
 </body>

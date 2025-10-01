@@ -10,6 +10,8 @@
     display: none !important;
 }
 
+
+
 @layer base {
     body {
         @apply bg-sigedra-bg font-sans text-base text-sigedra-text-dark antialiased;

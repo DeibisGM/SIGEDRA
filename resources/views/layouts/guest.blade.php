@@ -19,11 +19,11 @@
         <div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
             <div class="mb-6">
                 <a href="/">
-                    <x-application-logo class="w-32" />
+                    <img src="{{ asset('images/logo.svg') }}" alt="Logo de SIGEDRA" class="w-32" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-6 sm:bg-white sm:shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white shadow-md overflow-hidden sm:rounded-lg">
                 {{ $slot }}
             </div>
         </div>
