@@ -22,6 +22,7 @@
         <i class="ph ph-plus-circle text-lg"></i>
         <span>Pasar Nueva Asistencia</span>
     </x-primary-button>
+
 </div>
 @endsection
 
@@ -34,14 +35,17 @@
     <i class="ph ph-plus-circle text-lg"></i>
     <span>Pasar Nueva Asistencia</span>
 </x-primary-button>
+
+
 @endsection
 
 @section('content')
 <div
-    class="space-y-6"
-    x-data="{ viewingSession: false }"
-    @view-session.window="viewingSession = true"
-    @close-session.window="viewingSession = false"
+    class=""
+    x-data="{ viewingSession: false, sessionId: null }"
+    x-init="$watch('viewingSession', value => $dispatch('view-changed', { isViewingSession: value, sessionId: sessionId }))"
+    @view-session.window="viewingSession = true; sessionId = $event.detail.sessionId"
+    @close-session.window="viewingSession = false; sessionId = null"
 >
     <div x-show="!viewingSession" x-transition.opacity.duration.300ms>
         @livewire('attendance.attendance-history')
@@ -51,6 +55,6 @@
         @livewire('attendance.session-detail')
     </div>
 
-    <x-pre-create-modal x-cloak />
+    <x-pre-create-modal x-cloak class="mt-6" />
 </div>
 @endsection

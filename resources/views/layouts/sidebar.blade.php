@@ -1,7 +1,7 @@
 <aside id="application-sidebar" class="-translate-x-full transition-all duration-300 transform fixed z-[60] w-full lg:w-64 bg-sigedra-bg border-e flex flex-col lg:translate-x-0 lg:end-auto h-full">
     <header class="h-[70px] flex-shrink-0 flex items-center justify-between px-6 border-b bg-sigedra-light-colored-bg">
         <a class="flex items-center" href="{{ route('dashboard') }}">
-            <x-application-logo class="h-[1.2rem]" />
+            <img src="{{ asset('images/logo.svg') }}" alt="Logo de SIGEDRA" class="h-[1.2rem]" />
         </a>
         <button type="button" id="sidebar-close-button" class="lg:hidden text-sigedra-text-medium hover:text-sigedra-text-dark">
             <i class="ph ph-x text-xl"></i>

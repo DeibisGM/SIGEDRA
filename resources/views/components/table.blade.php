@@ -1,6 +1,6 @@
 <!-- Componente de tabla reutilizable. -->
 <div class="flex flex-col">
-    <div class="md:border md:rounded-lg">
+    <div class="md:border md:rounded-lg md:overflow-hidden">
         {{-- CAMBIO CLAVE: Se agrega 'table-fixed' --}}
         <table class="min-w-full md:divide-y table-fixed">
             <thead class="bg-sigedra-medium-bg hidden md:table-header-group">

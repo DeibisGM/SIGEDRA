@@ -108,7 +108,8 @@ class AttendanceHistory extends Component
                 ->when($this->activeFilters['selectedMaterias'], fn($q) => $q->whereHas('cargaAcademica', fn($sq) => $sq->whereIn('materia_id', $this->activeFilters['selectedMaterias'])))
                 ->when($this->activeFilters['selectedMaestros'], fn($q) => $q->whereHas('cargaAcademica', fn($sq) => $sq->whereIn('maestro_id', $this->activeFilters['selectedMaestros'])))
                 ->when($user->hasRole('Maestro'), fn($q) => $q->whereHas('cargaAcademica.maestro', fn($sq) => $sq->where('usuario_id', $user->id)))
-                ->orderBy('fecha', 'desc');
+                ->orderBy('fecha', 'desc')
+                ->orderBy('id', 'desc');
 
             $asistencias = $query->paginate($this->perPage);
         }

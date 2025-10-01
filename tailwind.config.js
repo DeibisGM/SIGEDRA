@@ -51,7 +51,7 @@ export default {
             colors: {
                 'sigedra-primary': '#0d3b31',
                 'sigedra-primary-dark': '#02140f',
-                'sigedra-secondary': '#6cbc5f',
+                'sigedra-secondary': '#7CBA60',
                 'sigedra-accent': '#00C765',
                 'sigedra-error': '#FB584B',
                 'sigedra-warning': '#EE9849',
@@ -64,7 +64,7 @@ export default {
                 'sigedra-components-hover-bg': grayscale['90'],
 
                 'sigedra-input': '#ff0000',
-                'sigedra-border': '#ababab',
+                'sigedra-border': grayscale['120'],
 
                 'grayscale': grayscale,
 

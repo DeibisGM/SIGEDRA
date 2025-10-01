@@ -1,6 +1,7 @@
 <div class="relative min-h-[400px]">
     @if ($session)
-    <div class="flex justify-between items-center gap-x-4 mb-4">
+    <header class="">
+    <div class="container mx-auto px-0 py-5 flex items-center justify-between">
         <div class="flex items-baseline gap-x-2">
             <button
                 wire:click="closeSession"
@@ -13,13 +14,14 @@
                         class="ph ph-spinner-gap text-xl animate-spin"></i></span>
                 <span wire:loading.remove wire:target="closeSession"><i class="ph ph-arrow-left text-xl"></i></span>
             </button>
-            <h1 class="text-xl font-bold text-sigedra-text-medium">Detalles de la Sesión</h1>
+            <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">Detalles de la Sesión</h1>
         </div>
         <x-secondary-button wire:click="editSession">
             <i class="ph ph-pencil-simple text-lg"></i>
-            <span>Editar</span>
+            <span>Editar sesión</span>
         </x-secondary-button>
     </div>
+</header>
 
     <div class="space-y-4">
         <div class="bg-sigedra-light-bg border rounded-lg p-4">
@@ -86,10 +88,10 @@
                         <td class="px-6 py-3 text-base text-sigedra-text-dark">
                <span class="inline-flex w-24 items-center justify-center px-2.5 py-0.5 rounded-lg text-sm font-medium border
     @switch($asistencia->estadoAsistencia->nombre)
-        @case('Presente')  bg-sigedra-accent/15 border-sigedra-accent/50 text-sigedra-accent @break
-        @case('Ausente')   bg-sigedra-error/15 border-sigedra-error/50 text-sigedra-error @break
-        @case('Tardía')    bg-sigedra-warning/15 border-sigedra-warning/50 text-sigedra-warning @break
-        @default           bg-sigedra-medium-bg/15 border-sigedra-text-medium/50 text-sigedra-text-medium
+        @case('Presente')  bg-sigedra-accent/10 border-sigedra-accent/50 text-sigedra-accent @break
+        @case('Ausente')   bg-sigedra-error/10 border-sigedra-error/50 text-sigedra-error @break
+        @case('Tardía')    bg-sigedra-warning/10 border-sigedra-warning/50 text-sigedra-warning @break
+        @default           bg-sigedra-medium-bg/10 border-sigedra-text-medium/50 text-sigedra-text-medium
     @endswitch
 ">
     {{ $asistencia->estadoAsistencia->nombre }}
@@ -115,12 +117,12 @@
                         <p class="font-bold text-lg">{{ $asistencia->estudiante->nombre_completo }}</p>
                         <p class="text-sm text-sigedra-text-medium">{{ $asistencia->estudiante->cedula }}</p>
                     </div>
-                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-sm font-medium
                             @switch($asistencia->estadoAsistencia->nombre)
-                                @case('Presente') bg-sigedra-accent text-white @break
-                                @case('Ausente') bg-sigedra-error text-white @break
-                                @case('Tardía') bg-sigedra-warning text-white @break
-                                @default bg-sigedra-light-colored-bg text-sigedra-text-dark
+        @case('Presente')  bg-sigedra-accent/10 border-sigedra-accent/50 text-sigedra-accent @break
+        @case('Ausente')   bg-sigedra-error/10 border-sigedra-error/50 text-sigedra-error @break
+        @case('Tardía')    bg-sigedra-warning/10 border-sigedra-warning/50 text-sigedra-warning @break
+        @default           bg-sigedra-medium-bg/10 border-sigedra-text-medium/50 text-sigedra-text-medium
                             @endswitch
                         ">
                             {{ $asistencia->estadoAsistencia->nombre }}
@@ -142,7 +144,7 @@
     </div>
     @else
     <div class="animate-pulse">
-        <div class="flex justify-between items-center gap-x-4 mb-4">
+        <div class="flex justify-between items-center gap-x-4 mb-4 mt-4">
             <div class="flex items-center gap-x-2">
                 <div class="h-8 w-8 bg-sigedra-light-bg rounded-full"></div>
                 <div class="h-6 w-48 bg-sigedra-light-bg rounded-md"></div>

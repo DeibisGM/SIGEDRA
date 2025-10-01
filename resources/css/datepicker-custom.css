@@ -1,18 +1,23 @@
 /* resources/css/datepicker-custom.css */
 
-/* Estilos del datepicker */
+.custom-datepicker:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
 .datepicker,
 .datepicker-dropdown {
     @apply absolute z-[9999] transform-none m-0;
 }
 
 .datepicker-picker {
-    @apply bg-white rounded-lg border border-gray-200 w-full max-w-none;
+    @apply bg-white rounded-lg border w-full max-w-none;
 }
 
 #main-content-area {
     @apply relative;
 }
+
 
 .datepicker-header .datepicker-title,
 .datepicker-controls .button {
@@ -47,7 +52,7 @@
 
 .datepicker-view .months .datepicker-cell.focused,
 .datepicker-view .years .datepicker-cell.focused {
-    @apply bg-gray-100 text-gray-800 border border-gray-300;
+    @apply bg-gray-100 text-gray-800 border;
 }
 
 .datepicker-view .days .datepicker-cell.today,
@@ -66,29 +71,10 @@
 }
 
 .datepicker-footer {
-    @apply w-full justify-stretch p-2 border-t border-gray-200 box-border;
+    @apply w-full justify-stretch p-2 border-t box-border;
 }
 
 .datepicker-footer .today-btn,
 .datepicker-footer .clear-btn {
-    @apply flex-1 mx-1 bg-sigedra-light-colored-bg text-black rounded-md border border-gray-400 py-2 px-3 text-sm font-normal text-center;
-}
-
-/* Estilos compartidos para inputs y selects */
-.custom-datepicker,
-.custom-select-button {
-    @apply bg-sigedra-medium-bg text-sigedra-text-dark text-sm rounded-lg block w-full p-2.5;
-}
-
-.custom-datepicker {
-    @apply ps-10;
-}
-
-.custom-datepicker:focus,
-.custom-select-button:focus {
-    @apply ring-sigedra-primary border-sigedra-primary outline-none;
-}
-
-.custom-select-button {
-    @apply text-left relative;
+    @apply flex-1 mx-1 bg-sigedra-light-colored-bg text-black rounded-md border py-2 px-3 text-sm font-normal text-center;
 }

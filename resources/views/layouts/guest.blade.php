@@ -19,7 +19,7 @@
         <div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
             <div class="mb-6">
                 <a href="/">
-                    <x-application-logo class="w-32" />
+                    <img src="{{ asset('images/logo.svg') }}" alt="Logo de SIGEDRA" class="w-32" />
                 </a>
             </div>
 
