@@ -2,12 +2,12 @@
     <x-table>
         <x-slot:head>
             <tr>
-                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Cédula</th>
-                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[25%]">Nombre completo</th>
-                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">Edad</th>
-                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Género</th>
-                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Dirección</th>
-                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Acciones</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%] bg-sigedra-medium-bg">Cédula</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[25%] bg-sigedra-medium-bg">Nombre completo</th>
+                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%] bg-sigedra-medium-bg">Edad</th>
+                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%] bg-sigedra-medium-bg">Género</th>
+                <th class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%] bg-sigedra-medium-bg">Dirección</th>
+                <th class="px-6 py-4 text-center text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%] bg-sigedra-medium-bg">Acciones</th>
             </tr>
         </x-slot:head>
 
@@ -23,7 +23,7 @@
                         <td class="px-6 py-4 text-base font-medium">
                             <div class="w-full flex items-center justify-center gap-x-2">
                                 <x-secondary-button href="{{ route('estudiantes.show', $estudiante->id) }}" title="Ver Detalles del Estudiante"><i class="ph ph-eye text-lg"></i></x-secondary-button>
-                                <x-secondary-button href="#" title="Editar Estudiante"><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button>
+                                <x-secondary-button href="{{ route('estudiantes.edit', $estudiante) }}" title="Editar Estudiante"><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button>
                                 <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion-{{ $estudiante->id }}')" title="Eliminar Estudiante"><i class="ph ph-trash text-lg"></i></x-danger-button>
                             </div>
                         </td>
@@ -71,4 +71,36 @@
             {{ $estudiantes->links('vendor.pagination.sigedra-pagination') }}
         </div>
     @endif
+
+    @if ($isReady)
+        @foreach ($estudiantes as $estudiante)
+            <!-- Modal de confirmación para cada estudiante -->
+            <x-modal name="confirm-student-deletion-{{ $estudiante->id }}" :show="false" maxWidth="md">
+                <form method="POST" action="{{ route('estudiantes.destroy', $estudiante) }}" class="p-6">
+                    @csrf
+                    @method('DELETE')
+
+                    <h2 class="text-lg font-medium text-gray-900">
+                        ¿Estás seguro de que deseas desactivar este estudiante?
+                    </h2>
+
+                    <p class="mt-3 text-sm text-gray-600">
+                        Estás a punto de desactivar a <strong>{{ $estudiante->nombre_completo }}</strong> (Cédula: {{ $estudiante->cedula }}).
+                        Esta acción marcará al estudiante como inactivo en el sistema.
+                    </p>
+
+                    <div class="mt-6 flex justify-end gap-3">
+                        <x-secondary-button type="button" x-on:click="$dispatch('close')">
+                            Cancelar
+                        </x-secondary-button>
+
+                        <x-danger-button type="submit">
+                            Desactivar Estudiante
+                        </x-danger-button>
+                    </div>
+                </form>
+            </x-modal>
+        @endforeach
+    @endif
+
 </div>

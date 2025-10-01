@@ -1,17 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Crear Estudiante')
+@section('title', 'Editar Estudiante')
 
 @section('breadcrumbs')
 <div class="text-sm text-gray-500 whitespace-nowrap truncate">
     <a href="{{ route('estudiantes.index') }}" class="hover:text-gray-700">Estudiantes</a>
     <span class="mx-2">/</span>
-    <span>Crear Nuevo Estudiante</span>
+    <a href="{{ route('estudiantes.show', $estudiante) }}" class="hover:text-gray-700">{{ $estudiante->nombre_completo }}</a>
+    <span class="mx-2">/</span>
+    <span>Editar</span>
 </div>
 @endsection
 
-@section('module_title', 'Crear Nuevo Estudiante')
-@section('module_subtitle', 'Ingresa los datos para registrar un nuevo estudiante en el sistema.')
+@section('module_title', 'Editar Estudiante')
+@section('module_subtitle', 'Modifica los datos del estudiante en el sistema.')
 
 @section('content')
 <div class="w-full">
@@ -36,8 +38,9 @@
         </div>
     @endif
 
-    <form action="{{ route('estudiantes.store') }}" method="POST" class="space-y-4">
+    <form action="{{ route('estudiantes.update', $estudiante) }}" method="POST" class="space-y-4">
         @csrf
+        @method('PUT')
 
         {{-- 1. Card: Información de Identidad --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
@@ -46,25 +49,23 @@
                 {{-- Tipo de Identificación --}}
                 <div>
                     <x-input-label for="tipo_identificacion" value="Tipo de Identificación" />
-                    <select id="tipo_identificacion" name="tipo_identificacion" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                    <select id="tipo_identificacion" name="tipo_identificacion" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" disabled>
                         <option value="nacional" selected>Nacional</option>
                         <option value="extranjero">Extranjero</option>
                     </select>
                 </div>
 
-                {{-- Cédula --}}
+                {{-- Cédula (solo lectura) --}}
                 <div class="md:col-span-2">
-                    <x-input-label for="cedula" value="Cédula *" />
+                    <x-input-label for="cedula" value="Cédula" />
                     <x-text-input
                         id="cedula"
                         name="cedula"
                         type="text"
-                        class="mt-1 block w-full"
-                        required
-                        autofocus
-                        placeholder="Ej: 1-2345-6789"
-                        value="{{ old('cedula') }}" />
-                    <x-input-error :messages="$errors->get('cedula')" class="mt-2" />
+                        class="mt-1 block w-full bg-gray-100"
+                        value="{{ $estudiante->cedula }}"
+                        readonly />
+                    <p class="mt-1 text-sm text-gray-500">La cédula no puede ser modificada</p>
                 </div>
             </div>
         </div>
@@ -85,7 +86,7 @@
                         class="mt-1 block w-full"
                         required
                         placeholder="Juan"
-                        value="{{ old('primer_nombre') }}" />
+                        value="{{ old('primer_nombre', $estudiante->primer_nombre) }}" />
                     <x-input-error :messages="$errors->get('primer_nombre')" class="mt-2" />
                 </div>
 
@@ -98,7 +99,7 @@
                         type="text"
                         class="mt-1 block w-full"
                         placeholder="Carlos"
-                        value="{{ old('segundo_nombre') }}" />
+                        value="{{ old('segundo_nombre', $estudiante->segundo_nombre) }}" />
                 </div>
 
                 {{-- Primer Apellido --}}
@@ -111,7 +112,7 @@
                         class="mt-1 block w-full"
                         required
                         placeholder="Pérez"
-                        value="{{ old('primer_apellido') }}" />
+                        value="{{ old('primer_apellido', $estudiante->primer_apellido) }}" />
                     <x-input-error :messages="$errors->get('primer_apellido')" class="mt-2" />
                 </div>
 
@@ -124,7 +125,7 @@
                         type="text"
                         class="mt-1 block w-full"
                         placeholder="Rojas"
-                        value="{{ old('segundo_apellido') }}" />
+                        value="{{ old('segundo_apellido', $estudiante->segundo_apellido) }}" />
                 </div>
             </div>
 
@@ -139,7 +140,7 @@
                         type="date"
                         class="mt-1 block w-full"
                         required
-                        value="{{ old('fecha_nacimiento') }}" />
+                        value="{{ old('fecha_nacimiento', $estudiante->fecha_nacimiento->format('Y-m-d')) }}" />
                     <x-input-error :messages="$errors->get('fecha_nacimiento')" class="mt-2" />
                 </div>
 
@@ -147,10 +148,10 @@
                 <div>
                     <x-input-label for="genero" value="Género *" />
                     <select id="genero" name="genero" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
-                        <option value="" disabled {{ old('genero') ? '' : 'selected' }}>Seleccione...</option>
-                        <option value="M" {{ old('genero') == 'M' ? 'selected' : '' }}>Masculino</option>
-                        <option value="F" {{ old('genero') == 'F' ? 'selected' : '' }}>Femenino</option>
-                        <option value="O" {{ old('genero') == 'O' ? 'selected' : '' }}>Otro</option>
+                        <option value="" disabled>Seleccione...</option>
+                        <option value="M" {{ old('genero', $estudiante->genero) == 'M' ? 'selected' : '' }}>Masculino</option>
+                        <option value="F" {{ old('genero', $estudiante->genero) == 'F' ? 'selected' : '' }}>Femenino</option>
+                        <option value="O" {{ old('genero', $estudiante->genero) == 'O' ? 'selected' : '' }}>Otro</option>
                     </select>
                     <x-input-error :messages="$errors->get('genero')" class="mt-2" />
                 </div>
@@ -164,7 +165,7 @@
                         type="text"
                         class="mt-1 block w-full"
                         placeholder="Ej: Costarricense"
-                        value="{{ old('nacionalidad', 'Costarricense') }}" />
+                        value="{{ old('nacionalidad', $estudiante->nacionalidad) }}" />
                 </div>
             </div>
 
@@ -181,7 +182,7 @@
                             type="text"
                             class="mt-1 block w-full"
                             placeholder="Ej: San José"
-                            value="{{ old('provincia') }}" />
+                            value="{{ old('provincia', $direccion_partes['provincia']) }}" />
                     </div>
                     {{-- Cantón --}}
                     <div>
@@ -192,7 +193,7 @@
                             type="text"
                             class="mt-1 block w-full"
                             placeholder="Ej: Desamparados"
-                            value="{{ old('canton') }}" />
+                            value="{{ old('canton', $direccion_partes['canton']) }}" />
                     </div>
                     {{-- Distrito --}}
                     <div>
@@ -203,7 +204,7 @@
                             type="text"
                             class="mt-1 block w-full"
                             placeholder="Ej: San Miguel"
-                            value="{{ old('distrito') }}" />
+                            value="{{ old('distrito', $direccion_partes['distrito']) }}" />
                     </div>
                     {{-- Dirección Exacta --}}
                     <div class="md:col-span-2 lg:col-span-3">
@@ -213,7 +214,7 @@
                             name="direccion_exacta"
                             rows="3"
                             class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                            placeholder="Ej: 100 metros al sur del parque central, casa color verde con portón negro.">{{ old('direccion_exacta') }}</textarea>
+                            placeholder="Ej: 100 metros al sur del parque central, casa color verde con portón negro.">{{ old('direccion_exacta', $direccion_partes['direccion_exacta']) }}</textarea>
                     </div>
                 </div>
             </div>
@@ -224,16 +225,16 @@
             <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Información Académica</h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <x-input-label for="grado_id" value="Grado a Matricular *" />
+                    <x-input-label for="grado_id" value="Grado Actual" />
                     <select
                         id="grado_id"
                         name="grado_id"
-                        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                        required>
-                        <option value="" disabled {{ old('grado_id') ? '' : 'selected' }}>Seleccione un grado...</option>
+                        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        <option value="">Sin grado asignado</option>
                         @foreach($grados as $grado)
-                            <option value="{{ $grado->id }}" {{ old('grado_id') == $grado->id ? 'selected' : '' }}>
-                                {{ $grado->nivelAcademico->nombre }} - {{ $grado->nombre }}
+                            <option value="{{ $grado->id }}"
+                                {{ old('grado_id', $grado_actual?->id) == $grado->id ? 'selected' : '' }}>
+                                {{ $grado->nivelAcademico->nombre }}
                             </option>
                         @endforeach
                     </select>
@@ -242,48 +243,23 @@
             </div>
         </div>
 
-        {{-- 4. Card: Necesidades Especiales (Adecuación) --}}
+        {{-- 4. Card: Estado del Estudiante --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
-            <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Necesidades Especiales (Adecuación)</h2>
-            <div class="space-y-6">
+            <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Estado</h2>
+            <div class="space-y-4">
                 <div class="relative flex items-start">
                     <div class="flex items-center h-5">
                         <input
-                            id="necesita_adecuacion"
-                            name="necesita_adecuacion"
+                            id="activo"
+                            name="activo"
                             type="checkbox"
                             class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
-                            {{ old('necesita_adecuacion') ? 'checked' : '' }}>
+                            value="1"
+                            {{ old('activo', $estudiante->activo) ? 'checked' : '' }}>
                     </div>
                     <div class="ml-3 text-sm">
-                        <label for="necesita_adecuacion" class="font-medium text-gray-800">El estudiante requiere adecuación curricular</label>
-                        <p class="text-gray-500">Marque esta casilla si el estudiante necesita algún tipo de apoyo o adecuación.</p>
-                    </div>
-                </div>
-
-                <div id="campos_adecuacion" class="hidden pl-8 mt-4 space-y-6 border-l-2 border-indigo-200">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <x-input-label for="adecuacion_id" value="Tipo de Adecuación" />
-                            <select
-                                id="adecuacion_id"
-                                name="adecuacion_id"
-                                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                <option value="" disabled selected>Seleccione un tipo...</option>
-                                <option value="1" {{ old('adecuacion_id') == '1' ? 'selected' : '' }}>No Significativa</option>
-                                <option value="2" {{ old('adecuacion_id') == '2' ? 'selected' : '' }}>Significativa</option>
-                                <option value="3" {{ old('adecuacion_id') == '3' ? 'selected' : '' }}>De Acceso</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <x-input-label for="adecuacion_detalles" value="Detalles y Observaciones" />
-                        <textarea
-                            id="adecuacion_detalles"
-                            name="adecuacion_detalles"
-                            rows="4"
-                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                            placeholder="Describa las recomendaciones...">{{ old('adecuacion_detalles') }}</textarea>
+                        <label for="activo" class="font-medium text-gray-800">Estudiante Activo</label>
+                        <p class="text-gray-500">Desmarque esta casilla para desactivar al estudiante del sistema.</p>
                     </div>
                 </div>
             </div>
@@ -291,36 +267,16 @@
 
         {{-- Botones de Acción --}}
         <div class="flex items-center justify-end gap-3 bg-white border border-gray-200 rounded-lg p-6">
-            <x-secondary-button type="button" onclick="window.location='{{ route('estudiantes.index') }}'">
+            <x-secondary-button type="button" onclick="window.location='{{ route('estudiantes.show', $estudiante) }}'">
                 Cancelar
             </x-secondary-button>
 
             <x-primary-button type="submit">
-                <i class="ph ph-plus-circle text-lg"></i>
-                <span>Guardar Estudiante</span>
+                <i class="ph ph-check-circle text-lg"></i>
+                <span>Actualizar Estudiante</span>
             </x-primary-button>
         </div>
     </form>
 </div>
-
-@push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const necesitaAdecuacionCheckbox = document.getElementById('necesita_adecuacion');
-        const camposAdecuacion = document.getElementById('campos_adecuacion');
-
-        const toggleAdecuacionFields = () => {
-            if (necesitaAdecuacionCheckbox.checked) {
-                camposAdecuacion.classList.remove('hidden');
-            } else {
-                camposAdecuacion.classList.add('hidden');
-            }
-        };
-
-        necesitaAdecuacionCheckbox.addEventListener('change', toggleAdecuacionFields);
-        toggleAdecuacionFields(); // Ejecutar al cargar la página
-    });
-</script>
-@endpush
 
 @endsection

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Grado extends Model
 {
@@ -32,4 +33,18 @@ class Grado extends Model
     {
         return $this->belongsTo(NivelAcademico::class, 'nivel_academico_id');
     }
+    /**
+     * Relación muchos a muchos con Estudiante
+     * Un grado puede tener muchos estudiantes
+     */
+    public function estudiantes(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Estudiante::class,
+            'asignacion_estudiante_grado',  // Tabla pivote
+            'grado_id',                      // FK de grado en la pivote
+            'estudiante_id'                  // FK de estudiante en la pivote
+        );
+    }
+
 }

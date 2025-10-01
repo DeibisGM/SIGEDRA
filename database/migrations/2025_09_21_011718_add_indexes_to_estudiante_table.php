@@ -12,7 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('estudiante', function (Blueprint $table) {
+            // Índice para cédula (búsquedas frecuentes)
+            $table->index('cedula');
+
+            // Índice para fecha de nacimiento (cálculo de edad)
             $table->index('fecha_nacimiento');
+
+            // Índice para estudiantes activos
+            $table->index('activo');
         });
     }
 
@@ -22,7 +29,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('estudiante', function (Blueprint $table) {
+            $table->dropIndex(['cedula']);
             $table->dropIndex(['fecha_nacimiento']);
+            $table->dropIndex(['activo']);
         });
     }
 };
