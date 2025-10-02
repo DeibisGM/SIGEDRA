@@ -35,6 +35,12 @@ class MaestroController extends Controller
         return view('maestros.create');
     }
 
+    public function edit(Maestro $maestro): View
+    {
+        $maestro->load('user');
+        return view('maestros.create', compact('maestro'));
+    }
+
     public function store(MaestroRequest $request)
     {
         // 1. Validar datos. Laravel redirecciona automáticamente si falla.

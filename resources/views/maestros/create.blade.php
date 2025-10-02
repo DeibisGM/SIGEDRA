@@ -181,3 +181,20 @@
 </div>
 
 @endsection
+
+@section('footer_actions')
+<div class="fixed inset-x-0 bottom-0 z-40 p-4 bg-white border-t border-gray-200 md:hidden shadow-lg">
+
+    <div class="flex items-center gap-3">
+
+        <x-secondary-button as="a" href="{{ route('maestros.index') }}">
+            Cancelar
+        </x-secondary-button>
+
+        <x-primary-button as="button" type="button" onclick="document.getElementById('maestro-form').submit()" class="flex-grow justify-center">
+            <i class="ph ph-plus-circle text-lg"></i>
+            <span>Guardar</span>
+        </x-primary-button>
+    </div>
+</div>
+@endsection
