@@ -8,7 +8,7 @@
         <!-- Cédula -->
         <div>
             <x-input-label for="cedula" :value="__('Cédula')" />
-            <x-text-input id="cedula" class="block mt-1 w-full" type="text" name="cedula" :value="old('cedula')" required autofocus autocomplete="username" />
+            <x-text-input id="cedula" class="block mt-1 w-full placeholder-gray-400" type="text" name="cedula" :value="old('cedula')" required autofocus autocomplete="username" placeholder="Tu cédula" />
             <x-input-error :messages="$errors->get('cedula')" class="mt-2" />
         </div>
 
@@ -16,12 +16,12 @@
         <div class="mt-4">
             <x-input-label for="password" :value="__('Contraseña')" />
             <div class="relative">
-                <x-text-input id="password" class="block mt-1 w-full pr-10"
+                <x-text-input id="password" class="block mt-1 w-full pr-10 placeholder-gray-400"
                               type="password"
                               name="password"
-                              required autocomplete="current-password" />
+                              required autocomplete="current-password" placeholder="Tu contraseña" />
                 <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5">
-                    <i id="togglePassword" class="ph ph-eye text-sigedra-text-medium cursor-pointer" style="font-size: 1.2rem"></i>
+                    <i id="togglePassword" class="ph ph-eye-slash text-sigedra-text-medium cursor-pointer" style="font-size: 1.2rem"></i>
                 </div>
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
@@ -45,11 +45,11 @@
 
                 // Toggle icon class
                 if (type === 'password') {
-                    togglePassword.classList.remove('ph-eye-slash');
-                    togglePassword.classList.add('ph-eye');
-                } else {
                     togglePassword.classList.remove('ph-eye');
                     togglePassword.classList.add('ph-eye-slash');
+                } else {
+                    togglePassword.classList.remove('ph-eye-slash');
+                    togglePassword.classList.add('ph-eye');
                 }
             });
         </script>

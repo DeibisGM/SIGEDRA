@@ -30,7 +30,12 @@
                 'bg-sigedra-medium-bg text-sigedra-primary font-semibold' => request()->routeIs($link['active_pattern']),
                 'text-sigedra-text-light hover:bg-sigedra-medium-bg hover:text-sigedra-primary' => !request()->routeIs($link['active_pattern']),
                 ])>
-                <i class="ph {{ $link['icon'] }} text-2xl"></i>
+                                <i @class([
+                    'ph',
+                    $link['icon'],
+                    'text-2xl',
+                    'ph-fill' => request()->routeIs($link['active_pattern']),
+                ])></i>
                 <span>{{ $link['label'] }}</span>
                 </a>
             </li>

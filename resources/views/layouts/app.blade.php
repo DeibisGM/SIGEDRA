@@ -51,6 +51,14 @@
                     </div>
                 </div>
                 <div class="ms-4 flex items-center gap-x-2 md:gap-x-4">
+
+
+                    <!-- Help Button -->
+                    <x-secondary-button href="#" class="h-8 w-8 md:h-auto md:w-auto md:px-3 md:py-2">
+                        <i class="ph ph-question text-xl"></i>
+                        <span class="hidden sm:inline">Ayuda</span>
+                    </x-secondary-button>
+
                     <!-- User Dropdown -->
                     <div x-data="{ open: false }" class="relative">
                         @php
@@ -99,12 +107,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Help Button -->
-                    <x-secondary-button href="#" class="h-8 w-8 md:h-auto md:w-auto md:px-3 md:py-2">
-                        <i class="ph ph-question text-xl"></i>
-                        <span class="hidden sm:inline">Ayuda</span>
-                    </x-secondary-button>
                 </div>
             </div>
         </header>
@@ -139,7 +141,7 @@
 
 <!-- Mobile Footer Actions -->
 @hasSection('footer_actions')
-<div class="block md:hidden fixed bottom-0 left-0 w-full bg-sigedra-light-colored-bg border-t p-4 z-20">
+<div class="block md:hidden fixed bottom-0 left-0 w-full bg-sigedra-light-bg border-t p-4 z-20">
     <div class="container mx-auto">
         @yield('footer_actions')
     </div>
