@@ -3,37 +3,45 @@
 @section('title', 'Detalles del Estudiante')
 
 @section('breadcrumbs')
-<div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
-    <a href="{{ route('estudiantes.index') }}" class="hover:text-sigedra-text-dark">Estudiantes</a>
+<div class="text-base text-gray-500 whitespace-nowrap truncate">
+    <a href="{{ route('estudiantes.index') }}" class="hover:text-gray-700">Estudiantes</a>
     <span class="mx-2">/</span>
-    <span class="font-semibold text-sigedra-primary">{{ $student->nombre_completo }}</span>
+    <span class="font-semibold text-indigo-600">{{ $student->nombre_completo }}</span>
 </div>
 @endsection
 
 @section('content')
 <div class="space-y-6">
     <!-- Card de Perfil del Estudiante -->
-    <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
         <div class="flex flex-col md:flex-row items-start gap-6">
             <!-- Avatar -->
             <div class="flex-shrink-0">
-                <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-sigedra-primary text-white">
+                <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-indigo-600 text-white">
                     <span class="text-3xl font-bold">{{ $student->avatar_initials }}</span>
                 </span>
             </div>
 
             <!-- Información Principal -->
             <div class="flex-grow">
-                <h1 class="text-3xl font-bold text-sigedra-primary">{{ $student->nombre_completo }}</h1>
-                <p class="mt-1 text-base text-sigedra-text-medium">
+                <h1 class="text-3xl font-bold text-gray-900">{{ $student->nombre_completo }}</h1>
+                <p class="mt-1 text-base text-gray-600">
                     Cédula: {{ $student->cedula }}
-                    @if($student->grados->isNotEmpty())
-                    <span class="mx-2">|</span> Grado Actual: <strong>{{ $student->grados->last()->nivelAcademico->nombre }}</strong>
+                    @if($grado_actual)
+                        <span class="mx-2">|</span>
+                        Grado Actual: <strong>{{ $grado_actual->nivelAcademico->nombre }}</strong>
                     @endif
                 </p>
                 <div class="mt-3 flex items-center gap-x-3">
-                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">Activo</span>
-                    {{-- Lógica para adecuación podría ir aquí --}}
+                    @if($student->activo)
+                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                            Activo
+                        </span>
+                    @else
+                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                            Inactivo
+                        </span>
+                    @endif
                 </div>
             </div>
 
@@ -43,12 +51,39 @@
                     <i class="ph ph-printer text-lg"></i>
                     <span>Imprimir</span>
                 </x-secondary-button>
-                <x-primary-button as="a" href="#">
+                <x-secondary-button href="{{ route('estudiantes.edit', $student) }}" title="Editar Estudiante">
                     <i class="ph ph-pencil-simple text-lg"></i>
-                    <span>Editar</span>
-                </x-primary-button>
+                </x-secondary-button>
             </div>
         </div>
+    </div>
+
+    <!-- Información Adicional -->
+    <div class="bg-white border border-gray-200 rounded-lg p-6">
+        <h2 class="text-xl font-semibold mb-4">Información Personal</h2>
+        <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Fecha de Nacimiento</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ $student->fecha_nacimiento->format('d/m/Y') }} ({{ $student->edad }} años)</dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Género</dt>
+                <dd class="mt-1 text-sm text-gray-900">
+                    @if($student->genero == 'M') Masculino
+                    @elseif($student->genero == 'F') Femenino
+                    @else Otro
+                    @endif
+                </dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Nacionalidad</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ $student->nacionalidad ?? 'No especificada' }}</dd>
+            </div>
+            <div>
+                <dt class="text-sm font-medium text-gray-500">Dirección</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ $student->direccion ?? 'No especificada' }}</dd>
+            </div>
+        </dl>
     </div>
 </div>
 @endsection

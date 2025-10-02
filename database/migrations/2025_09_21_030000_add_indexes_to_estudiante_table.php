@@ -12,9 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('estudiante', function (Blueprint $table) {
-                        
-                        // Índice compuesto para búsquedas múltiples (opcional pero recomendado)
-                                            });
+            // Índice compuesto para búsquedas por nombre y apellido
+            $table->index(['primer_apellido', 'segundo_apellido', 'primer_nombre']);
+
+            // Índice compuesto para filtrar activos por fecha
+            $table->index(['activo', 'fecha_nacimiento']);
+        });
     }
 
     /**
@@ -23,7 +26,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('estudiante', function (Blueprint $table) {
-            // No indexes were created in the up() method, so nothing to drop here.
+            $table->dropIndex(['primer_apellido', 'segundo_apellido', 'primer_nombre']);
+            $table->dropIndex(['activo', 'fecha_nacimiento']);
         });
     }
 };
