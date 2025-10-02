@@ -22,7 +22,7 @@
         <span>Información de maestro</span>
     </div>
 
-    <div class="flex-shrink-0 flex gap-3">
+    <div class="flex-shrink-0 flex flex-col w-full md:flex-row md:w-auto gap-3">
         <x-primary-button  as="a" href="#">
             <i class="ph ph-pencil-simple text-lg"></i>
             <span>Editar Información</span>
@@ -55,7 +55,7 @@
 
                             <div class="sm:col-span-2">Nacionalidad: {{$maestro->nacionalidad }}</div>
 
-                            <div class="sm:col-span-2">Correo: c.rojas@example.com</div>
+                            <div class="sm:col-span-2">Correo: {{ $maestro->user->email ?? 'No asignada' }}</div>
                         </div>
 
                         <p class="mt-1 text-base text-sigedra-text-medium">
@@ -84,7 +84,7 @@
     </div>
 
 <x-card-header title="Información de cursos">
-    <x-primary-button as="a" href="#">
+    <x-primary-button as="a" href="#" class="w-full justify-center md:w-auto">
         <i class="ph ph-pencil-simple text-lg"></i>
         <span>Editar Cursos</span>
     </x-primary-button>
@@ -97,6 +97,6 @@
     </div>
 </div>
 
-
 @endsection
+
 

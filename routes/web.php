@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('estudiantes/{estudiante}', [EstudianteController::class, 'destroy'])->name('estudiantes.destroy');
 
     //Maestro
-    Route::resource('maestros', MaestroController::class)->only(['index', 'show', 'create', 'store']);
+    Route::resource('maestros', MaestroController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
