@@ -37,7 +37,7 @@ Route::middleware('auth')->group(function () {
     Route::get('estudiantes/{estudiante}', [EstudianteController::class, 'show'])->name('estudiantes.show');
 
     //Maestro
-    Route::resource('maestros', MaestroController::class)->only(['index', 'show', 'create', 'store']);
+    Route::resource('maestros', MaestroController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');

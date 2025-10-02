@@ -21,7 +21,7 @@
                                <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}" title="Ver informacion">
                                     <i class="ph ph-eye text-lg"></i>
                                </x-secondary-button>
-                                <x-secondary-button href="#" title="Editar Maestro"><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button>
+                                <x-secondary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}" title="Editar Maestro"><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button>
                                 <x-danger-button x-data="" x-on:click.prevent="$dispatch('open-modal', 'confirm-student-deletion-{{ $maestro->id }}')" title="Eliminar Maestro"><i class="ph ph-trash text-lg"></i></x-danger-button>
                             </div>
                         </td>

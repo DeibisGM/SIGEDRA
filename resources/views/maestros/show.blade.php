@@ -55,7 +55,7 @@
 
                             <div class="sm:col-span-2">Nacionalidad: {{$maestro->nacionalidad }}</div>
 
-                            <div class="sm:col-span-2">Correo: c.rojas@example.com</div>
+                            <div class="sm:col-span-2">Correo: {{ $maestro->user->email ?? 'No asignada' }}</div>
                         </div>
 
                         <p class="mt-1 text-base text-sigedra-text-medium">

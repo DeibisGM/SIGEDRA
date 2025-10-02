@@ -32,7 +32,8 @@ class MaestroController extends Controller
 
     public function create(): View
     {
-        return view('maestros.create');
+        $maestro = null;
+        return view('maestros.create', compact('maestro'));
     }
 
     public function edit(Maestro $maestro): View
