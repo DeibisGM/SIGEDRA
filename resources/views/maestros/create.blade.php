@@ -180,10 +180,13 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
                     @enderror
                 </div>
             </div>
+        </div>
 
+        {{-- 3. Card: Nombramientos --}}
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
             {{-- Nombramiento --}}
-            <div class="mt-8 border-t border-gray-200 pt-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Nombramiento asignado al maestro</h3>
+            <div >
+                <h3 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Nombramiento asignado al maestro</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                     {{-- Fecha de nombramiento Inicio--}}
@@ -223,11 +226,14 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 </div>
             </div>
+        </div>
 
-            @if ($isEdit)
+        {{-- 4. Card: Datos criticos --}}
+        @if ($isEdit)
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
             {{-- Datos criticos --}}
-            <div class="mt-8 border-t border-gray-200 pt-6">
-                <h3 class="text-lg font-medium text-gray-900 mb-4">Datos de acceso al sistema</h3>
+            <div >
+                <h3 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Datos de acceso al sistema</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
 
                     {{-- Contrasena --}}
@@ -297,8 +303,8 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 </div>
             </div>
-            @endif
         </div>
+        @endif
 </div>
 </form>
 </div>
@@ -314,7 +320,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
         <x-primary-button as="button" type="button" onclick="document.getElementById('maestro-form').submit()" class="flex-grow justify-center">
             <i class="{{ $buttonIcon }} text-lg"></i>
-            <span>{{ $buttonText }}</span>
+            <span> Guardar </span>
         </x-primary-button>
     </div>
 </div>
