@@ -15,7 +15,7 @@
                     <x-input-label for="start_date">Fecha de inicio</x-input-label>
                     <div class="relative max-w-sm mt-1">
                         <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
-                            <i class="ph ph-calendar w-4 h-4 text-sigedra-text-medium"></i>
+                            <i class="ph ph-calendar-blank w-4 h-4 text-sigedra-text-medium"></i>
                         </div>
                         <input id="start_date" type="text" class="custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off" wire:model.defer="startDate">
                     </div>
@@ -24,7 +24,7 @@
                     <x-input-label for="end_date">Fecha de fin</x-input-label>
                     <div class="relative max-w-sm mt-1">
                         <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
-                            <i class="ph ph-calendar w-4 h-4 text-sigedra-text-medium"></i>
+                            <i class="ph ph-calendar-blank w-4 h-4 text-sigedra-text-medium"></i>
                         </div>
                         <input id="end_date" type="text" class="custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off" wire:model.defer="endDate">
                     </div>

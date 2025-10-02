@@ -15,15 +15,15 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
-    <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col justify-center items-center bg-gray-100">
+    <body class="font-sans text-gray-900 antialiased grainy-background">
+        <div class="min-h-screen flex flex-col justify-center items-center px-4">
             <div class="mb-6">
                 <a href="/">
                     <img src="{{ asset('images/logo.svg') }}" alt="Logo de SIGEDRA" class="w-32" />
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="w-full sm:max-w-md mt-6 px-6 py-6 bg-white overflow-hidden sm:rounded-lg border border-gray-200">
                 {{ $slot }}
             </div>
         </div>

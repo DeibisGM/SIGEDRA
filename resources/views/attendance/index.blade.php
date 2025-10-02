@@ -19,7 +19,7 @@
         x-data=""
         x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
     >
-        <i class="ph ph-plus-circle text-lg"></i>
+        <i class="ph ph-plus text-base"></i>
         <span>Pasar Nueva Asistencia</span>
     </x-primary-button>
 
@@ -32,7 +32,7 @@
     x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
     class="w-full md:hidden py-3"
 >
-    <i class="ph ph-plus-circle text-lg"></i>
+    <i class="ph ph-plus text-base"></i>
     <span>Pasar Nueva Asistencia</span>
 </x-primary-button>
 
