@@ -28,6 +28,7 @@ class GestionEstudiantes extends Component
     {
         $estudiantes = $this->isReady
             ? Estudiante::query()
+                ->where('activo', true) // <-- Solo estudiantes activos
                 ->when($this->search, function ($query) {
                     $query->where('primer_nombre', 'like', '%' . $this->search . '%')
                         ->orWhere('primer_apellido', 'like', '%' . $this->search . '%')
