@@ -14,7 +14,7 @@
                 @forelse ($maestros as $maestro)
                     <tr class="bg-white hover:bg-gray-50">
                         <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->primer_nombre }} {{ $maestro->primer_apellido }}</td>
-                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->correo }}</td>
+                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->email ?? 'N/A' }}</td>
                         <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->cedula ?? 'N/A' }}</td>
                         <td class="px-6 py-3 text-base font-medium">
                             <div class="w-full flex items-center justify-center">
