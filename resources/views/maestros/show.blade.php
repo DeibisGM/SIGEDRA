@@ -10,26 +10,38 @@
 </div>
 @endsection
 
-@section('content')
+@section('module_title')
+<div class="flex items-center space-x-2">
+    <a href="{{ route('maestros.index') }}"
+       class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
+       title="Volver al listado">
+        <i class="ph ph-arrow-left"></i>
+    </a>
+    <h1 class="text-xl font-semibold">Información de maestro</h1>
+</div>
+@endsection
 
-<h1 class="text-xl font-bold text-gray-800 leading-tight flex items-center justify-between my-4">
-    <div class="flex items-center space-x-2">
-        <a href="{{ route('maestros.index') }}"
-           class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
-           title="Volver al listado">
-            <i class="ph ph-arrow-left"></i>
-        </a>
-        <span>Información de maestro</span>
-    </div>
 
-    <div class="flex-shrink-0 flex flex-col w-full md:flex-row md:w-auto gap-3">
-        <x-primary-button  as="a" href="#">
+@section('header_actions')
+<div class="flex items-center justify-between mt-4 gap-3 w-full">
+    <div class="flex-shrink-0 flex flex-col md:flex-row md:w-auto gap-3">
+        <x-primary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}">
             <i class="ph ph-pencil-simple text-lg"></i>
             <span>Editar Información</span>
         </x-primary-button>
     </div>
-</h1>
+</div>
+@endsection
 
+
+@section('content')
+@if (session('success'))
+<x-flash-message type="success" :message="session('success')" />
+@endif
+
+@if (session('error'))
+<x-flash-message type="error" :message="session('error')" />
+@endif
 
     <div class="space-y-6">
         <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
@@ -84,7 +96,7 @@
     </div>
 
 <x-card-header title="Información de cursos">
-    <x-primary-button as="a" href="#" class="w-full justify-center md:w-auto">
+    <x-primary-button as="a" href="#" class="hidden md:w-auto md:inline-flex justify-center">
         <i class="ph ph-pencil-simple text-lg"></i>
         <span>Editar Cursos</span>
     </x-primary-button>

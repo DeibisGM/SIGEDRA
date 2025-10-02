@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class MaestroRequest extends FormRequest
 {
@@ -11,7 +12,14 @@ class MaestroRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    protected function getUserIdToIgnore()
+    {
+        $maestro = $this->route('maestro');
+
+        return $maestro && $maestro->user ? $maestro->user->id : null;
+    }
+
+    public function storeRules(): array
     {
         return [
 
@@ -26,14 +34,50 @@ class MaestroRequest extends FormRequest
 
             'telefono' => ['required', 'regex:/^[78624]\d{7}$/',],
 
-            'correo' => ['required', 'email:rfc,dns', 'max:100', 'unique:maestro,correo'],
+            'correo' => ['required', 'email:rfc,dns', 'max:100', 'unique:users,email'],
 
             'nombramiento_inicio' => ['required', 'date'],
 
             'nombramiento_final' => ['required', 'date', 'after_or_equal:nombramiento_inicio'],
 
         ];
+    }
 
+    public function updateRules(): array
+    {
+        $maestro_user_id = $this->getUserIdToIgnore();
+
+        return [
+
+            'primer_nombre' => ['required', 'string', 'max:25', 'alpha_spaces'],
+            'segundo_nombre' => ['nullable', 'string', 'max:25', 'alpha_spaces'],
+            'primer_apellido' => ['required', 'string', 'max:25', 'alpha_spaces'],
+            'segundo_apellido' => ['nullable', 'string', 'max:25', 'alpha_spaces'],
+
+            'nacionalidad' => ['required', 'string', 'max:25', 'alpha_spaces'],
+
+            'telefono' => ['required', 'regex:/^[78624]\d{7}$/',],
+
+            'correo' => ['required', 'email:rfc,dns', 'max:100', Rule::unique('users', 'email')->ignore($maestro_user_id),],
+
+            'nombramiento_inicio' => ['required', 'date'],
+
+            'nombramiento_final' => ['required', 'date', 'after_or_equal:nombramiento_inicio'],
+
+            'password' => ['nullable', 'string', 'max:12', 'confirmed'],
+            'password_confirmation' => ['nullable', 'string', 'max:12', 'required_with:password'],
+
+            'activo' => ['required'],
+        ];
+    }
+
+    public function rules(): array
+    {
+        if ($this->isMethod('POST')) {
+            return $this->storeRules();
+        }
+
+        return $this->updateRules();
     }
 
     public function messages(): array
@@ -69,6 +113,9 @@ class MaestroRequest extends FormRequest
 
             'nacionalidad.alpha_spaces' => 'La nacionalidad solo debe contener letras y espacios.',
             'nacionalidad.required' => 'Por favor, ingrese la nacionalidad.',
+
+            'password_confirmation' => 'La contraseña no coincide.',
+            'password' => 'La contraseña no coincide.',
         ];
     }
 

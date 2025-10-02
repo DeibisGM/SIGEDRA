@@ -39,11 +39,12 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 @section('content')
 <div class="w-full">
 
+    @if (session('success'))
+    <x-flash-message type="success" :message="session('success')" />
+    @endif
+
     @if (session('error'))
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-        <strong class="font-bold">¡Error del Sistema!</strong>
-        <span class="block sm:inline">{{ session('error') }}</span>
-    </div>
+    <x-flash-message type="error" :message="session('error')" />
     @endif
 
     <form action="{{ $isEdit ? route('maestros.update', $maestro) : route('maestros.store') }}" id="maestro-form" method="POST" class="space-y-4">
@@ -237,7 +238,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
 
                     {{-- Contrasena --}}
-                    <div x-data="{ showPasswordFields: false }" class="pt-1">
+                    <div x-data="{ showPasswordFields: @json($errors->has('password') || $errors->has('password_confirmation')) }" class="pt-1">
                         <x-input-label value="Actualizar contraseña" />
 
                         <div class="mb-4">

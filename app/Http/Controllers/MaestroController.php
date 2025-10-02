@@ -75,6 +75,7 @@ class MaestroController extends Controller
 
             // b) Eliminamos la cédula, ya que la tabla 'maestro' NO tiene columna 'cedula'
             unset($datosValidados['cedula']);
+            unset($datosValidados['correo']);
 
             $usuariorol = UsuarioRol::create(['usuario_id' => $user->id, 'rol_id' => 2,]);
 
@@ -98,6 +99,43 @@ class MaestroController extends Controller
             }
 
             return back()->withInput()->with('error', 'Hubo un error al guardar el maestro o su usuario. Inténtelo de nuevo.');
+        }
+    }
+
+    public function update(MaestroRequest $request, Maestro $maestro)
+    {
+        $datosValidados = $request->validated();
+
+        try {
+
+            $nombreCompleto = trim($datosValidados['primer_nombre'] . ' ' . $datosValidados['primer_apellido']);
+
+            $userData = [
+                'name' => $nombreCompleto,
+                'email' => $datosValidados['correo'],
+                'activo' => $datosValidados['activo'],
+            ];
+
+            if (!empty($datosValidados['password'])) {
+                $userData['password'] = Hash::make($datosValidados['password']);
+            }
+
+            $maestro->user->update($userData);
+
+            unset($datosValidados['cedula']);
+            unset($datosValidados['correo']);
+            unset($datosValidados['password']);
+            unset($datosValidados['password_confirmation']);
+
+            $maestro->update($datosValidados);
+
+            return redirect()
+                ->route('maestros.show', $maestro)
+                ->with('success', 'El maestro y su usuario de acceso fueron actualizados exitosamente.');
+
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with('error', 'Hubo un error al actualizar el maestro o su usuario. Inténtelo de nuevo.');
         }
     }
 
