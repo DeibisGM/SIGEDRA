@@ -8,9 +8,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class CargaAcademica extends Model
 {
     protected $table = 'carga_academica';
+
     public $timestamps = false;
 
     protected $fillable = ['maestro_id', 'materia_id', 'grado_id', 'activo'];
+
     protected $casts = ['activo' => 'boolean'];
 
     public function maestro(): BelongsTo

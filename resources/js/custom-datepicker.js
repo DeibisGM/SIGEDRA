@@ -14,6 +14,10 @@ export function initDatepickers() {
             return;
         }
 
+        // Si el datepicker está dentro de un modal, su contenedor debe ser el body
+        // para que se muestre por encima del modal.
+        const inModal = element.closest('.fixed.z-50');
+
         const datepicker = new Datepicker(element, {
 
             buttons: true,
@@ -22,8 +26,10 @@ export function initDatepickers() {
             language: 'es',
             todayBtn: true,
             clearBtn: true,
+            todayBtnMode: 1, // 1 = select today's date
+            offset: 10, // 10px padding
 
-            container: '#main-content-area',
+            container: inModal ? null : '#main-content-area',
         });
 
         element.addEventListener('changeDate', function (e) {

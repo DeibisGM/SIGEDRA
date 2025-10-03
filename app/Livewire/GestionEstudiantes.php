@@ -11,7 +11,9 @@ class GestionEstudiantes extends Component
     use WithPagination;
 
     public bool $isReady = false;
+
     public int $perPage = 10;
+
     public string $search = '';
 
     public function loadEstudiantes(): void
@@ -30,9 +32,9 @@ class GestionEstudiantes extends Component
             ? Estudiante::query()
                 ->where('activo', true) // <-- Solo estudiantes activos
                 ->when($this->search, function ($query) {
-                    $query->where('primer_nombre', 'like', '%' . $this->search . '%')
-                        ->orWhere('primer_apellido', 'like', '%' . $this->search . '%')
-                        ->orWhere('cedula', 'like', '%' . $this->search . '%');
+                    $query->where('primer_nombre', 'like', '%'.$this->search.'%')
+                        ->orWhere('primer_apellido', 'like', '%'.$this->search.'%')
+                        ->orWhere('cedula', 'like', '%'.$this->search.'%');
                 })
                 ->paginate($this->perPage)
             : [];

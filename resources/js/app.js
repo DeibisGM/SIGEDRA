@@ -5,6 +5,7 @@ import Alpine from 'alpinejs';
 import { initDatepickers } from './custom-datepicker.js';
 
 window.Alpine = Alpine;
+window.initDatepickers = initDatepickers;
 
 document.addEventListener('DOMContentLoaded', function () {
     initDatepickers();

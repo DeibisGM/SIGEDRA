@@ -12,6 +12,7 @@ class Grado extends Model
     use HasFactory;
 
     protected $table = 'grado';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -33,6 +34,7 @@ class Grado extends Model
     {
         return $this->belongsTo(NivelAcademico::class, 'nivel_academico_id');
     }
+
     /**
      * Relación muchos a muchos con Estudiante
      * Un grado puede tener muchos estudiantes
@@ -46,5 +48,4 @@ class Grado extends Model
             'estudiante_id'                  // FK de estudiante en la pivote
         );
     }
-
 }

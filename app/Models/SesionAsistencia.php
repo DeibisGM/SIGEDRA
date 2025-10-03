@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SesionAsistencia extends Model
 {
     protected $table = 'sesion_asistencia';
+
     public $timestamps = false;
 
     protected $fillable = ['carga_academica_id', 'fecha'];
+
     protected $casts = ['fecha' => 'date'];
 
     public function cargaAcademica(): BelongsTo

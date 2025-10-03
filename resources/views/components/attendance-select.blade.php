@@ -1,3 +1,5 @@
+{{-- resources/views/components/attendance-select.blade.php --}}
+
 <div class="relative">
     <select hidden data-hs-select='{
         "placeholder": "Seleccionar estado",

@@ -39,15 +39,8 @@
                         <i class="ph ph-list text-xl"></i>
                     </button>
                     <!-- Breadcrumbs -->
-                    <div x-show="!isViewingSession" class="w-full text-base text-sigedra-text-medium whitespace-nowrap truncate">
+                    <div id="breadcrumbs-container" class="w-full text-base text-sigedra-text-medium whitespace-nowrap truncate">
                         @yield('breadcrumbs')
-                    </div>
-                    <div x-show="isViewingSession" x-cloak class="w-full text-base text-sigedra-text-medium whitespace-nowrap truncate">
-                        <a href="{{ route('attendance.index') }}" class="hover:text-sigedra-text-dark">Asistencia</a>
-                        <span class="mx-2">/</span>
-                        <span @click="$dispatch('close-session-view')" class="cursor-pointer hover:text-sigedra-text-dark">Historial de asistencia</span>
-                        <span class="mx-2">/</span>
-                        <span x-text="sessionId"></span>
                     </div>
                 </div>
                 <div class="ms-4 flex items-center gap-x-2 md:gap-x-4">
@@ -118,9 +111,11 @@
                     <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">
                         @yield('module_title')
                     </h1>
+                    @if(Request::route()->getName() !== 'dashboard')
                     <p class="text-base text-sigedra-text-medium mt-1">
                         @yield('module_subtitle')
                     </p>
+                    @endif
                 </div>
                 <div class="hidden sm:block">
                     @yield('header_actions')

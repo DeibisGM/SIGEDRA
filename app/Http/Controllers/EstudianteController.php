@@ -4,12 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Estudiante;
 use App\Models\Grado;
-use Illuminate\Http\Request;
-use Illuminate\View\View;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+use Illuminate\View\View;
 
 class EstudianteController extends Controller
 {
@@ -38,111 +38,111 @@ class EstudianteController extends Controller
     /**
      * Guarda un nuevo estudiante y lo asigna a un grado
      */
-   public function store(Request $request): RedirectResponse
-   {
-       // Validación
-       $validated = $request->validate([
-           // Datos de identidad
-           'cedula' => 'required|string|max:20|unique:estudiante,cedula',
+    public function store(Request $request): RedirectResponse
+    {
+        // Validación
+        $validated = $request->validate([
+            // Datos de identidad
+            'cedula' => 'required|string|max:20|unique:estudiante,cedula',
 
-           // Datos personales
-           'primer_nombre' => 'required|string|max:100',
-           'segundo_nombre' => 'nullable|string|max:100',
-           'primer_apellido' => 'required|string|max:100',
-           'segundo_apellido' => 'nullable|string|max:100',
-           'fecha_nacimiento' => 'required|date|before:today|after:1900-01-01',
-           'genero' => 'required|in:M,F,O',
-           'nacionalidad' => 'nullable|string|max:100',
+            // Datos personales
+            'primer_nombre' => 'required|string|max:100',
+            'segundo_nombre' => 'nullable|string|max:100',
+            'primer_apellido' => 'required|string|max:100',
+            'segundo_apellido' => 'nullable|string|max:100',
+            'fecha_nacimiento' => 'required|date|before:today|after:1900-01-01',
+            'genero' => 'required|in:M,F,O',
+            'nacionalidad' => 'nullable|string|max:100',
 
-           // Dirección
-           'provincia' => 'nullable|string|max:100',
-           'canton' => 'nullable|string|max:100',
-           'distrito' => 'nullable|string|max:100',
-           'direccion_exacta' => 'nullable|string|max:500',
+            // Dirección
+            'provincia' => 'nullable|string|max:100',
+            'canton' => 'nullable|string|max:100',
+            'distrito' => 'nullable|string|max:100',
+            'direccion_exacta' => 'nullable|string|max:500',
 
-           // Asignación académica
-           'grado_id' => 'required|exists:grado,id',
+            // Asignación académica
+            'grado_id' => 'required|exists:grado,id',
 
-           // Adecuación curricular
-           'necesita_adecuacion' => 'nullable|boolean',
-           'adecuacion_id' => 'required_if:necesita_adecuacion,1|nullable|exists:adecuacion,id',
-           'adecuacion_detalles' => 'nullable|string|max:1000',
-       ], [
-           'cedula.required' => 'La cédula es obligatoria.',
-           'cedula.unique' => 'Esta cédula ya está registrada en el sistema.',
-           'primer_nombre.required' => 'El primer nombre es obligatorio.',
-           'primer_apellido.required' => 'El primer apellido es obligatorio.',
-           'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
-           'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
-           'genero.required' => 'El género es obligatorio.',
-           'genero.in' => 'El género seleccionado no es válido.',
-           'grado_id.required' => 'Debe seleccionar un grado para el estudiante.',
-           'grado_id.exists' => 'El grado seleccionado no es válido.',
-           'adecuacion_id.required_if' => 'Debe seleccionar el tipo de adecuación.',
-       ]);
+            // Adecuación curricular
+            'necesita_adecuacion' => 'nullable|boolean',
+            'adecuacion_id' => 'required_if:necesita_adecuacion,1|nullable|exists:adecuacion,id',
+            'adecuacion_detalles' => 'nullable|string|max:1000',
+        ], [
+            'cedula.required' => 'La cédula es obligatoria.',
+            'cedula.unique' => 'Esta cédula ya está registrada en el sistema.',
+            'primer_nombre.required' => 'El primer nombre es obligatorio.',
+            'primer_apellido.required' => 'El primer apellido es obligatorio.',
+            'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
+            'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
+            'genero.required' => 'El género es obligatorio.',
+            'genero.in' => 'El género seleccionado no es válido.',
+            'grado_id.required' => 'Debe seleccionar un grado para el estudiante.',
+            'grado_id.exists' => 'El grado seleccionado no es válido.',
+            'adecuacion_id.required_if' => 'Debe seleccionar el tipo de adecuación.',
+        ]);
 
-       try {
-           DB::beginTransaction();
+        try {
+            DB::beginTransaction();
 
-           // Construir dirección completa
-           $direccion_completa = $this->construirDireccion(
-               $validated['provincia'] ?? null,
-               $validated['canton'] ?? null,
-               $validated['distrito'] ?? null,
-               $validated['direccion_exacta'] ?? null
-           );
+            // Construir dirección completa
+            $direccion_completa = $this->construirDireccion(
+                $validated['provincia'] ?? null,
+                $validated['canton'] ?? null,
+                $validated['distrito'] ?? null,
+                $validated['direccion_exacta'] ?? null
+            );
 
-           // 1. Crear el estudiante
-           $estudiante = Estudiante::create([
-               'cedula' => $validated['cedula'],
-               'primer_nombre' => ucfirst(strtolower(trim($validated['primer_nombre']))),
-               'segundo_nombre' => $validated['segundo_nombre']
-                   ? ucfirst(strtolower(trim($validated['segundo_nombre'])))
-                   : null,
-               'primer_apellido' => ucfirst(strtolower(trim($validated['primer_apellido']))),
-               'segundo_apellido' => $validated['segundo_apellido']
-                   ? ucfirst(strtolower(trim($validated['segundo_apellido'])))
-                   : null,
-               'fecha_nacimiento' => $validated['fecha_nacimiento'],
-               'genero' => $validated['genero'],
-               'nacionalidad' => $validated['nacionalidad'] ?? null,
-               'direccion' => $direccion_completa,
-               'activo' => true,
-           ]);
+            // 1. Crear el estudiante
+            $estudiante = Estudiante::create([
+                'cedula' => $validated['cedula'],
+                'primer_nombre' => ucfirst(strtolower(trim($validated['primer_nombre']))),
+                'segundo_nombre' => $validated['segundo_nombre']
+                    ? ucfirst(strtolower(trim($validated['segundo_nombre'])))
+                    : null,
+                'primer_apellido' => ucfirst(strtolower(trim($validated['primer_apellido']))),
+                'segundo_apellido' => $validated['segundo_apellido']
+                    ? ucfirst(strtolower(trim($validated['segundo_apellido'])))
+                    : null,
+                'fecha_nacimiento' => $validated['fecha_nacimiento'],
+                'genero' => $validated['genero'],
+                'nacionalidad' => $validated['nacionalidad'] ?? null,
+                'direccion' => $direccion_completa,
+                'activo' => true,
+            ]);
 
-           // 2. Asignar el estudiante al grado seleccionado
-           $estudiante->grados()->attach($validated['grado_id']);
+            // 2. Asignar el estudiante al grado seleccionado
+            $estudiante->grados()->attach($validated['grado_id']);
 
-           // 3. Guardar adecuación si aplica
-           if ($request->boolean('necesita_adecuacion') && !empty($validated['adecuacion_id'])) {
-               DB::table('asignacion_estudiante_adecuacion')->insert([
-                   'estudiante_id' => $estudiante->id,
-                   'adecuacion_id' => $validated['adecuacion_id'],
-                   'nivel' => $validated['adecuacion_detalles'] ?? null,
-                   'fecha_asignacion' => Carbon::now(),
-                   'activo' => true,
-               ]);
-           }
+            // 3. Guardar adecuación si aplica
+            if ($request->boolean('necesita_adecuacion') && ! empty($validated['adecuacion_id'])) {
+                DB::table('asignacion_estudiante_adecuacion')->insert([
+                    'estudiante_id' => $estudiante->id,
+                    'adecuacion_id' => $validated['adecuacion_id'],
+                    'nivel' => $validated['adecuacion_detalles'] ?? null,
+                    'fecha_asignacion' => Carbon::now(),
+                    'activo' => true,
+                ]);
+            }
 
-           DB::commit();
+            DB::commit();
 
-           return redirect()
-               ->route('estudiantes.show', $estudiante)
-               ->with('success', "¡Estudiante {$estudiante->nombre_completo} registrado exitosamente!");
+            return redirect()
+                ->route('estudiantes.show', $estudiante)
+                ->with('success', "¡Estudiante {$estudiante->nombre_completo} registrado exitosamente!");
 
-       } catch (\Exception $e) {
-           DB::rollBack();
+        } catch (\Exception $e) {
+            DB::rollBack();
 
-           Log::error('Error al crear estudiante', [
-               'error' => $e->getMessage(),
-               'trace' => $e->getTraceAsString(),
-           ]);
+            Log::error('Error al crear estudiante', [
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
 
-           return back()
-               ->withInput()
-               ->with('error', 'Ocurrió un error al registrar el estudiante. Por favor, intente nuevamente.');
-       }
-   }
+            return back()
+                ->withInput()
+                ->with('error', 'Ocurrió un error al registrar el estudiante. Por favor, intente nuevamente.');
+        }
+    }
 
     /**
      * Muestra los detalles de un estudiante específico
@@ -152,7 +152,7 @@ class EstudianteController extends Controller
         // Cargar relaciones necesarias
         $estudiante->load([
             'grados.nivelAcademico',
-            'grados.anioAcademico'
+            'grados.anioAcademico',
         ]);
 
         // Obtener grado actual (el último asignado)
@@ -191,7 +191,7 @@ class EstudianteController extends Controller
     {
         // Validación (cédula única excepto para el estudiante actual)
         $validated = $request->validate([
-            'cedula' => 'required|string|max:20|unique:estudiante,cedula,' . $estudiante->id,
+            'cedula' => 'required|string|max:20|unique:estudiante,cedula,'.$estudiante->id,
             'primer_nombre' => 'required|string|max:100',
             'segundo_nombre' => 'nullable|string|max:100',
             'primer_apellido' => 'required|string|max:100',
@@ -243,11 +243,11 @@ class EstudianteController extends Controller
             ]);
 
             // Manejar cambio de grado
-            if (!empty($validated['grado_id'])) {
+            if (! empty($validated['grado_id'])) {
                 $grado_actual = $estudiante->grados()->first();
 
                 // Solo actualizar si es diferente al actual
-                if (!$grado_actual || $grado_actual->id != $validated['grado_id']) {
+                if (! $grado_actual || $grado_actual->id != $validated['grado_id']) {
                     // Eliminar el grado actual
                     if ($grado_actual) {
                         $estudiante->grados()->detach($grado_actual->id);
@@ -326,7 +326,7 @@ class EstudianteController extends Controller
                 ->with('success', 'Estudiante reactivado exitosamente.');
 
         } catch (\Exception $e) {
-            Log::error('Error al reactivar estudiante: ' . $e->getMessage());
+            Log::error('Error al reactivar estudiante: '.$e->getMessage());
 
             return back()
                 ->with('error', 'Ocurrió un error al reactivar el estudiante.');
@@ -339,7 +339,7 @@ class EstudianteController extends Controller
     public function buscarPorCedula(Request $request)
     {
         $request->validate([
-            'cedula' => 'required|string'
+            'cedula' => 'required|string',
         ]);
 
         $estudiante = Estudiante::where('cedula', $request->cedula)
@@ -364,13 +364,13 @@ class EstudianteController extends Controller
                     'direccion' => $estudiante->direccion,
                     'activo' => $estudiante->activo,
                     'grado_actual' => optional($estudiante->gradoActual()->first())->nombre,
-                ]
+                ],
             ]);
         }
 
         return response()->json([
             'encontrado' => false,
-            'mensaje' => 'No se encontró ningún estudiante con esa cédula.'
+            'mensaje' => 'No se encontró ningún estudiante con esa cédula.',
         ]);
     }
 
@@ -383,10 +383,10 @@ class EstudianteController extends Controller
             $provincia,
             $canton,
             $distrito,
-            $direccion_exacta
+            $direccion_exacta,
         ]);
 
-        return !empty($partes) ? implode(', ', $partes) : null;
+        return ! empty($partes) ? implode(', ', $partes) : null;
     }
 
     /**
