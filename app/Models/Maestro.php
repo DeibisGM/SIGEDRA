@@ -13,6 +13,7 @@ class Maestro extends Model
     use HasFactory;
 
     protected $table = 'maestro';
+
     public $timestamps = false;
 
     protected $fillable = [
@@ -47,15 +48,15 @@ class Maestro extends Model
     protected function nombreCompleto(): Attribute
     {
         return Attribute::make(
-            get: fn () => trim($this->primer_nombre . ' ' . $this->segundo_nombre . ' ' .
-                $this->primer_apellido . ' ' .  $this->segundo_apellido)
+            get: fn () => trim($this->primer_nombre.' '.$this->segundo_nombre.' '.
+                $this->primer_apellido.' '.$this->segundo_apellido)
         );
     }
 
     protected function avatarInitials(): Attribute
     {
         return Attribute::make(
-            get: fn() => mb_substr($this->primer_nombre, 0, 1) . mb_substr($this->primer_apellido, 0, 1)
+            get: fn () => mb_substr($this->primer_nombre, 0, 1).mb_substr($this->primer_apellido, 0, 1)
         );
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class BitacoraController extends Controller
@@ -22,7 +21,7 @@ class BitacoraController extends Controller
                 'color' => 'text-blue-500',
                 'user' => 'Nancy T.',
                 'user_avatar_initials' => 'NT',
-                'details' => 'Actualizó la foto de perfil.'
+                'details' => 'Actualizó la foto de perfil.',
             ],
             [
                 'timestamp' => now()->subDay()->format('Y-m-d H:i:s'),
@@ -31,7 +30,7 @@ class BitacoraController extends Controller
                 'color' => 'text-green-500',
                 'user' => 'Deibis Gutierrez',
                 'user_avatar_initials' => 'DG',
-                'details' => 'Creó al estudiante "Ana Rojas".'
+                'details' => 'Creó al estudiante "Ana Rojas".',
             ],
             [
                 'timestamp' => now()->subDay()->addHours(2)->format('Y-m-d H:i:s'),
@@ -40,7 +39,7 @@ class BitacoraController extends Controller
                 'color' => 'text-green-600',
                 'user' => 'Deibis Gutierrez',
                 'user_avatar_initials' => 'DG',
-                'details' => 'Inicio de sesión exitoso.'
+                'details' => 'Inicio de sesión exitoso.',
             ],
         ];
 

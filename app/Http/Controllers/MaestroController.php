@@ -6,13 +6,11 @@ use App\Http\Requests\MaestroRequest;
 use App\Models\Maestro;
 use App\Models\User;
 use App\Models\UsuarioRol;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class MaestroController extends Controller
 {
-
     /**
      * Muestra una lista de todos los maestros.
      */
@@ -27,18 +25,21 @@ class MaestroController extends Controller
     public function show(Maestro $maestro): View
     {
         $maestro->load('user'); // Asegura que la relación con el usuario esté cargada
+
         return view('maestros.show', compact('maestro'));
     }
 
     public function create(): View
     {
         $maestro = null;
+
         return view('maestros.create', compact('maestro'));
     }
 
     public function edit(Maestro $maestro): View
     {
         $maestro->load('user');
+
         return view('maestros.create', compact('maestro'));
     }
 
@@ -54,7 +55,7 @@ class MaestroController extends Controller
             // PASO 2: CREAR EL REGISTRO DE USUARIO (User)
             // ----------------------------------------------------
 
-            $nombreCompleto = trim($datosValidados['primer_nombre'] . ' ' . $datosValidados['primer_apellido']);
+            $nombreCompleto = trim($datosValidados['primer_nombre'].' '.$datosValidados['primer_apellido']);
 
             $user = User::create([
                 'cedula' => $datosValidados['cedula'],
@@ -64,7 +65,6 @@ class MaestroController extends Controller
                 'activo' => true,
                 // Asegúrate de que el modelo User tenga 'cedula', 'name', 'email', 'password' y 'activo' en $fillable.
             ]);
-
 
             // ----------------------------------------------------
             // PASO 3: CREAR EL REGISTRO DEL MAESTRO (Maestro)
@@ -77,7 +77,7 @@ class MaestroController extends Controller
             unset($datosValidados['cedula']);
             unset($datosValidados['correo']);
 
-            $usuariorol = UsuarioRol::create(['usuario_id' => $user->id, 'rol_id' => 2,]);
+            $usuariorol = UsuarioRol::create(['usuario_id' => $user->id, 'rol_id' => 2]);
 
             // c) Creamos el Maestro con el ID de usuario recién vinculado
             $maestro = Maestro::create($datosValidados);

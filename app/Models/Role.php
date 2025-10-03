@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Role extends Model
 {
     protected $table = 'roles';
+
     public $timestamps = false;
 
     public function users(): BelongsToMany

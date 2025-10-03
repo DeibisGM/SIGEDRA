@@ -1,16 +1,20 @@
 <?php
 
+// app/Livewire/Attendance/SessionDetail.php
+
 namespace App\Livewire\Attendance;
 
-use App\Models\SesionAsistencia;
 use App\Models\Asistencia;
+use App\Models\SesionAsistencia;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class SessionDetail extends Component
 {
     public ?SesionAsistencia $session = null;
+
     public Collection $studentDetails;
 
     public function mount(): void
@@ -25,7 +29,7 @@ class SessionDetail extends Component
             'cargaAcademica.materia',
             'cargaAcademica.grado.nivelAcademico',
             'cargaAcademica.grado.anioAcademico',
-            'cargaAcademica.maestro'
+            'cargaAcademica.maestro',
         ])->find($sessionId);
 
         if ($this->session) {
@@ -43,11 +47,15 @@ class SessionDetail extends Component
         $this->studentDetails = collect();
     }
 
-    public function editSession(): void
+    public function editSession(): ?RedirectResponse
     {
         if ($this->session) {
-            // Lógica para redirigir o abrir modal de edición
+            // Redirige a la ruta de edición con el ID de la sesión.
+            // Asegúrate de tener una ruta nombrada 'attendance.edit' en tus archivos de rutas.
+            return redirect()->route('attendance.edit', $this->session->id);
         }
+
+        return null;
     }
 
     public function render()

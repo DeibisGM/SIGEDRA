@@ -32,7 +32,7 @@ class MaestroRequest extends FormRequest
 
             'cedula' => ['required', 'string', 'max:50', 'alpha_num', 'unique:users,cedula'],
 
-            'telefono' => ['required', 'regex:/^[78624]\d{7}$/',],
+            'telefono' => ['required', 'regex:/^[78624]\d{7}$/'],
 
             'correo' => ['required', 'email:rfc,dns', 'max:100', 'unique:users,email'],
 
@@ -98,7 +98,6 @@ class MaestroRequest extends FormRequest
             'correo.required' => 'Por favor, ingrese el correo.',
             'correo.unique' => 'El correo ya se encuentra registrado a otro maestro.',
 
-
             'cedula.unique' => 'La cédula ingresada ya está registrada en el sistema.',
             'cedula.required' => 'Por favor, ingrese la identificación.',
             'cedula.alpha_num' => 'La cédula solo debe contener letras y números, sin espacios ni símbolos.',
@@ -118,5 +117,4 @@ class MaestroRequest extends FormRequest
             'password' => 'La contraseña no coincide.',
         ];
     }
-
 }

@@ -1,3 +1,5 @@
+<!-- resources/views/livewire/attendance/attendance-history.blade.php -->
+
 <div wire:init="loadAsistencias" x-data="{ filtersOpen: false }" class="relative py-5">
     <!-- Filtros -->
     <div class="flex justify-end items-center mb-4">
@@ -164,4 +166,18 @@
             </div>
         </div>
     </x-modal>
+
+    <!-- INICIO: Footer para Móviles -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
+        <x-primary-button
+            x-data=""
+            x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
+            class="w-full justify-center py-3"
+        >
+            <i class="ph ph-plus text-base"></i>
+            <span>Crear Asistencia</span>
+        </x-primary-button>
+    </div>
+    <!-- FIN: Footer para Móviles -->
+
 </div>

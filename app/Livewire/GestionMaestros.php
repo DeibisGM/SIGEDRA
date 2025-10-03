@@ -13,6 +13,7 @@ class GestionMaestros extends Component
     public function render()
     {
         $maestros = Maestro::with('user')->orderBy('primer_nombre')->paginate(10);
+
         return view('livewire.gestion-maestros', [
             'maestros' => $maestros,
         ]);
