@@ -32,7 +32,12 @@
             </x-slot:head>
             <x-slot:body>
                 @forelse ($asistencias as $asistencia)
-                <tr wire:key="asistencia-{{ $asistencia->id }}" class="hover:bg-sigedra-medium-bg transition-colors">
+                <tr wire:key="asistencia-{{ $asistencia->id }}" 
+                    class="hover:bg-sigedra-medium-bg transition-colors duration-500"
+                    x-data="{ highlighted: {{ $asistencia->id === $newAttendanceId ? 'true' : 'false' }} }"
+                    x-init="if (highlighted) { setTimeout(() => highlighted = false, 5000) }"
+                    :class="highlighted ? 'bg-sigedra-light-colored-bg' : ''">
+
                     <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark whitespace-nowrap overflow-hidden">{{ $asistencia->fecha->format('d/m/Y') }}</td>
                     <td class="px-6 py-3 text-base text-sigedra-text-dark overflow-hidden whitespace-nowrap" title="{{ $asistencia->cargaAcademica->materia->nombre }}">{{ $asistencia->cargaAcademica->materia->nombre }}</td>
                     <td class="px-6 py-3 text-base text-sigedra-text-dark overflow-hidden whitespace-nowrap" title="{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}">{{ $asistencia->cargaAcademica->grado->nivelAcademico->nombre }}</td>

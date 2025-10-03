@@ -12,7 +12,7 @@ class SesionAsistencia extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['carga_academica_id', 'fecha'];
+    protected $fillable = ['carga_academica_id', 'ciclo_id', 'fecha'];
 
     protected $casts = ['fecha' => 'date'];
 

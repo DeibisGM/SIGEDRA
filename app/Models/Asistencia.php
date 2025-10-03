@@ -15,6 +15,7 @@ class Asistencia extends Model
         'sesion_asistencia_id',
         'estudiante_id',
         'estado_asistencia_id',
+        'observaciones',
     ];
 
     public function sesionAsistencia(): BelongsTo

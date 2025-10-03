@@ -26,18 +26,25 @@ class AttendanceController extends Controller
                 ->get();
         }
 
-        return view('attendance.index', ['cargasAcademicas' => $cargasAcademicas]);
+        $tiposCiclo = DB::table('tipo_ciclo')->get();
+
+        return view('attendance.index', [
+            'cargasAcademicas' => $cargasAcademicas,
+            'tiposCiclo' => $tiposCiclo,
+        ]);
     }
 
     public function create(Request $request): View
     {
         $validated = $request->validate([
             'carga_academica_id' => 'required|exists:carga_academica,id',
+            'tipo_ciclo_id' => 'required|exists:tipo_ciclo,id',
             'fecha' => 'required|date_format:Y-m-d',
         ]);
 
         $cargaAcademicaId = $validated['carga_academica_id'];
         $fecha = $validated['fecha'];
+        $tipoCicloId = $validated['tipo_ciclo_id'];
 
         $cargaAcademica = CargaAcademica::with(['materia', 'grado.nivelAcademico', 'grado.anioAcademico'])->findOrFail($cargaAcademicaId);
 
@@ -45,6 +52,19 @@ class AttendanceController extends Controller
         if ($user->hasRole('Maestro') && $cargaAcademica->maestro_id !== $user->maestro->id) {
             abort(403, 'No tienes permiso para acceder a este curso.');
         }
+
+        // Buscar el ciclo_id
+        $ciclo = DB::table('ciclo')
+            ->where('grado_id', $cargaAcademica->grado_id)
+            ->where('tipo_ciclo_id', $tipoCicloId)
+            ->where('activo', 1)
+            ->first();
+
+        if (!$ciclo) {
+            abort(404, 'No se encontró un ciclo activo para el grado y tipo de ciclo especificado.');
+        }
+
+        $tipoCiclo = DB::table('tipo_ciclo')->find($tipoCicloId);
 
         $students = \App\Models\Estudiante::whereHas('grados', function ($query) use ($cargaAcademica) {
             $query->where('grado.id', $cargaAcademica->grado_id);
@@ -54,6 +74,8 @@ class AttendanceController extends Controller
             'cargaAcademica' => $cargaAcademica,
             'students' => $students,
             'fecha' => $fecha,
+            'ciclo_id' => $ciclo->id,
+            'cicloNombre' => $tipoCiclo->nombre,
         ]);
     }
 
@@ -64,18 +86,21 @@ class AttendanceController extends Controller
     {
         $validated = $request->validate([
             'carga_academica_id' => 'required|exists:carga_academica,id',
+            'ciclo_id' => 'required|exists:ciclo,id',
             'fecha' => 'required|date',
             'asistencias' => 'required|array',
             'asistencias.*.estado_asistencia_id' => 'required|exists:estado_asistencia,id',
             'asistencias.*.observaciones' => 'nullable|string|max:255',
         ]);
 
+        $sesionAsistencia = null;
+
         // Usamos una transacción para asegurar la integridad de los datos.
-        // Si algo falla, se revierte toda la operación.
-        DB::transaction(function () use ($validated) {
+        DB::transaction(function () use ($validated, &$sesionAsistencia) {
             // 1. Crear la sesión de asistencia
             $sesionAsistencia = SesionAsistencia::create([
                 'carga_academica_id' => $validated['carga_academica_id'],
+                'ciclo_id' => $validated['ciclo_id'],
                 'fecha' => $validated['fecha'],
             ]);
 
@@ -90,8 +115,10 @@ class AttendanceController extends Controller
             }
         });
 
-        // 3. Redirigir al historial con un mensaje de éxito
-        return redirect()->route('attendance.index')->with('success', 'Asistencia guardada correctamente.');
+        // 3. Redirigir al historial con un mensaje de éxito y el ID de la nueva asistencia
+        return redirect()->route('attendance.index')
+            ->with('success', 'Asistencia guardada correctamente.')
+            ->with('new_attendance_id', $sesionAsistencia->id);
     }
 
 

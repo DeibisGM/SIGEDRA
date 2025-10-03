@@ -32,6 +32,11 @@
 @endsection
 
 @section('content')
+@if (session('success'))
+<div x-data="{ show: true }" x-init="setTimeout(() => show = false, 5000)" x-show="show" class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+    <span class="block sm:inline">{{ session('success') }}</span>
+</div>
+@endif
 <div
     class=""
     x-data="{ viewingSession: false, sessionId: null }"
@@ -39,15 +44,15 @@
     @view-session.window="viewingSession = true; sessionId = $event.detail.sessionId"
     @close-session.window="viewingSession = false; sessionId = null"
 >
-    <div x-show="!viewingSession" x-transition.opacity.duration.300ms>
+    <div x-show="!viewingSession">
         @livewire('attendance.attendance-history')
     </div>
 
-    <div x-show="viewingSession" x-transition.opacity.duration.300ms style="display: none;">
+    <div x-show="viewingSession" style="display: none;">
         @livewire('attendance.session-detail')
     </div>
 
-    <x-pre-create-modal :cargasAcademicas="$cargasAcademicas" x-cloak class="mt-6" />
+    <x-pre-create-modal :cargasAcademicas="$cargasAcademicas" :tiposCiclo="$tiposCiclo" x-cloak class="mt-6" />
 </div>
 
 <script>

@@ -35,9 +35,12 @@ class AttendanceHistory extends Component
 
     public array $activeFilters = [];
 
+    public ?int $newAttendanceId = null;
+
     public function mount(): void
     {
         $this->applyFilters();
+        $this->newAttendanceId = session('new_attendance_id');
     }
 
     public function loadAsistencias(): void
