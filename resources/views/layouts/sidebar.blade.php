@@ -9,34 +9,64 @@
     </header>
 
     @php
+    $user = auth()->user();
+    $user->loadMissing('maestro');
+    $isMaestro = $user?->roles->contains('id', 2) ?? false;
+    $maestroModelId = $user->maestro->id ?? null;
+
     $navLinks = [
     ['route' => 'dashboard', 'active_pattern' => 'dashboard', 'icon' => 'ph-squares-four', 'label' => 'Inicio'],
     ['route' => 'attendance.index', 'active_pattern' => 'attendance.*', 'icon' => 'ph-calendar-check', 'label' => 'Asistencia'],
     ['route' => 'estudiantes.index', 'active_pattern' => 'estudiantes.*', 'icon' => 'ph-users', 'label' => 'Estudiantes'],
-    ['route' => 'maestros.index', 'active_pattern' => 'maestros.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Maestros'],
+    ['route' => 'maestros.index', 'active_pattern' => 'maestros.*', 'icon' => 'ph-chalkboard-teacher', 'label' => 'Maestros'], // Enlace base
     ['route' => 'reportes.index', 'active_pattern' => 'reportes.*', 'icon' => 'ph-chart-bar', 'label' => 'Reportes'],
     ['route' => 'bitacora.index', 'active_pattern' => 'bitacora.*', 'icon' => 'ph-book', 'label' => 'Bitácora'],
     ];
     @endphp
 
-    <!-- Navigation -->
     <nav class="flex-1 p-4 overflow-y-auto">
         <ul class="space-y-2">
             @foreach ($navLinks as $link)
+            @php
+
+            $currentActivePattern = $link['active_pattern'];
+            $currentIcon = $link['icon'];
+            $currentLabel = $link['label'];
+            $href = route($link['route']); // URL por defecto
+
+            // Logica si es el enlace de 'maestros.index'
+            if ($link['route'] === 'maestros.index' && $isMaestro) {
+
+            // Verificamos si tenemos el ID
+            if ($maestroModelId) {
+            // Sobreescribimos 'Mi Perfil'
+            $href = route('maestros.show', $maestroModelId); // ¡Pasamos el ID de la tabla MAESTROS!
+            $currentActivePattern = 'maestros.show';
+            $currentIcon = 'ph-user-circle';
+            $currentLabel = 'Mi Perfil';
+            } else {
+            // Si el usuario tiene el rol pero no tiene registro Maestro asociado
+            $href = '#';
+            }
+            }
+            $isActive = request()->routeIs($currentActivePattern);
+            @endphp
+
             <li>
-                <a href="{{ route($link['route']) }}"
+
+                <a href="{{ $href }}"
                    @class([
                 'flex items-center gap-x-3.5 py-2 px-3.5 rounded-lg text-base transition-colors duration-200',
-                'bg-sigedra-medium-bg text-sigedra-primary font-semibold' => request()->routeIs($link['active_pattern']),
-                'text-sigedra-text-light hover:bg-sigedra-medium-bg hover:text-sigedra-primary' => !request()->routeIs($link['active_pattern']),
+                'bg-sigedra-medium-bg text-sigedra-primary font-semibold' => $isActive,
+                'text-sigedra-text-light hover:bg-sigedra-medium-bg hover:text-sigedra-primary' => !$isActive,
                 ])>
-                                <i @class([
-                    'ph',
-                    $link['icon'],
-                    'text-2xl',
-                    'ph-fill' => request()->routeIs($link['active_pattern']),
+                <i @class([
+                'ph',
+                $currentIcon, // Usamos la variable de icono
+                'text-2xl',
+                'ph-fill' => $isActive,
                 ])></i>
-                <span>{{ $link['label'] }}</span>
+                <span>{{ $currentLabel }}</span> {{-- Usamos la variable de etiqueta --}}
                 </a>
             </li>
             @endforeach

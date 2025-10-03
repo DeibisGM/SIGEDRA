@@ -11,9 +11,8 @@ class Materia extends Model
 
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'activo'];
-
-    protected $casts = ['activo' => 'boolean'];
+    protected $fillable = ['tipo','nombre','descripcion', 'activo'];
+    protected $casts = ['activo' => 'boolean', 'tipo' => 'boolean'];
 
     public function cargasAcademicas(): HasMany
     {
