@@ -29,10 +29,20 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
         Cancelar
     </x-secondary-button>
 
+    @if ($isEdit)
+    <x-primary-button as="button" type="button" x-data x-on:click.prevent="$dispatch('open-modal', 'pre-update-modal')">
+        <i class="{{ $buttonIcon }} text-lg"></i>
+        <span>{{ $buttonText }}</span>
+    </x-primary-button>
+    @endif
+
+    @if (!$isEdit)
     <x-primary-button as="button" type="button" onclick="document.getElementById('maestro-form').submit()">
         <i class="{{ $buttonIcon }} text-lg"></i>
         <span>{{ $buttonText }}</span>
     </x-primary-button>
+    @endif
+
 </div>
 @endsection
 
@@ -319,10 +329,28 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
             Cancelar
         </x-secondary-button>
 
+        @if ($isEdit)
+        <x-primary-button as="button" type="button" x-data x-on:click.prevent="$dispatch('open-modal', 'pre-update-modal')" class="flex-grow justify-center">
+            <i class="{{ $buttonIcon }} text-lg"></i>
+            <span> Guardar </span>
+        </x-primary-button>
+        @endif
+
+        @if (!$isEdit)
         <x-primary-button as="button" type="button" onclick="document.getElementById('maestro-form').submit()" class="flex-grow justify-center">
             <i class="{{ $buttonIcon }} text-lg"></i>
             <span> Guardar </span>
         </x-primary-button>
+        @endif
     </div>
 </div>
 @endsection
+
+@if ($isEdit)
+<x-pre-update-modal
+    name="pre-update-modal"
+    form-id="maestro-form"
+    title="Confirmar Actualización de Maestro"
+    text="Estás a punto de guardar los cambios. ¿Deseas continuar?"
+/>
+@endif

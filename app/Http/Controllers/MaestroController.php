@@ -139,4 +139,23 @@ class MaestroController extends Controller
         }
     }
 
+    public function destroy(Maestro $maestro)
+    {
+
+        try {
+            $userData = ['activo' => 0];
+
+            $maestro->user->update($userData);
+            $maestro->update($userData);
+
+            return redirect()
+                ->route('maestros.index', $maestro)
+                ->with('success', 'El maestro y su usuario de acceso fueron inactivados exitosamente.');
+
+        } catch (\Exception $e) {
+
+            return back()->withInput()->with('error', 'Hubo un error al inactivar el maestro o su usuario. Inténtelo de nuevo.');
+        }
+    }
+
 }
