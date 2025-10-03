@@ -1,3 +1,5 @@
+{{-- resources/views/attendance/index.blade.php --}}
+
 @extends('layouts.app')
 
 @section('title', 'Asistencia')
@@ -27,19 +29,10 @@
 @endsection
 
 @section('footer_actions')
-<x-primary-button
-    x-data=""
-    x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
-    class="w-full md:hidden py-3"
->
-    <i class="ph ph-plus text-base"></i>
-    <span>Pasar Nueva Asistencia</span>
-</x-primary-button>
-
-
 @endsection
 
 @section('content')
+
 <div
     class=""
     x-data="{ viewingSession: false, sessionId: null }"
@@ -47,14 +40,36 @@
     @view-session.window="viewingSession = true; sessionId = $event.detail.sessionId"
     @close-session.window="viewingSession = false; sessionId = null"
 >
-    <div x-show="!viewingSession" x-transition.opacity.duration.300ms>
+    <div x-show="!viewingSession">
         @livewire('attendance.attendance-history')
     </div>
 
-    <div x-show="viewingSession" x-transition.opacity.duration.300ms style="display: none;">
+    <div x-show="viewingSession" style="display: none;">
         @livewire('attendance.session-detail')
     </div>
 
-    <x-pre-create-modal x-cloak class="mt-6" />
+    <x-pre-create-modal :cargasAcademicas="$cargasAcademicas" :tiposCiclo="$tiposCiclo" x-cloak class="mt-6" />
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
+        const originalBreadcrumbs = breadcrumbsContainer.innerHTML;
+
+        window.addEventListener('view-session', event => {
+            const sessionId = event.detail.sessionId;
+            breadcrumbsContainer.innerHTML = `
+                <a href="{{ route('attendance.index') }}" class="hover:text-sigedra-text-dark">Asistencia</a>
+                <span class="mx-2">/</span>
+                <span>Sesión</span>
+                <span class="mx-2">/</span>
+                <span>${sessionId}</span>
+            `;
+        });
+
+        window.addEventListener('close-session', () => {
+            breadcrumbsContainer.innerHTML = originalBreadcrumbs;
+        });
+    });
+</script>
 @endsection

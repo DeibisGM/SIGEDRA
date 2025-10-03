@@ -4,13 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Estudiante;
 use App\Models\Grado;
+use Carbon\Carbon;
 use App\Models\Adecuacion;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
 
 class EstudianteController extends Controller
 {
@@ -157,7 +157,7 @@ class EstudianteController extends Controller
         // Cargar relaciones necesarias
         $estudiante->load([
             'grados.nivelAcademico',
-            'grados.anioAcademico'
+            'grados.anioAcademico',
         ]);
 
         // Obtener grado actual (el último asignado)
@@ -209,7 +209,7 @@ class EstudianteController extends Controller
     {
         // Validación (cédula única excepto para el estudiante actual)
         $validated = $request->validate([
-            'cedula' => 'required|string|max:20|unique:estudiante,cedula,' . $estudiante->id,
+            'cedula' => 'required|string|max:20|unique:estudiante,cedula,'.$estudiante->id,
             'primer_nombre' => 'required|string|max:100',
             'segundo_nombre' => 'nullable|string|max:100',
             'primer_apellido' => 'required|string|max:100',
@@ -285,11 +285,11 @@ class EstudianteController extends Controller
             ]);
 
             // Manejar cambio de grado
-            if (!empty($validated['grado_id'])) {
+            if (! empty($validated['grado_id'])) {
                 $grado_actual = $estudiante->grados()->first();
 
                 // Solo actualizar si es diferente al actual
-                if (!$grado_actual || $grado_actual->id != $validated['grado_id']) {
+                if (! $grado_actual || $grado_actual->id != $validated['grado_id']) {
                     // Eliminar el grado actual
                     if ($grado_actual) {
                         $estudiante->grados()->detach($grado_actual->id);
@@ -403,7 +403,7 @@ class EstudianteController extends Controller
                 ->with('success', 'Estudiante reactivado exitosamente.');
 
         } catch (\Exception $e) {
-            Log::error('Error al reactivar estudiante: ' . $e->getMessage());
+            Log::error('Error al reactivar estudiante: '.$e->getMessage());
 
             return back()
                 ->with('error', 'Ocurrió un error al reactivar el estudiante.');
@@ -416,7 +416,7 @@ class EstudianteController extends Controller
     public function buscarPorCedula(Request $request)
     {
         $request->validate([
-            'cedula' => 'required|string'
+            'cedula' => 'required|string',
         ]);
 
         $estudiante = Estudiante::where('cedula', $request->cedula)
@@ -441,13 +441,13 @@ class EstudianteController extends Controller
                     'direccion' => $estudiante->direccion,
                     'activo' => $estudiante->activo,
                     'grado_actual' => optional($estudiante->gradoActual()->first())->nombre,
-                ]
+                ],
             ]);
         }
 
         return response()->json([
             'encontrado' => false,
-            'mensaje' => 'No se encontró ningún estudiante con esa cédula.'
+            'mensaje' => 'No se encontró ningún estudiante con esa cédula.',
         ]);
     }
 
@@ -460,10 +460,10 @@ class EstudianteController extends Controller
             $provincia,
             $canton,
             $distrito,
-            $direccion_exacta
+            $direccion_exacta,
         ]);
 
-        return !empty($partes) ? implode(', ', $partes) : null;
+        return ! empty($partes) ? implode(', ', $partes) : null;
     }
 
     /**

@@ -1,8 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
-@section('module_title', 'Dashboard')
+@section('title', 'Inicio')
+@section('module_title', 'Inicio')
 
 @section('content')
-<x-dashboard-skeleton />
+    <div class="py-5">
+        <h2 class="text-2xl font-bold text-sigedra-text-dark">Buenas, {{ Auth::user()->name }}!</h2>
+    </div>
+    <x-dashboard-skeleton />
 @endsection

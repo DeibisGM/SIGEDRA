@@ -1,3 +1,5 @@
+{{-- resources/views/components/attendance-skeleton-table.blade.php --}}
+
 @for ($i = 0; $i < 5; $i++)
     <tr wire:key="skeleton-{{ $i }}" class="bg-white animate-pulse">
         <td class="px-6 py-3">

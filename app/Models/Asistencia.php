@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Asistencia extends Model
 {
     protected $table = 'asistencia';
+
     public $timestamps = false;
 
     protected $fillable = [
         'sesion_asistencia_id',
         'estudiante_id',
         'estado_asistencia_id',
+        'observaciones',
     ];
 
     public function sesionAsistencia(): BelongsTo

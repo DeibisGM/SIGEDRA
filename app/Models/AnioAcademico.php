@@ -11,6 +11,7 @@ class AnioAcademico extends Model
     use HasFactory;
 
     protected $table = 'anio_lectivo';
+
     public $timestamps = false;
 
     protected $fillable = [

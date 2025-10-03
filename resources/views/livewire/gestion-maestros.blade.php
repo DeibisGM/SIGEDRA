@@ -84,37 +84,45 @@
 
                     <div x-show="openMenu"
                          @click.outside="openMenu = false"
-                         x-transition:enter="transition ease-out duration-100"
-                         x-transition:enter-start="opacity-0 transform scale-95"
-                         x-transition:enter-end="opacity-100 transform scale-100"
-                         x-transition:leave="transition ease-in duration-75"
-                         x-transition:leave-start="opacity-100 transform scale-100"
-                         x-transition:leave-end="opacity-0 transform scale-95"
+                         x-transition
+                    <div class="absolute z-0 top-full right-0 mt-0 bg-white border border-gray-100 rounded-md shadow-lg">
 
-                         class="absolute z-10 top-full right-0 mt-0 p-2 bg-white border border-gray-200 rounded-md shadow-lg
-                            flex flex-col space-y-1">
 
-                        {{-- Botón 1: Ver Información --}}
-                        <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}" title="Ver información">
-                            <i class="ph ph-eye text-lg"></i>
-                            <span>Ver</span>
-                        </x-secondary-button>
+                    <div class="flex flex-col">
+                            <div>
+                                <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}"
+                                                    class=" me-2 !bg-transparent !border-none !shadow-none !text-gray-700 hover:!text-gray-900 !w-full !justify-start">
+                                    <i class="ph ph-eye text-lg"></i>
+                                    <span>Ver</span>
+                                </x-secondary-button>
+                            </div>
 
-                        {{-- Botón 2: Editar Maestro --}}
-                        <x-secondary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}" title="Editar Maestro">
-                            <i class="ph ph-pencil-simple text-lg"></i>
-                            <span>Editar </span>
-                        </x-secondary-button>
+                            <div class="border-t border-gray-100">
+                                <x-secondary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}"
+                                                    class=" me-2 !bg-transparent !border-none !shadow-none !text-gray-700 hover:!text-gray-900 !w-full !justify-start">
+                                    <i class="ph ph-pencil-simple text-lg"></i>
+                                    <span>Editar</span>
+                                </x-secondary-button>
+                            </div>
 
-                        {{-- Botón 3: Eliminar Maestro --}}
-                        <x-danger-button
-                            title="Eliminar Maestro"
-                            x-on:click.prevent="$dispatch('open-modal', 'confirm-maestro-destroy-cel');
-                                    $dispatch('set-maestro-action', { url: '{{ route('maestros.destroy', $maestro->id) }}' });">
-                            <i class="ph ph-trash text-lg"></i>
-                            <span>Eliminar</span>
-                        </x-danger-button>
+                            <div class="border-t border-gray-100">
+                                <x-danger-button
+                                    x-on:click.prevent="$dispatch('open-modal', 'confirm-maestro-destroy-cel');
+                                    $dispatch('set-maestro-action', { url: '{{ route('maestros.destroy', $maestro->id) }}' });"
+                                    class=" me-2 !bg-transparent !border-none !shadow-none !text-red-600 hover:!text-red-800 !w-full !justify-start">
+                                    <i class="ph ph-trash text-lg"></i>
+                                    <span>Eliminar</span>
+                                </x-danger-button>
+                            </div>
+                        </div>
                     </div>
+
+
+
+
+
+
+
                 </div>
 
             </div>

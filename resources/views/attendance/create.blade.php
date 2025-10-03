@@ -1,6 +1,8 @@
+{{-- resources/views/attendance/create.blade.php --}}
+
 @extends('layouts.app')
 
-@section('title', 'Asistencia')
+@section('title', 'Crear Asistencia')
 
 @section('breadcrumbs')
 <div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
@@ -15,81 +17,178 @@
 
 @section('header_actions')
 <div class="hidden md:flex gap-3">
-    <x-secondary-button>Cancelar</x-secondary-button>
-    <x-primary-button>
+    <a href="{{ route('attendance.index') }}">
+        <x-secondary-button type="button">Cancelar</x-secondary-button>
+    </a>
+    <x-primary-button type="submit" form="attendance-form">
         <i class="ph ph-floppy-disk text-lg"></i>
-        <span>Guardar Cambios</span>
+        <span>Guardar Asistencia</span>
     </x-primary-button>
 </div>
 @endsection
 
 @section('footer_actions')
 <div class="flex gap-3 w-full">
-    <x-secondary-button class="w-full justify-center">Cancelar</x-secondary-button>
-    <x-primary-button class="w-full justify-center">
+    <a href="{{ route('attendance.index') }}" class="w-full">
+        <x-secondary-button type="button" class="w-full justify-center">Cancelar</x-secondary-button>
+    </a>
+    <x-primary-button type="submit" form="attendance-form" class="w-full justify-center">
         <i class="ph ph-floppy-disk text-lg"></i>
-        <span>Guardar Cambios</span>
+        <span>Guardar Asistencia</span>
     </x-primary-button>
 </div>
 @endsection
 
 @section('content')
-<div class="space-y-6">
-    <div class="flex flex-col md:flex-row md:items-baseline md:gap-4">
-        <h3 class="text-xl font-bold text-sigedra-primary">
-            <span class="font-semibold">Curso:</span> {{ $subject }}
-        </h3>
-        <p class="text-base text-sigedra-text-medium">
-            <span class="font-semibold">Fecha:</span> {{ $date }}
-        </p>
+<div x-data="attendanceForm()">
+    <div x-show="showError" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" style="display: none;">
+        <span class="block sm:inline">Debe seleccionar el estado de asistencia para todos los estudiantes.</span>
     </div>
+    <form method="POST" action="{{ route('attendance.store') }}" id="attendance-form" @submit="validateForm($event)">
+        @csrf
+        <input type="hidden" name="carga_academica_id" value="{{ $cargaAcademica->id }}">
+        <input type="hidden" name="ciclo_id" value="{{ $ciclo_id }}">
+        <input type="hidden" name="fecha" value="{{ $fecha }}">
 
-    <!-- Barra de Búsqueda y Acciones Secundarias -->
-    <div class="flex flex-col md:flex-row gap-3 justify-between items-center">
-        {{-- Search bar --}}
-        <div class="relative w-full md:w-auto md:flex-1">
-            <input type="text" class="py-2 px-4 ps-11 block w-full bg-white border-sigedra-border rounded-lg text-sm placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Buscar estudiante...">
-            <div class="absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4">
-                <i class="ph ph-magnifying-glass text-lg text-sigedra-text-medium"></i>
+        <div class="space-y-6">
+            {{-- Información del Curso y Fecha --}}
+            <div class="bg-sigedra-light-bg border rounded-lg p-4">
+                <div class="flex flex-wrap items-center gap-2">
+                                    <div class="inline-flex items-center gap-x-2 bg-sigedra-medium-bg text-sigedra-text-medium px-3 py-1 rounded-full border">
+                                        <i class="ph ph-calendar-blank text-lg"></i>
+                                        <span class="text-sm font-medium">{{ \Carbon\Carbon::parse($fecha)->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}</span>
+                                    </div>
+                                    <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                                        <i class="ph ph-arrows-clockwise text-base"></i>
+                    {{ $cicloNombre }}
+                </span>                    <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                        <i class="ph ph-book-bookmark text-base"></i>
+                        {{ $cargaAcademica->materia->nombre }}
+                    </span>
+                    <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                        <i class="ph ph-graduation-cap text-base"></i>
+                        {{ $cargaAcademica->grado->nivelAcademico->nombre }} ({{ $cargaAcademica->grado->anioAcademico->anio }})
+                    </span>
+                    <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                        <i class="ph ph-chalkboard-teacher text-base"></i>
+                        {{ $cargaAcademica->maestro->nombre_completo }}
+                    </span>
+                </div>
+            </div>
+
+            {{-- Acciones Secundarias --}}
+            <div class="flex justify-end">
+                <div class="flex gap-3 w-full md:w-auto">
+                    <x-secondary-button @click="markAllPresent()" type="button" class="w-full md:w-auto justify-center text-sm" title="Marcar todos como presentes">
+                        <i class="ph ph-check-square-offset text-lg"></i>
+                        <span class="sm:inline">Todos Presentes</span>
+                    </x-secondary-button>
+                </div>
+            </div>
+
+            {{-- Tabla de Estudiantes --}}
+            <div class="overflow-x-auto -mx-4 md:mx-0 border border-sigedra-border rounded-lg">
+                <table class="min-w-full divide-y divide-sigedra-border">
+                    <thead class="bg-sigedra-light-bg">
+                    <tr>
+                        <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]#">#</th>
+                        <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Cédula</th>
+                        <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[25%]">Nombre completo</th>
+                        <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Asistencia</th>
+                        <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Observaciones</th>
+                    </tr>
+                    </thead>
+                    <tbody class="divide-y divide-sigedra-border bg-white">
+                    @forelse ($students as $student)
+                    <tr>
+                        <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark">{{ $loop->iteration }}</td>
+                        <td class="px-6 py-3 text-base text-sigedra-text-dark">{{ $student->cedula }}</td>
+                        <td class="px-6 py-3 text-base text-sigedra-text-dark font-medium">{{ $student->nombre_completo }}</td>
+                        <td class="px-6 py-3 text-base text-sigedra-text-dark">
+                            {{-- Componente de selección de estado de asistencia --}}
+                            <div x-data="{ status: 0 }" @mark-all-present.window="status = 1" class="flex items-center gap-1.5">
+                                <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="1" id="presente-{{ $student->id }}" x-model.number="status" class="hidden">
+                                <label for="presente-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
+                                        'bg-green-100 text-green-800 border-green-300': status == 1,
+                                        'bg-white hover:bg-gray-50 text-gray-700': status != 1
+                                    }">Presente</label>
+
+                                <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="3" id="tardia-{{ $student->id }}" x-model.number="status" class="hidden">
+                                <label for="tardia-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
+                                        'bg-yellow-100 text-yellow-800 border-yellow-300': status == 3,
+                                        'bg-white hover:bg-gray-50 text-gray-700': status != 3
+                                    }">Tardía</label>
+
+                                <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="4" id="justificado-{{ $student->id }}" x-model.number="status" class="hidden">
+                                <label for="justificado-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
+                                        'bg-blue-100 text-blue-800 border-blue-300': status == 4,
+                                        'bg-white hover:bg-gray-50 text-gray-700': status != 4
+                                    }">Justificado</label>
+
+                                <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="2" id="ausente-{{ $student->id }}" x-model.number="status" class="hidden">
+                                <label for="ausente-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
+                                        'bg-red-100 text-red-800 border-red-300': status == 2,
+                                        'bg-white hover:bg-gray-50 text-gray-700': status != 2
+                                    }">Ausente</label>
+                            </div>
+                        </td>
+                        <td class="px-6 text-base text-sigedra-text-dark">
+                            <x-text-input
+                                type="text"
+                                name="asistencias[{{ $student->id }}][observaciones]"
+                                class="w-full text-base py-1.5"
+                                placeholder="Añada una observación..."
+                            />
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="5" class="px-6 py-10 text-center text-sm text-sigedra-text-medium">
+                            <div class="flex flex-col items-center">
+                                <i class="ph ph-user-list text-5xl text-gray-400"></i>
+                                <p class="mt-2 font-semibold">No hay estudiantes en esta clase.</p>
+                                <p class="text-xs">No se encontraron estudiantes matriculados en este curso.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforelse
+                    </tbody>
+                </table>
             </div>
         </div>
-        {{-- Action buttons --}}
-        <div class="flex gap-3 w-full md:w-auto justify-end">
-            <x-secondary-button class="w-full md:w-auto justify-center text-sm" title="Actualizar">
-                <i class="ph ph-arrows-clockwise text-lg"></i>
-                <span class="sm:inline">Actualizar</span>
-            </x-secondary-button>
-            <x-secondary-button class="w-full md:w-auto justify-center text-sm" title="Marcar todos como presentes">
-                <i class="ph ph-check-square-offset text-lg"></i>
-                <span class="sm:inline">Todos presentes</span>
-            </x-secondary-button>
-        </div>
-    </div>
-
-    <!-- Tabla de Estudiantes implementada con el nuevo componente reutilizable -->
-    <x-table class="-mx-4 md:mx-0">
-        {{-- Slot para el encabezado de la tabla --}}
-        <x-slot:head>
-            <tr>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">#</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Cédula</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Nombre completo</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Asistencia</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Estado</th>
-                <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider">Observaciones</th>
-            </tr>
-        </x-slot:head>
-
-        {{-- Slot para el cuerpo de la tabla --}}
-        <x-slot:body>
-            @forelse ($students as $student)
-            <x-tarjeta-alumno :student="$student" :loop="$loop" />
-            @empty
-            <tr>
-                <td colspan="6" class="px-6 py-3 text-center text-sm text-sigedra-text-medium">No hay estudiantes en esta clase.</td>
-            </tr>
-            @endforelse
-        </x-slot:body>
-    </x-table>
+    </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('attendanceForm', () => ({
+            showError: false,
+            markAllPresent() {
+                this.$dispatch('mark-all-present');
+            },
+            validateForm(event) {
+                const students = document.querySelectorAll('input[name^="asistencias["]');
+                const studentIds = [...new Set([...students].map(s => s.name.match(/\[(\d+)\]/)[1]))];
+                let allSet = true;
+                if (studentIds.length > 0) {
+                    for (const id of studentIds) {
+                        const radios = document.querySelectorAll(`input[name="asistencias[${id}][estado_asistencia_id]"]`);
+                        if (![...radios].some(r => r.checked)) {
+                            allSet = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (!allSet) {
+                    event.preventDefault();
+                    this.showError = true;
+                    setTimeout(() => this.showError = false, 5000);
+                }
+            }
+        }));
+    });
+</script>
+@endpush
