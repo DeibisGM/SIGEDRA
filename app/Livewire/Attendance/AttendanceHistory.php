@@ -19,7 +19,7 @@ class AttendanceHistory extends Component
 
     public int $perPage = 10;
 
-    public bool $confirmingDeletion = false;
+
 
     public ?int $recordIdToDelete = null;
 
@@ -35,9 +35,12 @@ class AttendanceHistory extends Component
 
     public array $activeFilters = [];
 
+    public ?int $newAttendanceId = null;
+
     public function mount(): void
     {
         $this->applyFilters();
+        $this->newAttendanceId = session('new_attendance_id');
     }
 
     public function loadAsistencias(): void
@@ -64,20 +67,22 @@ class AttendanceHistory extends Component
         $this->dispatch('filters-cleared');
     }
 
-    public function confirmDeletion(int $id): void
-    {
-        $this->recordIdToDelete = $id;
-        $this->confirmingDeletion = true;
-    }
+
 
     public function delete(): void
     {
-        if ($this->recordIdToDelete) {
-            SesionAsistencia::destroy($this->recordIdToDelete);
+        try {
+            if ($this->recordIdToDelete) {
+                SesionAsistencia::destroy($this->recordIdToDelete);
+                session()->flash('success', 'Registro de asistencia eliminado correctamente.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Ocurrió un error al eliminar el registro de asistencia.');
         }
-        $this->confirmingDeletion = false;
+
         $this->recordIdToDelete = null;
         $this->resetPage();
+        $this->dispatch('deletion-finished');
     }
 
     public function render()

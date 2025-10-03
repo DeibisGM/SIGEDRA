@@ -31,7 +31,7 @@ Route::middleware(['auth', CheckLoginFeature::class])->group(function () {
     // Módulos Principales
     Route::get('/asistencia', [AttendanceController::class, 'index'])->name('attendance.index');
     Route::get('/asistencia/crear', [AttendanceController::class, 'create'])->name('attendance.create');
-    Route::post('/attendance', [AttendanceController::class, 'store'])->name('attendance.store');
+    Route::post('/asistencia', [AttendanceController::class, 'store'])->name('attendance.store');
 
     // Rutas para Estudiantes (definidas manualmente para mayor claridad)
     // Rutas para Estudiantes
