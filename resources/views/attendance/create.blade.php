@@ -41,7 +41,10 @@
 
 @section('content')
 <div x-data="attendanceForm()">
-    <form method="POST" action="{{ route('attendance.store') }}" id="attendance-form">
+    <div x-show="showError" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" style="display: none;">
+        <span class="block sm:inline">Debe seleccionar el estado de asistencia para todos los estudiantes.</span>
+    </div>
+    <form method="POST" action="{{ route('attendance.store') }}" id="attendance-form" @submit="validateForm($event)">
         @csrf
         <input type="hidden" name="carga_academica_id" value="{{ $cargaAcademica->id }}">
         <input type="hidden" name="ciclo_id" value="{{ $ciclo_id }}">
@@ -161,8 +164,29 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('attendanceForm', () => ({
+            showError: false,
             markAllPresent() {
                 this.$dispatch('mark-all-present');
+            },
+            validateForm(event) {
+                const students = document.querySelectorAll('input[name^="asistencias["]');
+                const studentIds = [...new Set([...students].map(s => s.name.match(/\[(\d+)\]/)[1]))];
+                let allSet = true;
+                if (studentIds.length > 0) {
+                    for (const id of studentIds) {
+                        const radios = document.querySelectorAll(`input[name="asistencias[${id}][estado_asistencia_id]"]`);
+                        if (![...radios].some(r => r.checked)) {
+                            allSet = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (!allSet) {
+                    event.preventDefault();
+                    this.showError = true;
+                    setTimeout(() => this.showError = false, 5000);
+                }
             }
         }));
     });
