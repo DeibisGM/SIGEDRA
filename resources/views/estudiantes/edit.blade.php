@@ -234,7 +234,7 @@
                         @foreach($grados as $grado)
                             <option value="{{ $grado->id }}"
                                 {{ old('grado_id', $grado_actual?->id) == $grado->id ? 'selected' : '' }}>
-                                {{ $grado->nivelAcademico->nombre }}
+                                {{ $grado->nivelAcademico->nombre }} - {{ $grado->nombre }}
                             </option>
                         @endforeach
                     </select>
@@ -243,7 +243,99 @@
             </div>
         </div>
 
-        {{-- 4. Card: Estado del Estudiante --}}
+        {{-- 4. Card: Adecuaciones Curriculares --}}
+        <div class="bg-white border border-gray-200 rounded-lg p-6">
+            <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Adecuaciones Curriculares</h2>
+
+            {{-- Checkbox para mostrar/ocultar campos de adecuación --}}
+            <div class="relative flex items-start mb-6">
+                <div class="flex items-center h-5">
+                    <input
+                        id="tiene_adecuacion"
+                        name="tiene_adecuacion"
+                        type="checkbox"
+                        class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                        value="1"
+                        {{ old('tiene_adecuacion', $adecuacion_actual ? true : false) ? 'checked' : '' }}>
+                </div>
+                <div class="ml-3 text-sm">
+                    <label for="tiene_adecuacion" class="font-medium text-gray-800">Este estudiante requiere adecuación curricular</label>
+                    <p class="text-gray-500">Marque esta casilla si el estudiante necesita una adecuación curricular.</p>
+                </div>
+            </div>
+
+            {{-- Campos de adecuación --}}
+            <div id="adecuacion_fields" class="space-y-6" style="display: {{ old('tiene_adecuacion', $adecuacion_actual ? true : false) ? 'block' : 'none' }};">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{-- Tipo de Adecuación --}}
+                    <div>
+                        <x-input-label for="adecuacion_id" value="Tipo de Adecuación *" />
+                        <select
+                            id="adecuacion_id"
+                            name="adecuacion_id"
+                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            <option value="">Seleccione una adecuación...</option>
+                            @foreach($adecuaciones as $adecuacion)
+                                <option value="{{ $adecuacion->id }}"
+                                    {{ old('adecuacion_id', $adecuacion_actual?->id) == $adecuacion->id ? 'selected' : '' }}>
+                                    {{ $adecuacion->nombre }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <x-input-error :messages="$errors->get('adecuacion_id')" class="mt-2" />
+                    </div>
+
+                    {{-- Nivel de Adecuación --}}
+                    <div>
+                        <x-input-label for="nivel_adecuacion" value="Nivel de Adecuación *" />
+                        <select
+                            id="nivel_adecuacion"
+                            name="nivel_adecuacion"
+                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            <option value="">Seleccione el nivel...</option>
+                            <option value="Significativa" {{ old('nivel_adecuacion', $adecuacion_actual?->pivot->nivel) == 'Significativa' ? 'selected' : '' }}>Significativa</option>
+                            <option value="No Significativa" {{ old('nivel_adecuacion', $adecuacion_actual?->pivot->nivel) == 'No Significativa' ? 'selected' : '' }}>No Significativa</option>
+                            <option value="De Acceso" {{ old('nivel_adecuacion', $adecuacion_actual?->pivot->nivel) == 'De Acceso' ? 'selected' : '' }}>De Acceso</option>
+                        </select>
+                        <x-input-error :messages="$errors->get('nivel_adecuacion')" class="mt-2" />
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {{-- Fecha de Asignación --}}
+                    <div>
+                        <x-input-label for="fecha_asignacion_adecuacion" value="Fecha de Asignación *" />
+                        <x-text-input
+                            id="fecha_asignacion_adecuacion"
+                            name="fecha_asignacion_adecuacion"
+                            type="date"
+                            class="mt-1 block w-full"
+                            value="{{ old('fecha_asignacion_adecuacion', $adecuacion_actual?->pivot->fecha_asignacion ?? date('Y-m-d')) }}" />
+                        <x-input-error :messages="$errors->get('fecha_asignacion_adecuacion')" class="mt-2" />
+                    </div>
+
+                    {{-- Estado de la Adecuación --}}
+                    <div class="flex items-end">
+                        <div class="relative flex items-start pb-1">
+                            <div class="flex items-center h-5">
+                                <input
+                                    id="adecuacion_activa"
+                                    name="adecuacion_activa"
+                                    type="checkbox"
+                                    class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                                    value="1"
+                                    {{ old('adecuacion_activa', $adecuacion_actual?->pivot->activo ?? true) ? 'checked' : '' }}>
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="adecuacion_activa" class="font-medium text-gray-800">Adecuación Activa</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- 5. Card: Estado del Estudiante --}}
         <div class="bg-white border border-gray-200 rounded-lg p-6">
             <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Estado</h2>
             <div class="space-y-4">
@@ -278,5 +370,33 @@
         </div>
     </form>
 </div>
+
+<script>
+    function toggleAdecuacionFields() {
+        const checkbox = document.getElementById('tiene_adecuacion');
+        const fields = document.getElementById('adecuacion_fields');
+        const adecuacionId = document.getElementById('adecuacion_id');
+        const nivelAdecuacion = document.getElementById('nivel_adecuacion');
+        const fechaAsignacion = document.getElementById('fecha_asignacion_adecuacion');
+
+        if (checkbox.checked) {
+            fields.style.display = 'block';
+            adecuacionId.required = true;
+            nivelAdecuacion.required = true;
+            fechaAsignacion.required = true;
+        } else {
+            fields.style.display = 'none';
+            adecuacionId.required = false;
+            nivelAdecuacion.required = false;
+            fechaAsignacion.required = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const checkbox = document.getElementById('tiene_adecuacion');
+        checkbox.addEventListener('change', toggleAdecuacionFields);
+        toggleAdecuacionFields();
+    });
+</script>
 
 @endsection

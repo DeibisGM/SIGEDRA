@@ -106,4 +106,21 @@ class Estudiante extends Model
         });
     }
 
+    /**
+     * Adecuaciones del estudiante
+     */
+    public function adecuaciones(): BelongsToMany
+    {
+        return $this->belongsToMany(Adecuacion::class, 'estudiante_adecuacion')
+            ->withPivot('nivel', 'fecha_asignacion', 'activo');
+    }
+
+    /**
+     * Adecuaciones activas del estudiante
+     */
+    public function adecuacionesActivas(): BelongsToMany
+    {
+        return $this->adecuaciones()->wherePivot('activo', true);
+    }
+
 }
