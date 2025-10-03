@@ -63,18 +63,18 @@
 
                             <div class="sm:col-span-2">Cédula: {{ $maestro->user->cedula ?? 'No asignada' }}</div>
 
-                            <div class="sm:col-span-2">Telefono: {{ $maestro->telefono }}</div>
+                            <div class="sm:col-span-2">Telefono: {{ $maestro->telefono ?? 'N/A'}}</div>
 
                             <div class="sm:col-span-2">Nacionalidad: {{$maestro->nacionalidad }}</div>
 
-                            <div class="sm:col-span-2">Correo: {{ $maestro->user->email ?? 'No asignada' }}</div>
+                            <div class="sm:col-span-2">Correo: {{ $maestro->user->email ?? 'N/A' }}</div>
                         </div>
 
                         <p class="mt-1 text-base text-sigedra-text-medium">
-                            Nombramiento desde: {{$maestro->nombramiento_inicio->format('d/m/Y') }}
+                            Nombramiento desde: {{ $maestro->nombramiento_inicio?->format('d/m/Y') ?? 'N/A' }}
                         </p>
                         <p class="mt-1 text-base text-sigedra-text-medium">
-                            Nombramiento hasta: {{$maestro->nombramiento_final->format('d/m/Y') }}
+                            Nombramiento hasta: {{ $maestro->nombramiento_final?->format('d/m/Y') ?? 'N/A' }}
                         </p>
                     </div>
 
