@@ -23,13 +23,11 @@
 
 
 @section('header_actions')
-<div class="flex items-center justify-between mt-4 gap-3 w-full">
-    <div class="flex-shrink-0 flex flex-col md:flex-row md:w-auto gap-3">
-        <x-primary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}">
-            <i class="ph ph-pencil-simple text-lg"></i>
-            <span>Editar Información</span>
-        </x-primary-button>
-    </div>
+<div class="flex-shrink-0 flex flex-col md:flex-row md:w-auto gap-3 hidden lg:block">
+    <x-primary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}">
+        <i class="ph ph-pencil-simple text-lg"></i>
+        <span>Editar Información</span>
+    </x-primary-button>
 </div>
 @endsection
 
@@ -45,7 +43,6 @@
 
     <div class="space-y-6">
         <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
-
             <div class="flex flex-col md:flex-row items-start gap-6">
                 <!-- Avatar -->
                 <div class="flex-shrink-0">
@@ -81,13 +78,22 @@
 
                 </div>
 
-                <div class="mt-3 flex items-center gap-x-3">
-                    @if($maestro->activo)
-                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">Activo</span>
-                    @else
-                    <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactivo</span>
-                    @endif
-                </div>
+
+                    <div class="mt-3 flex items-center gap-x-3">
+                        @if($maestro->activo)
+                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">Activo</span>
+                        @else
+                        <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-100 text-red-800">Inactivo</span>
+                        @endif
+                    </div>
+
+                    <div class="md:hidden w-full">
+                        <x-primary-button class="md:hidden w-full" as="a" href="{{ route('maestros.edit', $maestro->id) }}">
+                            <i class="ph ph-pencil-simple text-lg"></i>
+                            <span>Editar Información</span>
+                        </x-primary-button>
+                    </div>
+
 
             </div>
 
@@ -95,19 +101,76 @@
 
     </div>
 
-<x-card-header title="Información de cursos">
-    <x-primary-button as="a" href="#" class="hidden md:w-auto md:inline-flex justify-center">
-        <i class="ph ph-pencil-simple text-lg"></i>
-        <span>Editar Cursos</span>
-    </x-primary-button>
-</x-card-header>
-
-<div class="space-y-6">
-    <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
-
-        Asignaciones cuando esten los modulos correspondientes
-    </div>
+<div class="p-4">
+    <h3 class="text-xl font-semibold">Información de cursos</h3>
+    <p class="text-sm text-gray-600 mt-1">Competencia academica</p>
 </div>
+
+
+
+@if ($maestro->materias->isEmpty())
+<div class="text-center py-10 w-full">
+    <p class="text-gray-500">No hay materias registradas para este maestro.</p>
+</div>
+@else
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+    @foreach ($maestro->materias as $materia)
+    <div x-data="{ openMenu: false }" class="bg-white border rounded-lg p-4">
+
+        <div class="flex justify-between items-start">
+            <div>
+                <p class="font-bold text-lg">{{ $materia->nombre ?? 'N/A' }}</p>
+                <p class="text-sm text-gray-600"><span>Descripción: </span>{{ $materia->descripcion ?? 'N/A' }}</p>
+            </div>
+
+            {{-- menu de acciones --}}
+            <div class="relative">
+
+                {{-- Botón para abrir/cerrar --}}
+                <button type="button" @click="openMenu = !openMenu" title="Opciones" class="p-1 -mt-1 -mr-1">
+                    <i class="ph ph-dots-three-vertical text-xl text-gray-600 hover:text-gray-900"></i>
+                </button>
+
+                <div x-show="openMenu"
+                     @click.outside="openMenu = false"
+                     x-transition:enter="transition ease-out duration-100"
+                     x-transition:enter-start="opacity-0 transform scale-95"
+                     x-transition:enter-end="opacity-100 transform scale-100"
+                     x-transition:leave="transition ease-in duration-75"
+                     x-transition:leave-start="opacity-100 transform scale-100"
+                     x-transition:leave-end="opacity-0 transform scale-95"
+
+                     class="absolute z-10 top-full right-0 mt-0 p-2 bg-white border border-gray-200 rounded-md shadow-lg
+                            flex flex-col space-y-1">
+
+                    {{-- Botones de acción aquí... --}}
+                    <x-secondary-button as="a" href="#" title="Ver información">
+                        <i class="ph ph-eye text-lg"></i>
+                        <span>Ver</span>
+                    </x-secondary-button>
+                    <x-secondary-button as="a" href="#" title="Editar Materia">
+                        <i class="ph ph-pencil-simple text-lg"></i>
+                        <span>Editar </span>
+                    </x-secondary-button>
+                    <x-danger-button title="Eliminar Materia">
+                        <i class="ph ph-trash text-lg"></i>
+                        <span>Eliminar</span>
+                    </x-danger-button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-3 flex items-center gap-x-3">
+            @if($materia->tipo)
+            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-green-100 text-green-800">Especial</span>
+            @else
+            <span class="inline-flex items-center gap-x-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-violet-100 text-violet-800">General</span>
+            @endif
+        </div>
+    </div>
+    @endforeach
+</div>
+@endif
 
 @endsection
 

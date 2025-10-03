@@ -22,12 +22,12 @@
             <x-slot:body>
                 @forelse ($maestros as $maestro)
                     <tr class="bg-white hover:bg-gray-50">
-                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->cedula ?? 'N/A' }}</td>
+                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->cedula ?? '-' }}</td>
                         <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->primer_nombre }} {{ $maestro->primer_apellido }} {{ $maestro->segundo_apellido }}</td>
-                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->telefono ?? 'N/A' }}</td>
-                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->email ?? 'N/A' }}</td>
+                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->telefono ?? '-' }}</td>
+                        <td class="px-6 py-3 text-base text-gray-800">{{ $maestro->user->email ?? '-' }}</td>
                         <td class="px-6 py-3 text-base font-medium">
-                            <div class="w-full flex items-center justify-center">
+                            <div class="w-full flex items-center justify-center gap-2">
                                <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}" title="Ver informacion">
                                     <i class="ph ph-eye text-lg"></i>
                                </x-secondary-button>
@@ -39,7 +39,6 @@
                                     $dispatch('set-maestro-action', { url: '{{ route('maestros.destroy', $maestro->id) }}' });">
                                     <i class="ph ph-trash text-lg"></i>
                                 </x-danger-button>
-
                             </div>
                         </td>
                     </tr>

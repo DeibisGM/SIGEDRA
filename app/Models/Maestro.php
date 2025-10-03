@@ -16,6 +16,7 @@ class Maestro extends Model
     public $timestamps = false;
 
     protected $fillable = [
+        'id',
         'usuario_id',
         'primer_nombre',
         'segundo_nombre',
@@ -33,6 +34,16 @@ class Maestro extends Model
         'nombramiento_inicio' => 'date',
         'nombramiento_final' => 'date',
     ];
+
+    public function materias()
+    {
+        return $this->belongsToMany(
+            Materia::class,
+            'maestro_competencia',
+            'maestro_id',
+            'materia_id'
+        );
+    }
 
     public function user(): BelongsTo
     {

@@ -72,7 +72,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
                 <div>
                     <x-input-label for="tipo_identificacion" value="Tipo de Identificación" />
                     <select id="tipo_identificacion" name="tipo_identificacion" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                        {{-- Usamos el valor de DB o el valor por defecto 'nacional' --}}
+
                         <option value="nacional" @selected(old('tipo_identificacion', $maestro->tipo_identificacion ?? 'nacional') == 'nacional')>Nacional</option>
                         <option value="extranjero" @selected(old('tipo_identificacion', $maestro->tipo_identificacion ?? 'nacional') == 'extranjero')>Extranjero</option>
                     </select>
@@ -87,7 +87,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
                     @endif
 
                     @if (!$isEdit)
-                        <x-input-label for="cedula" value="Cédula" />
+                        <x-input-label for="cedula" value="Cédula*" />
                         <x-text-input id="cedula" name="cedula" type="text" maxlength="25" class="mt-1 block w-full @error('cedula') @enderror" value="{{ old('cedula') }}" required placeholder="Identificación del profesor" />
                     @endif
 
@@ -106,7 +106,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
                 {{-- Primer Nombre --}}
                 <div>
-                    <x-input-label for="primer_nombre" value="Primer Nombre" />
+                    <x-input-label for="primer_nombre" value="Primer Nombre*" />
                     <x-text-input id="primer_nombre" name="primer_nombre" type="text" maxlength="25" class="mt-1 block w-full @error('primer_nombre') @enderror"
                                   value="{{ old('primer_nombre', $maestro->primer_nombre ?? '') }}"
                                   required placeholder="Juan" />
@@ -118,7 +118,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 {{-- Segundo Nombre --}}
                 <div>
-                    <x-input-label for="segundo_nombre" value="Segundo Nombre (Opcional)" />
+                    <x-input-label for="segundo_nombre" value="Segundo Nombre" />
                     <x-text-input id="segundo_nombre" name="segundo_nombre" type="text" maxlength="25" placeholder="Carlos" class="mt-1 block w-full @error('segundo_nombre') @enderror"
                                   value="{{ old('segundo_nombre', $maestro->segundo_nombre ?? '') }}" />
 
@@ -129,7 +129,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 {{-- Primer Apellido --}}
                 <div>
-                    <x-input-label for="primer_apellido" value="Primer Apellido" />
+                    <x-input-label for="primer_apellido" value="Primer Apellido*" />
                     <x-text-input id="primer_apellido" name="primer_apellido" type="text" maxlength="25" class="mt-1 block w-full @error('primer_apellido') @enderror"
                                   value="{{ old('primer_apellido', $maestro->primer_apellido ?? '') }}"
                                   required placeholder="Pérez" />
@@ -141,7 +141,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 {{-- Segundo Apellido --}}
                 <div>
-                    <x-input-label for="segundo_apellido" value="Segundo Apellido (Opcional)" />
+                    <x-input-label for="segundo_apellido" value="Segundo Apellido" />
                     <x-text-input id="segundo_apellido" name="segundo_apellido" type="text" maxlength="25" class="mt-1 block w-full @error('segundo_apellido') @enderror"
                                   value="{{ old('segundo_apellido', $maestro->segundo_apellido ?? '') }}"
                                   placeholder="Rojas" />
@@ -157,7 +157,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 {{-- Telefono --}}
                 <div>
-                    <x-input-label for="telefono" value="Telefono" />
+                    <x-input-label for="telefono" value="Telefono*" />
                     <x-text-input id="telefono" name="telefono" type="text" maxlength="8" class="mt-1 block w-full @error('telefono') @enderror"
                                   value="{{ old('telefono', $maestro->telefono ?? '') }}"
                                   placeholder="Ej: 88889999" />
@@ -169,7 +169,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 {{-- Correo --}}
                 <div>
-                    <x-input-label for="correo" value="Correo" />
+                    <x-input-label for="correo" value="Correo*" />
                     <x-text-input id="correo" name="correo" type="text" maxlength="100" class="mt-1 block w-full @error('correo') @enderror"
                                   value="{{ old('correo', $maestro->user->email ?? '') }}"
                                   placeholder="Ej: ejemplo@gmail.com" />
@@ -181,7 +181,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                 {{-- Nacionalidad --}}
                 <div>
-                    <x-input-label for="nacionalidad" value="Nacionalidad" />
+                    <x-input-label for="nacionalidad" value="Nacionalidad*" />
                     <x-text-input id="nacionalidad" name="nacionalidad" type="text" maxlength="25" class="mt-1 block w-full @error('nacionalidad') @enderror"
                                   value="{{ old('nacionalidad', $maestro->nacionalidad ?? '') }}"
                                   placeholder="Ej: Costarricense" />
@@ -202,7 +202,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                     {{-- Fecha de nombramiento Inicio--}}
                     <div>
-                        <x-input-label for="nombramiento_inicio" value="Desde" />
+                        <x-input-label for="nombramiento_inicio" value="Desde*" />
 
                         <div class="relative max-w-sm mt-1">
                             <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
@@ -220,7 +220,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                     {{-- Fecha de nombramiento Final--}}
                     <div>
-                        <x-input-label for="nombramiento_final" value="Hasta" />
+                        <x-input-label for="nombramiento_final" value="Hasta*" />
                         <div class="relative max-w-sm mt-1">
                             <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
                                 <i class="ph ph-calendar-blank w-4 h-4 text-sigedra-text-medium"></i>
@@ -304,7 +304,7 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
                     {{-- Campo de Activo --}}
                     <div class="md:col-span-2 lg:col-span-1">
-                        <x-input-label for="activo" value="Estado" />
+                        <x-input-label for="activo" value="Estado*" />
 
                         <select id="activo" name="activo" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                             <option value="1" @selected(old('activo', $maestro->activo) == 1)>Activo</option>

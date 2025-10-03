@@ -19,7 +19,7 @@
                 @csrf
                 @method('DELETE')
 
-                <x-primary-button>
+                <x-primary-button class="hover:bg-[#FB584B]">
                     Eliminar
                 </x-primary-button>
             </form>
