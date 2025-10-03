@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MaestroController;
 use App\Http\Controllers\ReporteController;
 use App\Http\Controllers\EstudianteController;
+use App\Http\Controllers\ExportController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BitacoraController;
@@ -46,6 +47,16 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
+
+    // Rutas para Exportaciones
+    Route::prefix('exports')->name('exports.')->group(function () {
+        Route::get('/', [ExportController::class, 'index'])->name('index');
+        Route::post('/', [ExportController::class, 'store'])->name('store');
+        Route::post('/sync', [ExportController::class, 'processSync'])->name('sync');
+        Route::get('/{export}/download', [ExportController::class, 'download'])->name('download');
+        Route::get('/{export}/status', [ExportController::class, 'status'])->name('status');
+        Route::delete('/{export}', [ExportController::class, 'destroy'])->name('destroy');
+    });
 });
 
 
