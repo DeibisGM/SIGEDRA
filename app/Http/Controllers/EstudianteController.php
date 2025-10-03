@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Estudiante;
 use App\Models\Grado;
 use Carbon\Carbon;
+use App\Models\Adecuacion;
+use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,125 +27,129 @@ class EstudianteController extends Controller
     /**
      * Muestra el formulario para crear un nuevo estudiante
      */
-    public function create(): View
+    public function create()
     {
-        // Obtener todos los grados activos para el combobox
         $grados = Grado::where('activo', true)
             ->with('nivelAcademico')
             ->orderBy('nivel_academico_id')
             ->get();
 
-        return view('estudiantes.create', compact('grados'));
+        $adecuaciones = Adecuacion::orderBy('nombre')->get();
+
+        return view('estudiantes.create', compact('grados', 'adecuaciones'));
     }
 
     /**
      * Guarda un nuevo estudiante y lo asigna a un grado
      */
-    public function store(Request $request): RedirectResponse
-    {
-        // Validación
-        $validated = $request->validate([
-            // Datos de identidad
-            'cedula' => 'required|string|max:20|unique:estudiante,cedula',
+  public function store(Request $request): RedirectResponse
+  {
+      $validated = $request->validate([
+          'cedula' => 'required|string|max:20|unique:estudiante,cedula',
+          'primer_nombre' => 'required|string|max:100',
+          'segundo_nombre' => 'nullable|string|max:100',
+          'primer_apellido' => 'required|string|max:100',
+          'segundo_apellido' => 'nullable|string|max:100',
+          'fecha_nacimiento' => 'required|date|before:today|after:1900-01-01',
+          'genero' => 'required|in:M,F,O',
+          'nacionalidad' => 'nullable|string|max:100',
+          'provincia' => 'nullable|string|max:100',
+          'canton' => 'nullable|string|max:100',
+          'distrito' => 'nullable|string|max:100',
+          'direccion_exacta' => 'nullable|string|max:500',
+          'grado_id' => 'required|exists:grado,id',
+          'activo' => 'nullable|boolean',
+          'tiene_adecuacion' => 'nullable|boolean',
+          'adecuacion_id' => 'nullable|exists:adecuacion,id',
+          'nivel_adecuacion' => 'nullable|in:Significativa,No Significativa,De Acceso',
+          'fecha_asignacion_adecuacion' => 'nullable|date|before_or_equal:today',
+          'adecuacion_activa' => 'nullable|boolean',
+      ], [
+          'cedula.unique' => 'Esta cédula ya está registrada en el sistema.',
+          'primer_nombre.required' => 'El primer nombre es obligatorio.',
+          'primer_apellido.required' => 'El primer apellido es obligatorio.',
+          'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
+          'genero.required' => 'El género es obligatorio.',
+          'grado_id.required' => 'Debe seleccionar un grado.',
+      ]);
 
-            // Datos personales
-            'primer_nombre' => 'required|string|max:100',
-            'segundo_nombre' => 'nullable|string|max:100',
-            'primer_apellido' => 'required|string|max:100',
-            'segundo_apellido' => 'nullable|string|max:100',
-            'fecha_nacimiento' => 'required|date|before:today|after:1900-01-01',
-            'genero' => 'required|in:M,F,O',
-            'nacionalidad' => 'nullable|string|max:100',
+      // Validación manual de adecuaciones
+      if ($request->boolean('tiene_adecuacion')) {
+          if (empty($validated['adecuacion_id'])) {
+              return back()
+                  ->withInput()
+                  ->withErrors(['adecuacion_id' => 'Debe seleccionar un tipo de adecuación.']);
+          }
+          if (empty($validated['nivel_adecuacion'])) {
+              return back()
+                  ->withInput()
+                  ->withErrors(['nivel_adecuacion' => 'Debe seleccionar el nivel de adecuación.']);
+          }
+          if (empty($validated['fecha_asignacion_adecuacion'])) {
+              return back()
+                  ->withInput()
+                  ->withErrors(['fecha_asignacion_adecuacion' => 'La fecha de asignación es obligatoria.']);
+          }
+      }
 
-            // Dirección
-            'provincia' => 'nullable|string|max:100',
-            'canton' => 'nullable|string|max:100',
-            'distrito' => 'nullable|string|max:100',
-            'direccion_exacta' => 'nullable|string|max:500',
+      try {
+          DB::beginTransaction();
 
-            // Asignación académica
-            'grado_id' => 'required|exists:grado,id',
+          $direccion_completa = $this->construirDireccion(
+              $validated['provincia'] ?? null,
+              $validated['canton'] ?? null,
+              $validated['distrito'] ?? null,
+              $validated['direccion_exacta'] ?? null
+          );
 
-            // Adecuación curricular
-            'necesita_adecuacion' => 'nullable|boolean',
-            'adecuacion_id' => 'required_if:necesita_adecuacion,1|nullable|exists:adecuacion,id',
-            'adecuacion_detalles' => 'nullable|string|max:1000',
-        ], [
-            'cedula.required' => 'La cédula es obligatoria.',
-            'cedula.unique' => 'Esta cédula ya está registrada en el sistema.',
-            'primer_nombre.required' => 'El primer nombre es obligatorio.',
-            'primer_apellido.required' => 'El primer apellido es obligatorio.',
-            'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
-            'fecha_nacimiento.before' => 'La fecha de nacimiento debe ser anterior a hoy.',
-            'genero.required' => 'El género es obligatorio.',
-            'genero.in' => 'El género seleccionado no es válido.',
-            'grado_id.required' => 'Debe seleccionar un grado para el estudiante.',
-            'grado_id.exists' => 'El grado seleccionado no es válido.',
-            'adecuacion_id.required_if' => 'Debe seleccionar el tipo de adecuación.',
-        ]);
+          $estudiante = Estudiante::create([
+              'cedula' => $validated['cedula'],
+              'primer_nombre' => ucfirst(strtolower(trim($validated['primer_nombre']))),
+              'segundo_nombre' => $validated['segundo_nombre']
+                  ? ucfirst(strtolower(trim($validated['segundo_nombre'])))
+                  : null,
+              'primer_apellido' => ucfirst(strtolower(trim($validated['primer_apellido']))),
+              'segundo_apellido' => $validated['segundo_apellido']
+                  ? ucfirst(strtolower(trim($validated['segundo_apellido'])))
+                  : null,
+              'fecha_nacimiento' => $validated['fecha_nacimiento'],
+              'genero' => $validated['genero'],
+              'nacionalidad' => $validated['nacionalidad'] ?? null,
+              'direccion' => $direccion_completa,
+              'activo' => $request->boolean('activo', true), // ← CAMBIO AQUÍ
+          ]);
 
-        try {
-            DB::beginTransaction();
+          // Asignar grado
+          $estudiante->grados()->attach($validated['grado_id']);
 
-            // Construir dirección completa
-            $direccion_completa = $this->construirDireccion(
-                $validated['provincia'] ?? null,
-                $validated['canton'] ?? null,
-                $validated['distrito'] ?? null,
-                $validated['direccion_exacta'] ?? null
-            );
+          // Asignar adecuación si existe
+          if ($request->boolean('tiene_adecuacion') && !empty($validated['adecuacion_id'])) { // ← CAMBIO AQUÍ
+              $estudiante->adecuaciones()->attach($validated['adecuacion_id'], [
+                  'nivel' => $validated['nivel_adecuacion'],
+                  'fecha_asignacion' => $validated['fecha_asignacion_adecuacion'],
+                  'activo' => $request->boolean('adecuacion_activa', true), // ← CAMBIO AQUÍ
+              ]);
+          }
 
-            // 1. Crear el estudiante
-            $estudiante = Estudiante::create([
-                'cedula' => $validated['cedula'],
-                'primer_nombre' => ucfirst(strtolower(trim($validated['primer_nombre']))),
-                'segundo_nombre' => $validated['segundo_nombre']
-                    ? ucfirst(strtolower(trim($validated['segundo_nombre'])))
-                    : null,
-                'primer_apellido' => ucfirst(strtolower(trim($validated['primer_apellido']))),
-                'segundo_apellido' => $validated['segundo_apellido']
-                    ? ucfirst(strtolower(trim($validated['segundo_apellido'])))
-                    : null,
-                'fecha_nacimiento' => $validated['fecha_nacimiento'],
-                'genero' => $validated['genero'],
-                'nacionalidad' => $validated['nacionalidad'] ?? null,
-                'direccion' => $direccion_completa,
-                'activo' => true,
-            ]);
+          DB::commit();
 
-            // 2. Asignar el estudiante al grado seleccionado
-            $estudiante->grados()->attach($validated['grado_id']);
+          return redirect()
+              ->route('estudiantes.show', $estudiante)
+              ->with('success', 'Estudiante registrado exitosamente.');
 
-            // 3. Guardar adecuación si aplica
-            if ($request->boolean('necesita_adecuacion') && ! empty($validated['adecuacion_id'])) {
-                DB::table('asignacion_estudiante_adecuacion')->insert([
-                    'estudiante_id' => $estudiante->id,
-                    'adecuacion_id' => $validated['adecuacion_id'],
-                    'nivel' => $validated['adecuacion_detalles'] ?? null,
-                    'fecha_asignacion' => Carbon::now(),
-                    'activo' => true,
-                ]);
-            }
+      } catch (\Exception $e) {
+          DB::rollBack();
 
-            DB::commit();
+          Log::error('Error al crear estudiante', [
+              'error' => $e->getMessage(),
+              'trace' => $e->getTraceAsString()
+          ]);
 
-            return redirect()
-                ->route('estudiantes.show', $estudiante)
-                ->with('success', "¡Estudiante {$estudiante->nombre_completo} registrado exitosamente!");
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-
-            Log::error('Error al crear estudiante', [
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-
-            return back()
-                ->withInput()
-                ->with('error', 'Ocurrió un error al registrar el estudiante. Por favor, intente nuevamente.');
-        }
-    }
+          return back()
+              ->withInput()
+              ->with('error', 'Ocurrió un error al registrar el estudiante. Por favor, intente nuevamente.');
+      }
+  }
 
     /**
      * Muestra los detalles de un estudiante específico
@@ -175,13 +182,26 @@ class EstudianteController extends Controller
             ->orderBy('nivel_academico_id')
             ->get();
 
+        // Obtener todas las adecuaciones disponibles
+        $adecuaciones = Adecuacion::orderBy('nombre')->get();
+
         // Obtener grado actual del estudiante
         $grado_actual = $estudiante->gradoActual()->first();
+
+        // Obtener la adecuación actual del estudiante (si tiene)
+        $adecuacion_actual = $estudiante->adecuacionesActivas()->first();
 
         // Separar la dirección si está en un solo campo
         $direccion_partes = $this->separarDireccion($estudiante->direccion);
 
-        return view('estudiantes.edit', compact('estudiante', 'grados', 'grado_actual', 'direccion_partes'));
+        return view('estudiantes.edit', compact(
+            'estudiante',
+            'grados',
+            'grado_actual',
+            'direccion_partes',
+            'adecuaciones',
+            'adecuacion_actual'
+        ));
     }
 
     /**
@@ -205,6 +225,11 @@ class EstudianteController extends Controller
             'direccion_exacta' => 'nullable|string|max:500',
             'grado_id' => 'nullable|exists:grado,id',
             'activo' => 'nullable|boolean',
+            'tiene_adecuacion' => 'nullable|boolean',
+            'adecuacion_id' => 'nullable|exists:adecuacion,id',
+            'nivel_adecuacion' => 'nullable|in:Significativa,No Significativa,De Acceso',
+            'fecha_asignacion_adecuacion' => 'nullable|date|before_or_equal:today',
+            'adecuacion_activa' => 'nullable|boolean',
         ], [
             'cedula.unique' => 'Esta cédula ya está registrada en el sistema.',
             'primer_nombre.required' => 'El primer nombre es obligatorio.',
@@ -212,6 +237,25 @@ class EstudianteController extends Controller
             'fecha_nacimiento.required' => 'La fecha de nacimiento es obligatoria.',
             'genero.required' => 'El género es obligatorio.',
         ]);
+
+        // Validación manual de adecuaciones
+        if ($request->boolean('tiene_adecuacion')) {
+            if (empty($validated['adecuacion_id'])) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['adecuacion_id' => 'Debe seleccionar un tipo de adecuación.']);
+            }
+            if (empty($validated['nivel_adecuacion'])) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['nivel_adecuacion' => 'Debe seleccionar el nivel de adecuación.']);
+            }
+            if (empty($validated['fecha_asignacion_adecuacion'])) {
+                return back()
+                    ->withInput()
+                    ->withErrors(['fecha_asignacion_adecuacion' => 'La fecha de asignación es obligatoria.']);
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -239,7 +283,7 @@ class EstudianteController extends Controller
                 'genero' => $validated['genero'],
                 'nacionalidad' => $validated['nacionalidad'] ?? null,
                 'direccion' => $direccion_completa,
-                'activo' => $request->has('activo') ? true : false,
+                'activo' => $request->boolean('activo', false),
             ]);
 
             // Manejar cambio de grado
@@ -258,26 +302,61 @@ class EstudianteController extends Controller
                 }
             }
 
-            DB::commit();
+            // Manejar adecuaciones
+            if ($request->boolean('tiene_adecuacion') && !empty($validated['adecuacion_id'])) {
+                // Verificar si ya tiene adecuaciones
+                $adecuacion_existente = $estudiante->adecuaciones()->first();
 
-            return redirect()
-                ->route('estudiantes.show', $estudiante)
-                ->with('success', 'Estudiante actualizado exitosamente.');
+                if ($adecuacion_existente) {
+                    // Si tiene una adecuación diferente, la reemplazamos
+                    if ($adecuacion_existente->id != $validated['adecuacion_id']) {
+                        $estudiante->adecuaciones()->detach($adecuacion_existente->id);
+                        $estudiante->adecuaciones()->attach($validated['adecuacion_id'], [
+                            'nivel' => $validated['nivel_adecuacion'],
+                            'fecha_asignacion' => $validated['fecha_asignacion_adecuacion'],
+                            'activo' => $request->boolean('adecuacion_activa', true),
+                        ]);
+                    } else {
+                        // Si es la misma adecuación, solo actualizamos los datos
+                        $estudiante->adecuaciones()->updateExistingPivot($validated['adecuacion_id'], [
+                            'nivel' => $validated['nivel_adecuacion'],
+                            'fecha_asignacion' => $validated['fecha_asignacion_adecuacion'],
+                            'activo' => $request->boolean('adecuacion_activa', true),
+                        ]);
+                    }
+                } else {
+                    // No tiene adecuación, agregamos una nueva
+                    $estudiante->adecuaciones()->attach($validated['adecuacion_id'], [
+                        'nivel' => $validated['nivel_adecuacion'],
+                        'fecha_asignacion' => $validated['fecha_asignacion_adecuacion'],
+                        'activo' => $request->boolean('adecuacion_activa', true),
+                    ]);
+                }
+            } else {
+                    // Si desmarcó "tiene_adecuacion", eliminar todas las adecuaciones
+                    $estudiante->adecuaciones()->detach();
+                }
 
-        } catch (\Exception $e) {
-            DB::rollBack();
+                DB::commit();
 
-            Log::error('Error al actualizar estudiante', [
-                'error' => $e->getMessage(),
-                'estudiante_id' => $estudiante->id,
-            ]);
+                return redirect()
+                    ->route('estudiantes.show', $estudiante)
+                    ->with('success', 'Estudiante actualizado exitosamente.');
 
-            return back()
-                ->withInput()
-                ->with('error', 'Ocurrió un error al actualizar el estudiante. Por favor, intente nuevamente.');
+            } catch (\Exception $e) {
+                DB::rollBack();
+
+                Log::error('Error al actualizar estudiante', [
+                    'error' => $e->getMessage(),
+                    'estudiante_id' => $estudiante->id,
+                    'trace' => $e->getTraceAsString()
+                ]);
+
+                return back()
+                    ->withInput()
+                    ->with('error', 'Ocurrió un error al actualizar el estudiante. Por favor, intente nuevamente.');
+            }
         }
-    }
-
     /**
      * Desactiva un estudiante (soft delete lógico)
      */

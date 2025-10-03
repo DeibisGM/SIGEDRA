@@ -23,7 +23,6 @@ class Maestro extends Model
         'primer_apellido',
         'segundo_apellido',
         'telefono',
-        'correo',
         'nacionalidad',
         'nombramiento_inicio',
         'nombramiento_final',

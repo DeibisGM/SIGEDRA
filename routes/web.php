@@ -43,8 +43,8 @@ Route::middleware(['auth', CheckLoginFeature::class])->group(function () {
     Route::put('estudiantes/{estudiante}', [EstudianteController::class, 'update'])->name('estudiantes.update');
     Route::delete('estudiantes/{estudiante}', [EstudianteController::class, 'destroy'])->name('estudiantes.destroy');
 
-    // Maestro
-    Route::resource('maestros', MaestroController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update']);
+    //Maestro
+    Route::resource('maestros', MaestroController::class)->only(['index', 'show', 'create', 'store', 'edit', 'update', 'destroy']);
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');

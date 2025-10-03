@@ -10,26 +10,38 @@
 </div>
 @endsection
 
-@section('content')
+@section('module_title')
+<div class="flex items-center space-x-2">
+    <a href="{{ route('maestros.index') }}"
+       class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
+       title="Volver al listado">
+        <i class="ph ph-arrow-left"></i>
+    </a>
+    <h1 class="text-xl font-semibold">Información de maestro</h1>
+</div>
+@endsection
 
-<h1 class="text-xl font-bold text-gray-800 leading-tight flex items-center justify-between my-4">
-    <div class="flex items-center space-x-2">
-        <a href="{{ route('maestros.index') }}"
-           class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
-           title="Volver al listado">
-            <i class="ph ph-arrow-left"></i>
-        </a>
-        <span>Información de maestro</span>
-    </div>
 
-    <div class="flex-shrink-0 flex flex-col w-full md:flex-row md:w-auto gap-3">
-        <x-primary-button  as="a" href="#">
+@section('header_actions')
+<div class="flex items-center justify-between mt-4 gap-3 w-full">
+    <div class="flex-shrink-0 flex flex-col md:flex-row md:w-auto gap-3">
+        <x-primary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}">
             <i class="ph ph-pencil-simple text-lg"></i>
             <span>Editar Información</span>
         </x-primary-button>
     </div>
-</h1>
+</div>
+@endsection
 
+
+@section('content')
+@if (session('success'))
+<x-flash-message type="success" :message="session('success')" />
+@endif
+
+@if (session('error'))
+<x-flash-message type="error" :message="session('error')" />
+@endif
 
     <div class="space-y-6">
         <div class="bg-sigedra-card border border-sigedra-border rounded-lg p-6">
@@ -51,18 +63,18 @@
 
                             <div class="sm:col-span-2">Cédula: {{ $maestro->user->cedula ?? 'No asignada' }}</div>
 
-                            <div class="sm:col-span-2">Telefono: {{ $maestro->telefono }}</div>
+                            <div class="sm:col-span-2">Telefono: {{ $maestro->telefono ?? 'N/A'}}</div>
 
                             <div class="sm:col-span-2">Nacionalidad: {{$maestro->nacionalidad }}</div>
 
-                            <div class="sm:col-span-2">Correo: {{ $maestro->user->email ?? 'No asignada' }}</div>
+                            <div class="sm:col-span-2">Correo: {{ $maestro->user->email ?? 'N/A' }}</div>
                         </div>
 
                         <p class="mt-1 text-base text-sigedra-text-medium">
-                            Nombramiento desde: {{$maestro->nombramiento_inicio->format('d/m/Y') }}
+                            Nombramiento desde: {{ $maestro->nombramiento_inicio?->format('d/m/Y') ?? 'N/A' }}
                         </p>
                         <p class="mt-1 text-base text-sigedra-text-medium">
-                            Nombramiento hasta: {{$maestro->nombramiento_final->format('d/m/Y') }}
+                            Nombramiento hasta: {{ $maestro->nombramiento_final?->format('d/m/Y') ?? 'N/A' }}
                         </p>
                     </div>
 
@@ -84,7 +96,7 @@
     </div>
 
 <x-card-header title="Información de cursos">
-    <x-primary-button as="a" href="#" class="w-full justify-center md:w-auto">
+    <x-primary-button as="a" href="#" class="hidden md:w-auto md:inline-flex justify-center">
         <i class="ph ph-pencil-simple text-lg"></i>
         <span>Editar Cursos</span>
     </x-primary-button>
