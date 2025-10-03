@@ -48,13 +48,25 @@
     @section('content')
     <div class="space-y-6">
         {{-- Información del Curso y Fecha --}}
-        <div class="flex flex-col md:flex-row md:items-baseline md:gap-4">
-            <h3 class="text-xl font-bold text-sigedra-primary">
-                <span class="font-semibold">Curso:</span> {{ $cargaAcademica->materia->nombre }} - {{ $cargaAcademica->grado->nivelAcademico->nombre }}
-            </h3>
-            <p class="text-base text-sigedra-text-medium">
-                <span class="font-semibold">Fecha:</span> {{ \Carbon\Carbon::parse($fecha)->format('d/m/Y') }}
-            </p>
+        <div class="bg-sigedra-light-bg border rounded-lg p-4">
+            <div class="flex flex-wrap items-center gap-2">
+                <div class="inline-flex items-center gap-x-2 bg-sigedra-medium-bg text-sigedra-text-medium px-3 py-1 rounded-full border">
+                    <i class="ph ph-calendar text-lg"></i>
+                    <span class="text-sm font-medium">{{ \Carbon\Carbon::parse($fecha)->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}</span>
+                </div>
+                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                    <i class="ph ph-book-bookmark text-base"></i>
+                    {{ $cargaAcademica->materia->nombre }}
+                </span>
+                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                    <i class="ph ph-graduation-cap text-base"></i>
+                    {{ $cargaAcademica->grado->nivelAcademico->nombre }} ({{ $cargaAcademica->grado->anioAcademico->anio }})
+                </span>
+                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
+                    <i class="ph ph-chalkboard-teacher text-base"></i>
+                    {{ $cargaAcademica->maestro->nombre_completo }}
+                </span>
+            </div>
         </div>
 
         {{-- Acciones Secundarias --}}
@@ -68,15 +80,15 @@
         </div>
 
         {{-- Tabla de Estudiantes --}}
-        <div class="overflow-x-auto -mx-4 md:mx-0">
+        <div class="overflow-x-auto -mx-4 md:mx-0 border border-sigedra-border rounded-lg">
             <table class="min-w-full divide-y divide-sigedra-border">
                 <thead class="bg-sigedra-light-bg">
                 <tr>
                     <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[5%]">#</th>
-                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[15%]">Cédula</th>
-                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Nombre completo</th>
-                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[25%]">Asistencia</th>
-                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[25%]">Observaciones</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[10%]">Cédula</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[25%]">Nombre completo</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Asistencia</th>
+                    <th scope="col" class="px-6 py-4 text-start text-sm font-semibold text-sigedra-text-medium uppercase tracking-wider w-[30%]">Observaciones</th>
                 </tr>
                 </thead>
                 <tbody class="divide-y divide-sigedra-border bg-white">
@@ -87,33 +99,39 @@
                     <td class="px-6 py-3 text-base text-sigedra-text-dark font-medium">{{ $student->nombre_completo }}</td>
                     <td class="px-6 py-3 text-base text-sigedra-text-dark">
                         {{-- Componente de selección de estado de asistencia --}}
-                        <div x-data="{ status: 1 }" class="flex items-center gap-1">
-                            <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="1" id="presente-{{ $student->id }}" x-model.number="status" class="hidden" checked>
-                            <label for="presente-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md border" :class="{
+                        <div x-data="{ status: 0 }" class="flex items-center gap-1.5">
+                            <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="1" id="presente-{{ $student->id }}" x-model.number="status" class="hidden">
+                            <label for="presente-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
                                     'bg-green-100 text-green-800 border-green-300': status == 1,
                                     'bg-white hover:bg-gray-50 text-gray-700': status != 1
                                 }">Presente</label>
 
                             <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="3" id="tardia-{{ $student->id }}" x-model.number="status" class="hidden">
-                            <label for="tardia-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md border" :class="{
+                            <label for="tardia-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
                                     'bg-yellow-100 text-yellow-800 border-yellow-300': status == 3,
                                     'bg-white hover:bg-gray-50 text-gray-700': status != 3
                                 }">Tardía</label>
 
+                            <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="4" id="justificado-{{ $student->id }}" x-model.number="status" class="hidden">
+                            <label for="justificado-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
+                                    'bg-blue-100 text-blue-800 border-blue-300': status == 4,
+                                    'bg-white hover:bg-gray-50 text-gray-700': status != 4
+                                }">Justificado</label>
+
                             <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="2" id="ausente-{{ $student->id }}" x-model.number="status" class="hidden">
-                            <label for="ausente-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-sm font-medium rounded-md border" :class="{
+                            <label for="ausente-{{ $student->id }}" class="cursor-pointer px-3 py-1.5 text-base font-medium rounded-md border" :class="{
                                     'bg-red-100 text-red-800 border-red-300': status == 2,
                                     'bg-white hover:bg-gray-50 text-gray-700': status != 2
                                 }">Ausente</label>
                         </div>
                     </td>
-                    <td class="px-6 py-3 text-base text-sigedra-text-dark">
-                        {{-- El campo de observaciones se muestra condicionalmente --}}
-                        <div x-data="{ studentStatus: 1 }" @change="studentStatus = $event.target.value">
-                            <template x-if="studentStatus != 1">
-                                <input type="text" name="asistencias[{{ $student->id }}][observaciones]" class="py-2 px-3 block w-full bg-white border-sigedra-border rounded-lg text-sm placeholder-sigedra-text-light focus:border-sigedra-primary focus:ring-sigedra-primary" placeholder="Añada una observación...">
-                            </template>
-                        </div>
+                    <td class="px-6 text-base text-sigedra-text-dark">
+                        <x-text-input
+                            type="text"
+                            name="asistencias[{{ $student->id }}][observaciones]"
+                            class="w-full text-base py-1.5"
+                            placeholder="Añada una observación..."
+                        />
                     </td>
                 </tr>
                 @empty
@@ -137,8 +155,8 @@
 
 @push('scripts')
 <script>
-    function attendanceForm() {
-        return {
+    document.addEventListener('alpine:init', () => {
+        Alpine.data('attendanceForm', () => ({
             markAllPresent() {
                 const presentButtons = document.querySelectorAll('input[type="radio"][value="1"]');
                 presentButtons.forEach(button => {
@@ -147,7 +165,7 @@
                     button.dispatchEvent(new Event('change', { bubbles: true }));
                 });
             }
-        }
-    }
+        }));
+    });
 </script>
 @endpush
