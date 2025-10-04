@@ -10,7 +10,9 @@ $isOwnProfile = $user && $user->maestro && $user->maestro->id === $maestro->id;
 @section('breadcrumbs')
 <div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
     @if ($isOwnProfile)
-        <span>Mi Perfil</span>
+    <div class="text-base text-gray-500 whitespace-nowrap truncate">
+        <span>Mi perfil</span>
+    </div>
     @else
         <a href="{{ route('maestros.index') }}" class="hover:text-sigedra-text-dark">Maestros</a>
         <span class="mx-2">/</span>
