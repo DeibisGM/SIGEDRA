@@ -16,7 +16,7 @@
             </x-secondary-button>
         </div>
 
-        <div x-show="filtersOpen" x-collapse.duration.300ms style="display: none;" class="bg-gray-50 p-4 mb-6 rounded-lg border border-gray-200 shadow-inner">
+        <div x-show="filtersOpen" x-collapse.duration.300ms style="display: none;" class="bg-gray-50 p-4 mb-6 rounded-lg border border-gray-200">
             <h3 class="text-lg font-semibold text-gray-800 mb-4">Opciones de Filtro</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
@@ -65,8 +65,8 @@
                     </div>
                 </div>
                 <div class="flex items-end justify-end gap-2">
-                    <x-primary-button wire:click="applyFilters" class="py-2.5">Buscar</x-primary-button>
-                    <x-secondary-button wire:click="clearFilters" class="py-2.5">Limpiar</x-secondary-button>
+                    <x-secondary-button wire:click="clearFilters" >Limpiar</x-secondary-button>
+                    <x-primary-button wire:click="applyFilters">Buscar</x-primary-button>
                 </div>
             </div>
         </div>
