@@ -21,22 +21,13 @@
     <div class="space-y-4">
         <div class="bg-sigedra-light-bg border rounded-lg p-4">
             <div class="flex flex-wrap items-center gap-2">
-                <div class="inline-flex items-center gap-x-2 bg-sigedra-medium-bg text-sigedra-text-medium px-3 py-1 rounded-full border">
-                    <i class="ph ph-calendar text-lg"></i>
-                    <span class="text-sm font-medium">{{ $session->fecha->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}</span>
-                </div>
-                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
-                    <i class="ph ph-book-bookmark text-base"></i>
-                    {{ $session->cargaAcademica->materia->nombre }}
-                </span>
-                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
-                    <i class="ph ph-graduation-cap text-base"></i>
-                    {{ $session->cargaAcademica->grado->nivelAcademico->nombre }} ({{ $session->cargaAcademica->grado->anioAcademico->anio }})
-                </span>
-                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
-                    <i class="ph ph-chalkboard-teacher text-base"></i>
-                    {{ $session->cargaAcademica->maestro->nombre_completo }}
-                </span>
+                <x-info-badge icon="calendar-blank" class="rounded-full text-sigedra-text-medium px-3">
+                    {{ $session->fecha->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}
+                </x-info-badge>
+                <x-info-badge icon="arrows-clockwise">{{ $session->ciclo->tipoCiclo->nombre }}</x-info-badge>
+                <x-info-badge icon="book-bookmark">{{ $session->cargaAcademica->materia->nombre }}</x-info-badge>
+                <x-info-badge icon="graduation-cap">{{ $session->cargaAcademica->grado->nivelAcademico->nombre }} ({{ $session->cargaAcademica->grado->anioAcademico->anio }})</x-info-badge>
+                <x-info-badge icon="chalkboard-teacher">{{ $session->cargaAcademica->maestro->nombre_completo }}</x-info-badge>
             </div>
         </div>
 

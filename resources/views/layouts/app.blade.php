@@ -126,6 +126,18 @@
         <!-- Main Content -->
         <main class="flex-grow bg-sigedra-bg">
             <div class="container mx-auto px-4 pb-24">
+                @if (session('success'))
+                    <x-alert type="success">{{ session('success') }}</x-alert>
+                @endif
+
+                @if (session('error'))
+                    <x-alert type="error">{{ session('error') }}</x-alert>
+                @endif
+
+                @if (session('info'))
+                    <x-alert type="info">{{ session('info') }}</x-alert>
+                @endif
+
                 @yield('content')
                 {{ $slot ?? '' }}
             </div>

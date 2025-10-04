@@ -75,6 +75,7 @@
                         <td class="px-6 py-3 text-center overflow-hidden">
                             <div class="flex items-center justify-center gap-x-2">
                                 <x-secondary-button @click.prevent="$wire.dispatch('load-session', { sessionId: {{ $asistencia->id }} }); $dispatch('view-session', { sessionId: {{ $asistencia->id }} })" title="Ver Detalles"><i class="ph ph-eye text-lg"></i></x-secondary-button>
+                                <a href="{{ route('attendance.edit', ['sesionAsistencia' => $asistencia->id]) }}" title="Editar Asistencia"><x-secondary-button><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button></a>
                                 <x-danger-button x-on:click.prevent="$wire.set('recordIdToDelete', {{ $asistencia->id }}); $dispatch('open-modal', 'confirm-deletion')" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
                             </div>
                         </td>
@@ -109,6 +110,7 @@
                     </div>
                     <div class="flex items-center gap-x-2">
                         <x-secondary-button @click.prevent="$wire.dispatch('load-session', { sessionId: {{ $asistencia->id }} }); $dispatch('view-session', { sessionId: {{ $asistencia->id }} })" title="Ver Detalles"><i class="ph ph-eye text-lg"></i></x-secondary-button>
+                        <a href="{{ route('attendance.edit', ['sesionAsistencia' => $asistencia->id]) }}" title="Editar Asistencia"><x-secondary-button><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button></a>
                         <x-danger-button wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
                     </div>
                 </div>

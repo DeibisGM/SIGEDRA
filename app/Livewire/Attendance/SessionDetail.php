@@ -30,6 +30,7 @@ class SessionDetail extends Component
             'cargaAcademica.grado.nivelAcademico',
             'cargaAcademica.grado.anioAcademico',
             'cargaAcademica.maestro',
+            'ciclo.tipoCiclo',
         ])->find($sessionId);
 
         if ($this->session) {

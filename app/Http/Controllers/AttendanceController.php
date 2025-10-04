@@ -34,7 +34,7 @@ class AttendanceController extends Controller
         ]);
     }
 
-    public function create(Request $request): View
+    public function create(Request $request): View|RedirectResponse
     {
         $validated = $request->validate([
             'carga_academica_id' => 'required|exists:carga_academica,id',
@@ -62,6 +62,17 @@ class AttendanceController extends Controller
 
         if (!$ciclo) {
             abort(404, 'No se encontró un ciclo activo para el grado y tipo de ciclo especificado.');
+        }
+
+        // Comprobar si ya existe una sesión de asistencia
+        $existingSession = SesionAsistencia::where('carga_academica_id', $cargaAcademicaId)
+            ->where('ciclo_id', $ciclo->id)
+            ->where('fecha', $fecha)
+            ->first();
+
+        if ($existingSession) {
+            return redirect()->route('attendance.edit', $existingSession->id)
+                ->with('info', 'Ya existe un registro de asistencia para esta fecha. Puede editarlo aquí.');
         }
 
         $tipoCiclo = DB::table('tipo_ciclo')->find($tipoCicloId);
@@ -123,11 +134,51 @@ class AttendanceController extends Controller
 
 
     /**
+     * Actualiza una sesión de asistencia existente en la base de datos.
+     */
+    public function update(Request $request, SesionAsistencia $sesionAsistencia): RedirectResponse
+    {
+        $validated = $request->validate([
+            'asistencias' => 'required|array',
+            'asistencias.*.estado_asistencia_id' => 'required|exists:estado_asistencia,id',
+            'asistencias.*.observaciones' => 'nullable|string|max:255',
+        ]);
+
+        DB::transaction(function () use ($validated, $sesionAsistencia) {
+            foreach ($validated['asistencias'] as $estudiante_id => $data) {
+                Asistencia::updateOrCreate(
+                    [
+                        'sesion_asistencia_id' => $sesionAsistencia->id,
+                        'estudiante_id' => $estudiante_id,
+                    ],
+                    [
+                        'estado_asistencia_id' => $data['estado_asistencia_id'],
+                        'observaciones' => $data['observaciones'] ?? null,
+                    ]
+                );
+            }
+        });
+
+        return redirect()->route('attendance.index')->with('success', 'Asistencia actualizada correctamente.');
+    }
+
+
+    /**
      * Muestra el formulario para editar una sesión de asistencia existente.
      */
     public function edit(SesionAsistencia $sesionAsistencia): View
     {
-        // Esta lógica necesitará ser desarrollada para la vista de edición.
-        return view('attendance.edit', ['session' => $sesionAsistencia]);
+        $sesionAsistencia->load([
+            'cargaAcademica.materia',
+            'cargaAcademica.grado.nivelAcademico',
+            'cargaAcademica.grado.anioAcademico',
+            'cargaAcademica.maestro',
+            'ciclo.tipoCiclo',
+            'asistencias.estudiante' => function ($query) {
+                $query->orderBy('primer_apellido')->orderBy('segundo_apellido')->orderBy('primer_nombre');
+            }
+        ]);
+
+        return view('attendance.edit', ['sesionAsistencia' => $sesionAsistencia]);
     }
 }
