@@ -138,6 +138,10 @@
                     <x-alert type="info">{{ session('info') }}</x-alert>
                 @endif
 
+                @if (session('warning'))
+                <x-alert type="warning">{{ session('warning') }}</x-alert>
+                @endif
+
                 @yield('content')
                 {{ $slot ?? '' }}
             </div>

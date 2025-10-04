@@ -5,16 +5,15 @@
     <header class="">
         <div class="container mx-auto px-0 py-5 flex items-center justify-between">
             <div class="flex items-baseline gap-x-2">
-                <button wire:click="closeSession" wire:loading.attr="disabled" wire:target="closeSession" class="text-sigedra-text-medium hover:text-sigedra-text-dark transition-colors p-1 rounded-full hover:bg-sigedra-light-colored-bg disabled:opacity-50" title="Volver al historial">
-                    <span wire:loading wire:target="closeSession"><i class="ph ph-spinner-gap text-xl animate-spin"></i></span>
-                    <span wire:loading.remove wire:target="closeSession"><i class="ph ph-arrow-left text-xl"></i></span>
-                </button>
+                <x-secondary-loading-button wire:click="closeSession" wire:target="closeSession" title="Volver al historial">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </x-secondary-loading-button>
                 <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">Detalles de la Sesión</h1>
             </div>
-            <x-secondary-button wire:click="editSession" class="hidden lg:inline-flex">
+            <x-secondary-loading-button wire:click="editSession" wire:target="editSession" class="hidden lg:inline-flex min-w-[150px]">
                 <i class="ph ph-pencil-simple text-lg"></i>
                 <span>Editar sesión</span>
-            </x-secondary-button>
+            </x-secondary-loading-button>
         </div>
     </header>
 
@@ -120,10 +119,10 @@
 
     <!-- INICIO: Footer para Móviles -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-        <x-primary-button wire:click="editSession" class="w-full justify-center py-3">
+        <x-primary-loading-button wire:click="editSession" wire:target="editSession" class="w-full justify-center py-3">
             <i class="ph ph-pencil-simple text-lg"></i>
             <span>Editar sesión</span>
-        </x-primary-button>
+        </x-primary-loading-button>
     </div>
     <!-- FIN: Footer para Móviles -->
 

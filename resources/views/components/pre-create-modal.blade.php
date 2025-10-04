@@ -20,13 +20,19 @@
         selectedCargaText: 'Seleccione un curso',
         selectedCicloText: 'Seleccione un ciclo',
         showValidationError: false,
+        loading: false,
         reset() {
             this.carga_academica_id = '';
             this.tipo_ciclo_id = '';
             this.selectedCargaText = 'Seleccione un curso';
             this.selectedCicloText = 'Seleccione un ciclo';
             this.showValidationError = false;
-            this.date = new Date().toISOString().slice(0, 10);
+            this.loading = false;
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            this.date = `${year}-${month}-${day}`;
         }
     }" x-init="reset()" @open-modal.window="if ($event.detail == 'pre-create-modal') { reset() }">
         <h2 class="text-lg font-medium text-sigedra-text-dark">
@@ -97,13 +103,22 @@
                     Cancelar
                 </x-secondary-button>
 
-                <x-primary-button
+                <x-primary-loading-button
                     as="button"
-                    x-on:click="if(carga_academica_id && tipo_ciclo_id && date) { window.location.href = `{{ route('attendance.create') }}?carga_academica_id=${carga_academica_id}&tipo_ciclo_id=${tipo_ciclo_id}&fecha=${date}` } else { showValidationError = true }"
-                    class="w-full sm:w-auto justify-center"
+                    x-on:click="
+                        loading = true;
+                        if(carga_academica_id && tipo_ciclo_id && date) {
+                            window.location.href = `{{ route('attendance.create') }}?carga_academica_id=${carga_academica_id}&tipo_ciclo_id=${tipo_ciclo_id}&fecha=${date}`;
+                        } else {
+                            loading = false;
+                            showValidationError = true;
+                        }
+                    "
+                    class="w-full sm:w-auto justify-center min-w-[150px]"
+                    loading="loading"
                 >
                     Continuar
-                </x-primary-button>
+                </x-primary-loading-button>
             </div>
         </div>
     </div>

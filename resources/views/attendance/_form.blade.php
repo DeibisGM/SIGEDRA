@@ -10,11 +10,11 @@
     'cicloNombre',
 ])
 
-<div x-data="attendanceForm()">
+<div x-data="attendanceForm">
     <div x-show="showError" class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert" style="display: none;">
         <span class="block sm:inline">Debe seleccionar el estado de asistencia para todos los estudiantes.</span>
     </div>
-    <form method="POST" action="{{ $formAction }}" id="attendance-form" @submit="validateForm($event)">
+    <form method="POST" action="{{ $formAction }}" id="attendance-form" @submit="$dispatch('loading-start'); loading = true; validateForm($event)">
         @csrf
         @if($formMethod !== 'POST')
             @method($formMethod)
@@ -134,6 +134,7 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('attendanceForm', () => ({
+            loading: false,
             showError: false,
             markAllPresent() {
                 this.$dispatch('mark-all-present');
@@ -154,6 +155,8 @@
 
                 if (!allSet) {
                     event.preventDefault();
+                    this.loading = false;
+                    this.$dispatch('loading-stop');
                     this.showError = true;
                     setTimeout(() => this.showError = false, 5000);
                 }

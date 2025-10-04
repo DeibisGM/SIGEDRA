@@ -72,7 +72,7 @@ class AttendanceController extends Controller
 
         if ($existingSession) {
             return redirect()->route('attendance.edit', $existingSession->id)
-                ->with('info', 'Ya existe un registro de asistencia para esta fecha. Puede editarlo aquí.');
+                ->with('warning', 'Ya existe un registro de asistencia para esta fecha. Puede editarlo aquí.');
         }
 
         $tipoCiclo = DB::table('tipo_ciclo')->find($tipoCicloId);

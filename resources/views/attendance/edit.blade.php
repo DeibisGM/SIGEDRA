@@ -16,26 +16,26 @@
 @section('module_subtitle', 'Actualiza la lista de asistencia para un curso en una fecha específica')
 
 @section('header_actions')
-<div class="hidden md:flex gap-3">
+<div class="hidden md:flex gap-3" x-data="{ loading: false }" @loading-start.window="loading = true" @loading-stop.window="loading = false">
     <a href="{{ route('attendance.index') }}">
         <x-secondary-button type="button">Cancelar</x-secondary-button>
     </a>
-    <x-primary-button type="submit" form="attendance-form">
+    <x-primary-loading-button type="submit" form="attendance-form" loading="loading" class="min-w-[200px]">
         <i class="ph ph-floppy-disk text-lg"></i>
         <span>Actualizar Asistencia</span>
-    </x-primary-button>
+    </x-primary-loading-button>
 </div>
 @endsection
 
 @section('footer_actions')
-<div class="flex gap-3 w-full">
+<div class="flex gap-3 w-full" x-data="{ loading: false }" @loading-start.window="loading = true" @loading-stop.window="loading = false">
     <a href="{{ route('attendance.index') }}" class="w-full">
         <x-secondary-button type="button" class="w-full justify-center">Cancelar</x-secondary-button>
     </a>
-    <x-primary-button type="submit" form="attendance-form" class="w-full justify-center">
+    <x-primary-loading-button type="submit" form="attendance-form" class="w-full justify-center" loading="loading">
         <i class="ph ph-floppy-disk text-lg"></i>
         <span>Actualizar Asistencia</span>
-    </x-primary-button>
+    </x-primary-loading-button>
 </div>
 @endsection
 
