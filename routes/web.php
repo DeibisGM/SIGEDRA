@@ -50,6 +50,11 @@ Route::middleware(['auth', CheckLoginFeature::class])->group(function () {
 
     Route::get('/reportes', [ReporteController::class, 'index'])->name('reportes.index');
     Route::get('/bitacora', [BitacoraController::class, 'index'])->name('bitacora.index');
+
+    // Connectivity check endpoint
+    Route::get('/ping', function () {
+        return response()->json(['status' => 'ok']);
+    });
 });
 
 require __DIR__.'/auth.php';

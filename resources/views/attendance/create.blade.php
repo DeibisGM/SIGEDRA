@@ -17,7 +17,7 @@
 
 @section('header_actions')
 <div class="hidden md:flex gap-3" x-data="{ saveLoading: false }" @loading-stop.window="saveLoading = false">
-    <a href="{{ route('attendance.index') }}">
+    <a href="{{ route('attendance.index') }}" class="cancel-attendance-form">
         <x-secondary-button type="button">Cancelar</x-secondary-button>
     </a>
     <x-primary-loading-button type="submit" form="attendance-form" loading="saveLoading" @click="saveLoading = true" class="min-w-[200px]">
@@ -29,7 +29,7 @@
 
 @section('footer_actions')
 <div class="flex gap-3 w-full" x-data="{ saveLoading: false }" @loading-stop.window="saveLoading = false">
-    <a href="{{ route('attendance.index') }}" class="w-full">
+    <a href="{{ route('attendance.index') }}" class="w-full cancel-attendance-form">
         <x-secondary-button type="button" class="w-full justify-center">Cancelar</x-secondary-button>
     </a>
     <x-primary-loading-button type="submit" form="attendance-form" class="w-full justify-center" loading="saveLoading" @click="saveLoading = true">

@@ -107,6 +107,16 @@
             </div>
         </header>
 
+        <!-- Offline Indicator   -->
+        <div id="offline-indicator" class="bg-red-600 text-white py-3">
+            <p class="flex items-center justify-center gap-2">
+                <i class="ph ph-wifi-x text-lg"></i>
+                <span class="text-base md:text-lg text-left">
+            Estás sin conexión...<span class="hidden md:inline">. Los cambios podrían no guardarse.</span>
+        </span>
+            </p>
+        </div>
+
         <!-- Secondary Header -->
         @hasSection('module_title')
         <header class="bg-sigedra-light-bg shadow-sm" x-show="!isViewingSession" x-cloak>
