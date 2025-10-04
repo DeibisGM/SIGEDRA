@@ -70,38 +70,38 @@
                             $asistencia = $sesionAsistencia ? $item : null;
                         @endphp
                         <tr>
-                            <td class="px-6 py-3 text-base font-medium text-sigedra-text-dark align-middle">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-3 text-base font-semibold text-sigedra-text-medium align-middle">{{ $loop->iteration }}</td>
                             <td class="px-6 py-3 text-base text-sigedra-text-dark align-middle">{{ $student->cedula }}</td>
-                            <td class="px-6 py-3 text-base text-sigedra-text-dark font-medium align-middle">{{ $student->nombre_completo }}</td>
+                            <td class="px-6 py-3 text-base text-sigedra-text-dark align-middle">{{ $student->nombre_completo }}</td>
                             <td class="px-6 py-3 text-base text-sigedra-text-dark align-middle">
                                 <div x-data="{ status: {{ $asistencia->estado_asistencia_id ?? 0 }} }" @mark-all-present.window="status = 1" class="isolate inline-flex rounded-md">
                                     <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="1" id="presente-{{ $student->id }}" x-model.number="status" class="hidden">
-                                    <label for="presente-{{ $student->id }}" class="relative inline-flex items-center rounded-l-md px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
+                                    <label for="presente-{{ $student->id }}" class="relative inline-flex items-center rounded-l-md px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
                                             'bg-green-100 text-green-800 ring-green-300 font-semibold': status == 1,
                                             'bg-white text-gray-900 font-normal': status != 1
                                         }">Presente</label>
 
                                     <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="3" id="tardia-{{ $student->id }}" x-model.number="status" class="hidden">
-                                    <label for="tardia-{{ $student->id }}" class="relative -ml-px inline-flex items-center px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
+                                    <label for="tardia-{{ $student->id }}" class="relative -ml-px inline-flex items-center px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
                                             'bg-yellow-100 text-yellow-800 ring-yellow-300 font-semibold': status == 3,
                                             'bg-white text-gray-900 font-normal': status != 3
                                         }">Tardía</label>
 
                                     <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="4" id="justificado-{{ $student->id }}" x-model.number="status" class="hidden">
-                                    <label for="justificado-{{ $student->id }}" class="relative -ml-px inline-flex items-center px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
+                                    <label for="justificado-{{ $student->id }}" class="relative -ml-px inline-flex items-center px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
                                             'bg-blue-100 text-blue-800 ring-blue-300 font-semibold': status == 4,
                                             'bg-white text-gray-900 font-normal': status != 4
                                         }">Justificado</label>
 
                                     <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="2" id="ausente-{{ $student->id }}" x-model.number="status" class="hidden">
-                                    <label for="ausente-{{ $student->id }}" class="relative -ml-px inline-flex items-center rounded-r-md px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
+                                    <label for="ausente-{{ $student->id }}" class="relative -ml-px inline-flex items-center rounded-r-md px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer" :class="{
                                             'bg-red-100 text-red-800 ring-red-300 font-semibold': status == 2,
                                             'bg-white text-gray-900 font-normal': status != 2
                                         }">Ausente</label>
                                 </div>
                             </td>
-                            <td class="px-6 py-3 text-base text-sigedra-text-dark align-middle">
-                                <x-textarea-input name="asistencias[{{ $student->id }}][observaciones]" rows="1" class="w-full text-base py-1.5 resize-none" placeholder="Añada una observación..." maxlength="75">{{ $asistencia->observaciones ?? '' }}</x-textarea-input>
+                            <td class="px-6 py-2 align-middle">
+                                <x-textarea-input name="asistencias[{{ $student->id }}][observaciones]" rows="1" class="w-full text-base resize-none" placeholder="Añada una observación..." maxlength="75">{{ $asistencia->observaciones ?? '' }}</x-textarea-input>
                             </td>
                         </tr>
                     @empty
@@ -131,35 +131,32 @@
                     @endphp
                     <div class="bg-white border border-sigedra-border rounded-lg p-4 space-y-4">
                         <div>
-                            <p class="font-bold text-sigedra-text-dark">{{ $student->nombre_completo }}</p>
-                            <p class="text-sm text-sigedra-text-medium">Cédula: {{ $student->cedula }}</p>
+                            <p class="font-bold text-base text-sigedra-text-medium">{{ $student->nombre_completo }}</p>
+                            <p class="text-base text-sigedra-text-medium">Cédula: {{ $student->cedula }}</p>
                         </div>
 
-                        <div class="border-t border-sigedra-border"></div>
-
                         <div>
-                            <p class="text-base font-semibold text-sigedra-text-dark mb-3">Asistencia</p>
                             <div x-data="{ status: {{ $asistencia->estado_asistencia_id ?? 0 }} }" @mark-all-present.window="status = 1" class="isolate inline-flex rounded-md w-full">
                                 <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="1" id="presente-m-{{ $student->id }}" x-model.number="status" class="hidden">
-                                <label for="presente-m-{{ $student->id }}" class="relative inline-flex items-center justify-center rounded-l-md px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
+                                <label for="presente-m-{{ $student->id }}" class="relative inline-flex items-center justify-center rounded-l-md px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
                                         'bg-green-100 text-green-800 ring-green-300 font-semibold': status == 1,
                                         'bg-white text-gray-900 font-normal': status != 1
                                     }">Pres.</label>
 
                                 <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="3" id="tardia-m-{{ $student->id }}" x-model.number="status" class="hidden">
-                                <label for="tardia-m-{{ $student->id }}" class="relative -ml-px inline-flex items-center justify-center px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
+                                <label for="tardia-m-{{ $student->id }}" class="relative -ml-px inline-flex items-center justify-center px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
                                         'bg-yellow-100 text-yellow-800 ring-yellow-300 font-semibold': status == 3,
                                         'bg-white text-gray-900 font-normal': status != 3
                                     }">Tard.</label>
 
                                 <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="4" id="justificado-m-{{ $student->id }}" x-model.number="status" class="hidden">
-                                <label for="justificado-m-{{ $student->id }}" class="relative -ml-px inline-flex items-center justify-center px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
+                                <label for="justificado-m-{{ $student->id }}" class="relative -ml-px inline-flex items-center justify-center px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
                                         'bg-blue-100 text-blue-800 ring-blue-300 font-semibold': status == 4,
                                         'bg-white text-gray-900 font-normal': status != 4
                                     }">Just.</label>
 
                                 <input type="radio" name="asistencias[{{ $student->id }}][estado_asistencia_id]" value="2" id="ausente-m-{{ $student->id }}" x-model.number="status" class="hidden">
-                                <label for="ausente-m-{{ $student->id }}" class="relative -ml-px inline-flex items-center justify-center rounded-r-md px-3 py-2 text-sm ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
+                                <label for="ausente-m-{{ $student->id }}" class="relative -ml-px inline-flex items-center justify-center rounded-r-md px-3 py-2 text-base ring-1 ring-inset ring-gray-300 focus:z-10 cursor-pointer w-1/4" :class="{
                                         'bg-red-100 text-red-800 ring-red-300 font-semibold': status == 2,
                                         'bg-white text-gray-900 font-normal': status != 2
                                     }">Aus.</label>

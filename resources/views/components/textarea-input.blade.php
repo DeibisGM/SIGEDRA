@@ -2,7 +2,8 @@
     'disabled' => false,
 ])
 
-<textarea x-data="{
+<textarea
+    x-data="{
         resize() {
             const el = $el;
             el.style.height = 'auto';
@@ -12,4 +13,6 @@
     }"
     x-init="$nextTick(() => resize())"
     @input="resize()"
-    {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge(['class' => 'border-gray-300 placeholder-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md']) !!}></textarea>
+    {{ $disabled ? 'disabled' : '' }}
+{!! $attributes->merge(['class' => 'block py-2 border-gray-300 placeholder-gray-400 focus:border-sigedra-text-dark focus:border-2 focus:border-gray-600 rounded-md']) !!}
+></textarea>
