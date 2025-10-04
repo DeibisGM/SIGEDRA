@@ -34,7 +34,7 @@
     </a>
     <x-primary-loading-button type="submit" form="attendance-form" class="w-full justify-center" loading="loading">
         <i class="ph ph-floppy-disk text-lg"></i>
-        <span>Actualizar Asistencia</span>
+        <span>Actualizar</span>
     </x-primary-loading-button>
 </div>
 @endsection
