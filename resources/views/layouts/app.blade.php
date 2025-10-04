@@ -99,14 +99,7 @@
                                     <i class="ph ph-user-circle text-lg text-sigedra-text-medium"></i>
                                     <span>Mi Perfil</span>
                                 </a>
-                                <div class="h-px bg-gray-200 my-1"></div>
-                                <form method="POST" action="{{ route('logout') }}" id="logout-form-dropdown" onsubmit="event.preventDefault(); console.log('Logout form submitted (dropdown)'); this.submit(); setTimeout(() => { console.log('Redirecting to /login (dropdown)'); window.location.replace('/login'); }, 100);">
-                                    <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                    <button type="submit" class="w-full flex items-center gap-x-3 px-3 py-2 text-sm text-red-600 rounded-md hover:bg-red-50">
-                                        <i class="ph ph-sign-out text-lg"></i>
-                                        <span>Cerrar Sesión</span>
-                                    </button>
-                                </form>
+
                             </div>
                         </div>
                     </div>
@@ -115,6 +108,7 @@
         </header>
 
         <!-- Secondary Header -->
+        @hasSection('module_title')
         <header class="bg-sigedra-light-bg shadow-sm" x-show="!isViewingSession" x-cloak>
             <div class="container mx-auto px-4 py-5 flex items-center justify-between">
                 <div>
@@ -132,6 +126,7 @@
                 </div>
             </div>
         </header>
+        @endif
 
         <!-- Main Content -->
         <main class="flex-grow bg-sigedra-bg">

@@ -1,21 +1,21 @@
-<header class="sticky top-0 z-40 h-[70px] flex-shrink-0 bg-sigedra-light-colored-bg border-b border-sigedra-border flex items-center">
+<header class="sticky top-0 z-40 h-[70px] flex-shrink-0 bg-gradient-to-r from-sigedra-primary to-sigedra-accent border-b border-sigedra-border flex items-center">
     <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-full">
         <div class="flex items-center min-w-0">
             <!-- Mobile Menu Toggle -->
-            <button type="button" id="mobile-menu-toggle" class="lg:hidden text-sigedra-text-medium hover:text-gray-600 me-4 flex-shrink-0">
+            <button type="button" id="mobile-menu-toggle" class="lg:hidden text-white hover:text-gray-200 me-4 flex-shrink-0">
                 <span class="sr-only">Toggle Navigation</span>
                 <i class="ph ph-list text-xl"></i>
             </button>
             <!-- Breadcrumbs -->
-            <div x-show="!isViewingSession" class="hidden sm:block w-full text-base text-sigedra-text-medium whitespace-nowrap truncate">
+            <div x-show="!isViewingSession" class="hidden sm:block w-full text-white whitespace-nowrap truncate">
                 @yield('breadcrumbs')
             </div>
-            <div x-show="isViewingSession" x-cloak class="w-full text-base text-sigedra-text-medium whitespace-nowrap truncate">
-                <a href="{{ route('attendance.index') }}" class="hover:text-gray-700">Asistencia</a>
+            <div x-show="isViewingSession" x-cloak class="w-full text-white whitespace-nowrap truncate">
+                <a href="{{ route('attendance.index') }}" class="hover:text-gray-200">Asistencia</a>
                 <span class="mx-2">/</span>
-                <span @click="$dispatch('close-session-view')" class="cursor-pointer hover:text-gray-700">Historial</span>
+                <span @click="$dispatch('close-session-view')" class="cursor-pointer hover:text-gray-200">Historial</span>
                 <span class="mx-2">/</span>
-                <span class="font-semibold text-sigedra-primary" x-text="sessionId"></span>
+                <span class="font-semibold text-white" x-text="sessionId"></span>
             </div>
         </div>
         <div class="ms-4 flex items-center gap-x-2 md:gap-x-4">

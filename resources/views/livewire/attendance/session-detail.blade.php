@@ -1,6 +1,6 @@
 <!-- resources/views/livewire/attendance/session-detail.blade.php -->
 
-<div class="relative min-h-[400px] pb-24 md:pb-0">
+<div class="relative">
     @if ($session)
     <header class="">
         <div class="container mx-auto px-0 py-5 flex items-center justify-between">

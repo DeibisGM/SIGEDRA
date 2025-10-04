@@ -121,7 +121,7 @@
                                 <i class="ph ph-pencil-simple text-lg"></i>
                             </x-secondary-loading-button>
                         </div>
-                        <x-danger-button wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
+                        <x-danger-button x-on:click.prevent="$wire.set('recordIdToDelete', {{ $asistencia->id }}); $dispatch('open-modal', 'confirm-deletion')" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
                     </div>
                 </div>
             </div>

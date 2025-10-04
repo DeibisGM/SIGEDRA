@@ -45,7 +45,6 @@
 
 
 
-
 [x-cloak] {
     display: none !important;
 }
@@ -77,5 +76,3 @@
         @apply focus:outline-none;
     }
 }
-
-
