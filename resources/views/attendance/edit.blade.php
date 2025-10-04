@@ -17,7 +17,7 @@
 
 @section('header_actions')
 <div class="hidden md:flex gap-3" x-data="{ saveLoading: false, cancelLoading: false }" @loading-stop.window="saveLoading = false">
-    <x-secondary-loading-button type="button" loading="cancelLoading" @click="cancelLoading = true; window.location.href='{{ route('attendance.index') }}'">
+    <x-secondary-loading-button type="button" loading="cancelLoading" @click="cancelLoading = true; hasUnsavedChanges = false; window.location.href='{{ route('attendance.index') }}'">
         Cancelar
     </x-secondary-loading-button>
     <x-primary-loading-button type="submit" form="attendance-form" loading="saveLoading" @click="saveLoading = true" class="min-w-[200px]">
@@ -29,7 +29,7 @@
 
 @section('footer_actions')
 <div class="flex gap-3 w-full" x-data="{ saveLoading: false, cancelLoading: false }" @loading-stop.window="saveLoading = false">
-    <x-secondary-loading-button type="button" class="w-full justify-center" loading="cancelLoading" @click="cancelLoading = true; window.location.href='{{ route('attendance.index') }}'">
+    <x-secondary-loading-button type="button" class="w-full justify-center" loading="cancelLoading" @click="cancelLoading = true; hasUnsavedChanges = false; window.location.href='{{ route('attendance.index') }}'">
         Cancelar
     </x-secondary-loading-button>
     <x-primary-loading-button type="submit" form="attendance-form" class="w-full justify-center" loading="saveLoading" @click="saveLoading = true">

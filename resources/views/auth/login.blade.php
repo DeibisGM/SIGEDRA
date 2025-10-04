@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('login') }}" x-data="{ loginLoading: false }">
         @csrf
 
         <!-- General Auth Error -->
@@ -64,7 +64,9 @@
         </script>
 
         <div class="mt-6">
-            <x-primary-button class="w-full justify-center">{{ __('Iniciar Sesión') }}</x-primary-button>
+            <x-primary-loading-button type="submit" class="w-full justify-center" loading="loginLoading" @click="loginLoading = true">
+                {{ __('Iniciar Sesión') }}
+            </x-primary-loading-button>
         </div>
     </form>
 </x-guest-layout>
