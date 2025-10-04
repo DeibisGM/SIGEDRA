@@ -24,6 +24,7 @@ WORKDIR /var/www/html
 # Copy composer files and install dependencies
 COPY database/ database/
 COPY composer.json composer.lock ./
+ENV COMPOSER_MEMORY_LIMIT=-1
 RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist
 
 # --- NPM Dependencies Stage ---
