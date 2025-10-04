@@ -18,12 +18,24 @@ RUN apt-get update && apt-get install -y \
 COPY nginx.conf /etc/nginx/sites-available/default
 
 # --- Composer Dependencies Stage ---
-FROM composer:latest as composer_deps
+FROM php:8.2-fpm as composer_deps
+
+# Install system dependencies and PHP extensions
+RUN apt-get update && apt-get install -y \
+    nginx \
+    git \
+    unzip \
+    libzip-dev \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libxml2-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd pdo pdo_mysql zip xml
 
 WORKDIR /var/www/html
 
 # Copy composer files and install dependencies
-COPY database/ database/
 COPY composer.json composer.lock ./
 ENV COMPOSER_MEMORY_LIMIT=-1
 RUN composer install --no-interaction --no-plugins --no-scripts --no-dev --prefer-dist
