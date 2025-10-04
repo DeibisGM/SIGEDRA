@@ -6,16 +6,19 @@ use App\Http\Requests\MaestroRequest;
 use App\Models\Maestro;
 use App\Models\User;
 use App\Models\UsuarioRol;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 
 class MaestroController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Muestra una lista de todos los maestros.
      */
     public function index(): View
     {
+        $this->authorize('viewAny', Maestro::class);
         return view('maestros.index');
     }
 
@@ -24,13 +27,14 @@ class MaestroController extends Controller
      */
     public function show(Maestro $maestro): View
     {
-
+        $this->authorize('view', $maestro);
         $maestro->load(['user', 'materias']);
         return view('maestros.show', compact('maestro'));
     }
 
     public function create(): View
     {
+        $this->authorize('create', Maestro::class);
         $maestro = null;
 
         return view('maestros.create', compact('maestro'));
@@ -38,6 +42,7 @@ class MaestroController extends Controller
 
     public function edit(Maestro $maestro): View
     {
+        $this->authorize('update', $maestro);
         $maestro->load('user');
 
         return view('maestros.create', compact('maestro'));
@@ -45,6 +50,7 @@ class MaestroController extends Controller
 
     public function store(MaestroRequest $request)
     {
+        $this->authorize('create', Maestro::class);
         // 1. Validar datos. Laravel redirecciona automáticamente si falla.
         $datosValidados = $request->validated();
         $passwordPorDefecto = '12345678';
@@ -104,6 +110,7 @@ class MaestroController extends Controller
 
     public function update(MaestroRequest $request, Maestro $maestro)
     {
+        $this->authorize('update', $maestro);
         $datosValidados = $request->validated();
 
         try {
@@ -141,7 +148,7 @@ class MaestroController extends Controller
 
     public function destroy(Maestro $maestro)
     {
-
+        $this->authorize('delete', $maestro);
         try {
             $userData = ['activo' => 0];
 
