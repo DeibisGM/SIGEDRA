@@ -1,5 +1,6 @@
 @import "../../node_modules/@phosphor-icons/web/src/regular/style.css";
 @import "../../node_modules/@phosphor-icons/web/src/fill/style.css";
+@import "../../node_modules/@phosphor-icons/web/src/bold/style.css";
 @import "datepicker-custom.css";
 
 @tailwind base;
@@ -29,6 +30,18 @@
     }
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-custom {
+  animation: spin 3s linear infinite;
+}
 
 
 

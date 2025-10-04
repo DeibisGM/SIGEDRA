@@ -5,38 +5,28 @@
     <header class="">
         <div class="container mx-auto px-0 py-5 flex items-center justify-between">
             <div class="flex items-baseline gap-x-2">
-                <button wire:click="closeSession" wire:loading.attr="disabled" wire:target="closeSession" class="text-sigedra-text-medium hover:text-sigedra-text-dark transition-colors p-1 rounded-full hover:bg-sigedra-light-colored-bg disabled:opacity-50" title="Volver al historial">
-                    <span wire:loading wire:target="closeSession"><i class="ph ph-spinner-gap text-xl animate-spin"></i></span>
-                    <span wire:loading.remove wire:target="closeSession"><i class="ph ph-arrow-left text-xl"></i></span>
-                </button>
+                <x-secondary-loading-button wire:click="closeSession" wire:target="closeSession" title="Volver al historial">
+                    <i class="ph ph-arrow-left text-xl"></i>
+                </x-secondary-loading-button>
                 <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">Detalles de la Sesión</h1>
             </div>
-            <x-secondary-button wire:click="editSession" class="hidden lg:inline-flex">
+            <x-secondary-loading-button wire:click="editSession" wire:target="editSession" class="hidden lg:inline-flex min-w-[150px]">
                 <i class="ph ph-pencil-simple text-lg"></i>
                 <span>Editar sesión</span>
-            </x-secondary-button>
+            </x-secondary-loading-button>
         </div>
     </header>
 
     <div class="space-y-4">
         <div class="bg-sigedra-light-bg border rounded-lg p-4">
             <div class="flex flex-wrap items-center gap-2">
-                <div class="inline-flex items-center gap-x-2 bg-sigedra-medium-bg text-sigedra-text-medium px-3 py-1 rounded-full border">
-                    <i class="ph ph-calendar text-lg"></i>
-                    <span class="text-sm font-medium">{{ $session->fecha->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}</span>
-                </div>
-                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
-                    <i class="ph ph-book-bookmark text-base"></i>
-                    {{ $session->cargaAcademica->materia->nombre }}
-                </span>
-                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
-                    <i class="ph ph-graduation-cap text-base"></i>
-                    {{ $session->cargaAcademica->grado->nivelAcademico->nombre }} ({{ $session->cargaAcademica->grado->anioAcademico->anio }})
-                </span>
-                <span class="inline-flex items-center gap-x-1.5 bg-sigedra-medium-bg text-sigedra-text-dark text-sm font-medium px-2.5 py-1 rounded-md border">
-                    <i class="ph ph-chalkboard-teacher text-base"></i>
-                    {{ $session->cargaAcademica->maestro->nombre_completo }}
-                </span>
+                <x-info-badge icon="calendar-blank" class="rounded-full text-sigedra-text-medium px-3">
+                    {{ $session->fecha->locale('es')->isoFormat('dddd, D [de] MMMM [de] YYYY') }}
+                </x-info-badge>
+                <x-info-badge icon="arrows-clockwise">{{ $session->ciclo->tipoCiclo->nombre }}</x-info-badge>
+                <x-info-badge icon="book-bookmark">{{ $session->cargaAcademica->materia->nombre }}</x-info-badge>
+                <x-info-badge icon="graduation-cap">{{ $session->cargaAcademica->grado->nivelAcademico->nombre }} ({{ $session->cargaAcademica->grado->anioAcademico->anio }})</x-info-badge>
+                <x-info-badge icon="chalkboard-teacher">{{ $session->cargaAcademica->maestro->nombre_completo }}</x-info-badge>
             </div>
         </div>
 
@@ -129,10 +119,10 @@
 
     <!-- INICIO: Footer para Móviles -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-        <x-primary-button wire:click="editSession" class="w-full justify-center py-3">
+        <x-primary-loading-button wire:click="editSession" wire:target="editSession" class="w-full justify-center py-3">
             <i class="ph ph-pencil-simple text-lg"></i>
             <span>Editar sesión</span>
-        </x-primary-button>
+        </x-primary-loading-button>
     </div>
     <!-- FIN: Footer para Móviles -->
 

@@ -25,4 +25,9 @@ class SesionAsistencia extends Model
     {
         return $this->hasMany(Asistencia::class, 'sesion_asistencia_id');
     }
+
+    public function ciclo(): BelongsTo
+    {
+        return $this->belongsTo(Ciclo::class, 'ciclo_id');
+    }
 }
