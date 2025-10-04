@@ -1,23 +1,42 @@
 @extends('layouts.app')
 
+@php
+$user = auth()->user();
+$isOwnProfile = $user && $user->maestro && $user->maestro->id === $maestro->id;
+@endphp
+
 @section('title', 'Detalles del Maestro')
 
 @section('breadcrumbs')
 <div class="text-base text-sigedra-text-medium whitespace-nowrap truncate">
-    <a href="{{ route('maestros.index') }}" class="hover:text-sigedra-text-dark">Maestros</a>
-    <span class="mx-2">/</span>
-    <span>Ver información</span>
+    @if ($isOwnProfile)
+    <div class="text-base text-gray-500 whitespace-nowrap truncate">
+        <span>Mi perfil</span>
+    </div>
+    @else
+        <a href="{{ route('maestros.index') }}" class="hover:text-sigedra-text-dark">Maestros</a>
+        <span class="mx-2">/</span>
+        <span>Ver información</span>
+    @endif
 </div>
 @endsection
 
 @section('module_title')
 <div class="flex items-center space-x-2">
+    @if (!$isOwnProfile)
     <a href="{{ route('maestros.index') }}"
        class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
        title="Volver al listado">
         <i class="ph ph-arrow-left"></i>
     </a>
-    <h1 class="text-xl font-semibold">Información de maestro</h1>
+    @endif
+    <h1 class="text-xl font-semibold">
+        @if ($isOwnProfile)
+            Información de Perfil
+        @else
+            Información de maestro
+        @endif
+    </h1>
 </div>
 @endsection
 
@@ -140,19 +159,18 @@
                      x-transition:leave-start="opacity-100 transform scale-100"
                      x-transition:leave-end="opacity-0 transform scale-95"
 
-                     class="absolute z-10 top-full right-0 mt-0 p-2 bg-white border border-gray-200 rounded-md shadow-lg
-                            flex flex-col space-y-1">
+                     class="absolute z-10 top-full right-0 mt-0 bg-white border border-gray-100 rounded-md shadow-lg">
 
                     {{-- Botones de acción aquí... --}}
-                    <x-secondary-button as="a" href="#" title="Ver información">
+                    <x-secondary-button as="a" href="#" title="Ver información" class="me-2 !bg-transparent !border-none !shadow-none !text-gray-700 hover:!text-gray-900 !w-full !justify-start">
                         <i class="ph ph-eye text-lg"></i>
                         <span>Ver</span>
                     </x-secondary-button>
-                    <x-secondary-button as="a" href="#" title="Editar Materia">
+                    <x-secondary-button as="a" href="#" title="Editar Materia" class="me-2 !bg-transparent !border-none !shadow-none !text-gray-700 hover:!text-gray-900 !w-full !justify-start">
                         <i class="ph ph-pencil-simple text-lg"></i>
                         <span>Editar </span>
                     </x-secondary-button>
-                    <x-danger-button title="Eliminar Materia">
+                    <x-danger-button title="Eliminar Materia" class="me-2 !bg-transparent !border-none !shadow-none !text-red-700 hover:!text-red-900 !w-full !justify-start">
                         <i class="ph ph-trash text-lg"></i>
                         <span>Eliminar</span>
                     </x-danger-button>

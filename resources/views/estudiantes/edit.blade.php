@@ -17,25 +17,13 @@
 
 @section('content')
 <div class="w-full">
-    {{-- Mensajes de error --}}
-    @if ($errors->any())
-        <div class="mb-4 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
-            <div class="flex">
-                <div class="flex-shrink-0">
-                    <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                    </svg>
-                </div>
-                <div class="ml-3">
-                    <h3 class="text-sm font-medium">Hay errores en el formulario:</h3>
-                    <ul class="mt-2 text-sm list-disc list-inside">
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
+
+    @if (session('success'))
+    <x-flash-message type="success" :message="session('success')" />
+    @endif
+
+    @if (session('error'))
+    <x-flash-message type="error" :message="session('error')" />
     @endif
 
     <form action="{{ route('estudiantes.update', $estudiante) }}" method="POST" class="space-y-4">
@@ -60,11 +48,11 @@
                     <x-input-label for="cedula" value="Cédula" />
                     <x-text-input
                         id="cedula"
-                        name="cedula"
                         type="text"
                         class="mt-1 block w-full bg-gray-100"
                         value="{{ $estudiante->cedula }}"
-                        readonly />
+                        disabled />
+                    <input type="hidden" name="cedula" value="{{ $estudiante->cedula }}">
                     <p class="mt-1 text-sm text-gray-500">La cédula no puede ser modificada</p>
                 </div>
             </div>
@@ -75,19 +63,22 @@
             <h2 class="text-xl font-semibold border-b border-gray-200 pb-4 mb-6">Datos Personales</h2>
 
             {{-- Nombre y Apellidos --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-end">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-start">
                 {{-- Primer Nombre --}}
                 <div>
-                    <x-input-label for="primer_nombre" value="Primer Nombre *" />
+                    <x-input-label for="primer_nombre" value="Primer Nombre*" />
                     <x-text-input
                         id="primer_nombre"
                         name="primer_nombre"
                         type="text"
-                        class="mt-1 block w-full"
-                        required
-                        placeholder="Juan"
+                        maxlength="100"
+                        class="mt-1 block w-full @error('primer_nombre') @enderror"
+                        placeholder="Ej: Juan"
                         value="{{ old('primer_nombre', $estudiante->primer_nombre) }}" />
-                    <x-input-error :messages="$errors->get('primer_nombre')" class="mt-2" />
+
+                    @error('primer_nombre')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Segundo Nombre --}}
@@ -97,23 +88,31 @@
                         id="segundo_nombre"
                         name="segundo_nombre"
                         type="text"
-                        class="mt-1 block w-full"
-                        placeholder="Carlos"
+                        maxlength="100"
+                        class="mt-1 block w-full @error('segundo_nombre') @enderror"
+                        placeholder="Ej: Carlos"
                         value="{{ old('segundo_nombre', $estudiante->segundo_nombre) }}" />
+
+                    @error('segundo_nombre')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Primer Apellido --}}
                 <div>
-                    <x-input-label for="primer_apellido" value="Primer Apellido *" />
+                    <x-input-label for="primer_apellido" value="Primer Apellido*" />
                     <x-text-input
                         id="primer_apellido"
                         name="primer_apellido"
                         type="text"
-                        class="mt-1 block w-full"
-                        required
-                        placeholder="Pérez"
+                        maxlength="100"
+                        class="mt-1 block w-full @error('primer_apellido') @enderror"
+                        placeholder="Ej: Pérez"
                         value="{{ old('primer_apellido', $estudiante->primer_apellido) }}" />
-                    <x-input-error :messages="$errors->get('primer_apellido')" class="mt-2" />
+
+                    @error('primer_apellido')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Segundo Apellido --}}
@@ -123,37 +122,47 @@
                         id="segundo_apellido"
                         name="segundo_apellido"
                         type="text"
-                        class="mt-1 block w-full"
-                        placeholder="Rojas"
+                        maxlength="100"
+                        class="mt-1 block w-full @error('segundo_apellido') @enderror"
+                        placeholder="Ej: Rojas"
                         value="{{ old('segundo_apellido', $estudiante->segundo_apellido) }}" />
+
+                    @error('segundo_apellido')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
             {{-- Fecha de Nacimiento, Género y Nacionalidad --}}
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-end mt-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start mt-6">
                 {{-- Fecha de Nacimiento --}}
                 <div>
-                    <x-input-label for="fecha_nacimiento" value="Fecha de Nacimiento *" />
+                    <x-input-label for="fecha_nacimiento" value="Fecha de Nacimiento*" />
                     <x-text-input
                         id="fecha_nacimiento"
                         name="fecha_nacimiento"
                         type="date"
-                        class="mt-1 block w-full"
-                        required
+                        class="mt-1 block w-full @error('fecha_nacimiento') @enderror"
                         value="{{ old('fecha_nacimiento', $estudiante->fecha_nacimiento->format('Y-m-d')) }}" />
-                    <x-input-error :messages="$errors->get('fecha_nacimiento')" class="mt-2" />
+
+                    @error('fecha_nacimiento')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Género --}}
                 <div>
-                    <x-input-label for="genero" value="Género *" />
-                    <select id="genero" name="genero" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required>
+                    <x-input-label for="genero" value="Género*" />
+                    <select id="genero" name="genero" class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('genero') @enderror">
                         <option value="" disabled>Seleccione...</option>
                         <option value="M" {{ old('genero', $estudiante->genero) == 'M' ? 'selected' : '' }}>Masculino</option>
                         <option value="F" {{ old('genero', $estudiante->genero) == 'F' ? 'selected' : '' }}>Femenino</option>
                         <option value="O" {{ old('genero', $estudiante->genero) == 'O' ? 'selected' : '' }}>Otro</option>
                     </select>
-                    <x-input-error :messages="$errors->get('genero')" class="mt-2" />
+
+                    @error('genero')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
 
                 {{-- Nacionalidad --}}
@@ -163,9 +172,14 @@
                         id="nacionalidad"
                         name="nacionalidad"
                         type="text"
-                        class="mt-1 block w-full"
+                        maxlength="100"
+                        class="mt-1 block w-full @error('nacionalidad') @enderror"
                         placeholder="Ej: Costarricense"
                         value="{{ old('nacionalidad', $estudiante->nacionalidad) }}" />
+
+                    @error('nacionalidad')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
 
@@ -180,9 +194,14 @@
                             id="provincia"
                             name="provincia"
                             type="text"
-                            class="mt-1 block w-full"
+                            maxlength="100"
+                            class="mt-1 block w-full @error('provincia') @enderror"
                             placeholder="Ej: San José"
                             value="{{ old('provincia', $direccion_partes['provincia']) }}" />
+
+                        @error('provincia')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     {{-- Cantón --}}
                     <div>
@@ -191,9 +210,14 @@
                             id="canton"
                             name="canton"
                             type="text"
-                            class="mt-1 block w-full"
+                            maxlength="100"
+                            class="mt-1 block w-full @error('canton') @enderror"
                             placeholder="Ej: Desamparados"
                             value="{{ old('canton', $direccion_partes['canton']) }}" />
+
+                        @error('canton')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     {{-- Distrito --}}
                     <div>
@@ -202,9 +226,14 @@
                             id="distrito"
                             name="distrito"
                             type="text"
-                            class="mt-1 block w-full"
+                            maxlength="100"
+                            class="mt-1 block w-full @error('distrito') @enderror"
                             placeholder="Ej: San Miguel"
                             value="{{ old('distrito', $direccion_partes['distrito']) }}" />
+
+                        @error('distrito')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                     {{-- Dirección Exacta --}}
                     <div class="md:col-span-2 lg:col-span-3">
@@ -213,8 +242,13 @@
                             id="direccion_exacta"
                             name="direccion_exacta"
                             rows="3"
-                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                            maxlength="500"
+                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('direccion_exacta') @enderror"
                             placeholder="Ej: 100 metros al sur del parque central, casa color verde con portón negro.">{{ old('direccion_exacta', $direccion_partes['direccion_exacta']) }}</textarea>
+
+                        @error('direccion_exacta')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
             </div>
@@ -229,7 +263,7 @@
                     <select
                         id="grado_id"
                         name="grado_id"
-                        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                        class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('grado_id') @enderror">
                         <option value="">Sin grado asignado</option>
                         @foreach($grados as $grado)
                             <option value="{{ $grado->id }}"
@@ -238,7 +272,10 @@
                             </option>
                         @endforeach
                     </select>
-                    <x-input-error :messages="$errors->get('grado_id')" class="mt-2" />
+
+                    @error('grado_id')
+                    <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                    @enderror
                 </div>
             </div>
         </div>
@@ -269,11 +306,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Tipo de Adecuación --}}
                     <div>
-                        <x-input-label for="adecuacion_id" value="Tipo de Adecuación *" />
+                        <x-input-label for="adecuacion_id" value="Tipo de Adecuación*" />
                         <select
                             id="adecuacion_id"
                             name="adecuacion_id"
-                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('adecuacion_id') @enderror">
                             <option value="">Seleccione una adecuación...</option>
                             @foreach($adecuaciones as $adecuacion)
                                 <option value="{{ $adecuacion->id }}"
@@ -282,36 +319,45 @@
                                 </option>
                             @endforeach
                         </select>
-                        <x-input-error :messages="$errors->get('adecuacion_id')" class="mt-2" />
+
+                        @error('adecuacion_id')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Nivel de Adecuación --}}
                     <div>
-                        <x-input-label for="nivel_adecuacion" value="Nivel de Adecuación *" />
+                        <x-input-label for="nivel_adecuacion" value="Nivel de Adecuación*" />
                         <select
                             id="nivel_adecuacion"
                             name="nivel_adecuacion"
-                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('nivel_adecuacion') @enderror">
                             <option value="">Seleccione el nivel...</option>
                             <option value="Significativa" {{ old('nivel_adecuacion', $adecuacion_actual?->pivot->nivel) == 'Significativa' ? 'selected' : '' }}>Significativa</option>
                             <option value="No Significativa" {{ old('nivel_adecuacion', $adecuacion_actual?->pivot->nivel) == 'No Significativa' ? 'selected' : '' }}>No Significativa</option>
                             <option value="De Acceso" {{ old('nivel_adecuacion', $adecuacion_actual?->pivot->nivel) == 'De Acceso' ? 'selected' : '' }}>De Acceso</option>
                         </select>
-                        <x-input-error :messages="$errors->get('nivel_adecuacion')" class="mt-2" />
+
+                        @error('nivel_adecuacion')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Fecha de Asignación --}}
                     <div>
-                        <x-input-label for="fecha_asignacion_adecuacion" value="Fecha de Asignación *" />
+                        <x-input-label for="fecha_asignacion_adecuacion" value="Fecha de Asignación*" />
                         <x-text-input
                             id="fecha_asignacion_adecuacion"
                             name="fecha_asignacion_adecuacion"
                             type="date"
-                            class="mt-1 block w-full"
+                            class="mt-1 block w-full @error('fecha_asignacion_adecuacion') @enderror"
                             value="{{ old('fecha_asignacion_adecuacion', $adecuacion_actual?->pivot->fecha_asignacion ?? date('Y-m-d')) }}" />
-                        <x-input-error :messages="$errors->get('fecha_asignacion_adecuacion')" class="mt-2" />
+
+                        @error('fecha_asignacion_adecuacion')
+                        <p class="text-sm text-sigedra-error mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
                     {{-- Estado de la Adecuación --}}
@@ -375,20 +421,11 @@
     function toggleAdecuacionFields() {
         const checkbox = document.getElementById('tiene_adecuacion');
         const fields = document.getElementById('adecuacion_fields');
-        const adecuacionId = document.getElementById('adecuacion_id');
-        const nivelAdecuacion = document.getElementById('nivel_adecuacion');
-        const fechaAsignacion = document.getElementById('fecha_asignacion_adecuacion');
 
         if (checkbox.checked) {
             fields.style.display = 'block';
-            adecuacionId.required = true;
-            nivelAdecuacion.required = true;
-            fechaAsignacion.required = true;
         } else {
             fields.style.display = 'none';
-            adecuacionId.required = false;
-            nivelAdecuacion.required = false;
-            fechaAsignacion.required = false;
         }
     }
 

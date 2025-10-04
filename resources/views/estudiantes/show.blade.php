@@ -10,6 +10,16 @@
 </div>
 @endsection
 
+@section('module_title')
+<div class="flex items-center space-x-2">
+    <a href="{{ route('estudiantes.index') }}"
+       class="text-gray-500 hover:text-gray-900 transition duration-150 ease-in-out text-2xl"
+       title="Volver al listado">
+        <i class="ph ph-arrow-left"></i>
+    </a>
+    <h1 class="text-xl font-semibold">Información de estudiantes</h1>
+</div>
+@endsection
 @section('content')
 <div class="space-y-6">
     <!-- Card de Perfil del Estudiante -->
@@ -17,14 +27,14 @@
         <div class="flex flex-col md:flex-row items-start gap-6">
             <!-- Avatar -->
             <div class="flex-shrink-0">
-                <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-indigo-600 text-white">
+                <span class="inline-flex items-center justify-center h-24 w-24 rounded-full bg-sigedra-primary text-white">
                     <span class="text-3xl font-bold">{{ $student->avatar_initials }}</span>
                 </span>
             </div>
 
             <!-- Información Principal -->
             <div class="flex-grow">
-                <h1 class="text-3xl font-bold text-gray-900">{{ $student->nombre_completo }}</h1>
+                <h1 class="text-3xl font-bold text-sigedra-primary">{{ $student->nombre_completo }}</h1>
                 <p class="mt-1 text-base text-gray-600">
                     Cédula: {{ $student->cedula }}
                     @if($grado_actual)

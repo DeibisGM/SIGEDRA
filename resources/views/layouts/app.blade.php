@@ -58,8 +58,18 @@
                         $userName = Auth::user()->name;
                         $userEmail = Auth::user()->email;
                         $userInitials = collect(explode(' ', $userName))->map(function ($word) {
-                        return mb_substr($word, 0, 1);
+                            return mb_substr($word, 0, 1);
                         })->take(2)->implode('');
+
+                        $user = auth()->user();
+                        $user->loadMissing('maestro');
+                        $isMaestro = $user?->roles->contains('id', 2) ?? false;
+                        $maestroModelId = $user->maestro->id ?? null;
+
+                        $profileLink = '#'; // Default link
+                        if ($isMaestro && $maestroModelId) {
+                            $profileLink = route('maestros.show', $maestroModelId);
+                        }
                         @endphp
                         <button @click="open = !open" class="flex items-center gap-x-2 focus:outline-none rounded-md">
                             <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200 text-sigedra-text-dark">
@@ -85,7 +95,7 @@
                                     <p class="text-xs text-sigedra-text-medium">{{ $userEmail }}</p>
                                 </div>
                                 <div class="h-px bg-gray-200 my-1"></div>
-                                <a href="#" class="flex items-center gap-x-3 px-3 py-2 text-sm text-sigedra-text-dark rounded-md hover:bg-gray-100">
+                                <a href="{{ $profileLink }}" class="flex items-center gap-x-3 px-3 py-2 text-sm text-sigedra-text-dark rounded-md hover:bg-gray-100">
                                     <i class="ph ph-user-circle text-lg text-sigedra-text-medium"></i>
                                     <span>Mi Perfil</span>
                                 </a>
@@ -161,6 +171,11 @@
 
 @livewireScripts
 @stack('scripts')
+<script>
+    document.addEventListener('livewire:navigated', () => {
+        window.Livewire.dispatch('remount');
+    })
+</script>
 
 </body>
 </html>
