@@ -28,28 +28,15 @@
         <ul class="space-y-2">
             @foreach ($navLinks as $link)
             @php
+                if ($link['route'] === 'maestros.index' && $isMaestro) {
+                    continue;
+                }
 
-            $currentActivePattern = $link['active_pattern'];
-            $currentIcon = $link['icon'];
-            $currentLabel = $link['label'];
-            $href = route($link['route']); // URL por defecto
-
-            // Logica si es el enlace de 'maestros.index'
-            if ($link['route'] === 'maestros.index' && $isMaestro) {
-
-            // Verificamos si tenemos el ID
-            if ($maestroModelId) {
-            // Sobreescribimos 'Mi Perfil'
-            $href = route('maestros.show', $maestroModelId); // ¡Pasamos el ID de la tabla MAESTROS!
-            $currentActivePattern = 'maestros.show';
-            $currentIcon = 'ph-user-circle';
-            $currentLabel = 'Mi Perfil';
-            } else {
-            // Si el usuario tiene el rol pero no tiene registro Maestro asociado
-            $href = '#';
-            }
-            }
-            $isActive = request()->routeIs($currentActivePattern);
+                $currentActivePattern = $link['active_pattern'];
+                $currentIcon = $link['icon'];
+                $currentLabel = $link['label'];
+                $href = route($link['route']);
+                $isActive = request()->routeIs($currentActivePattern);
             @endphp
 
             <li>

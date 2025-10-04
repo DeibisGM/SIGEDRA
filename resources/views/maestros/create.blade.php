@@ -2,9 +2,11 @@
 
 @php
 $isEdit = isset($maestro);
+$user = auth()->user();
+$isOwnProfile = $isEdit && $user && $user->maestro && $user->maestro->id === $maestro->id;
 
 // Títulos y textos dinámicos
-$title = $isEdit ? 'Editar Maestro ' : 'Crear Maestro';
+$title = $isEdit ? ($isOwnProfile ? 'Editar Mi Perfil' : 'Editar Maestro') : 'Crear Maestro';
 $subtitle = $isEdit ? 'Modifica los datos del maestro y su usuario asociado.' : 'Ingresa los datos para registrar un nuevo maestro en el sistema.';
 $buttonText = $isEdit ? 'Guardar Cambios' : 'Guardar Maestro';
 $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
@@ -14,9 +16,15 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
 @section('breadcrumbs')
 <div class="text-base text-gray-500 whitespace-nowrap truncate">
-    <a href="{{ route('maestros.index') }}" class="hover:text-gray-700">Maestros</a>
-    <span class="mx-2">/</span>
-    <span>{{ $isEdit ? 'Editar Maestro' : 'Crear Nuevo Maestro' }}</span>
+    @if ($isOwnProfile)
+        <a href="{{ route('maestros.show', $maestro->id) }}" class="hover:text-gray-700">Mi Perfil</a>
+        <span class="mx-2">/</span>
+        <span>Editar Perfil</span>
+    @else
+        <a href="{{ route('maestros.index') }}" class="hover:text-gray-700">Maestros</a>
+        <span class="mx-2">/</span>
+        <span>{{ $isEdit ? 'Editar Maestro' : 'Crear Nuevo Maestro' }}</span>
+    @endif
 </div>
 @endsection
 
@@ -25,9 +33,15 @@ $buttonIcon = $isEdit ? 'ph ph-floppy-disk' : 'ph ph-plus-circle';
 
 @section('header_actions')
 <div class="hidden md:flex items-center justify-end mt-4 gap-3">
+    @if ($isOwnProfile)
+    <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}">
+        Cancelar
+    </x-secondary-button>
+    @else
     <x-secondary-button as="a" href="{{ route('maestros.index') }}">
         Cancelar
     </x-secondary-button>
+    @endif
 
     @if ($isEdit)
     <x-primary-button as="button" type="button" x-data x-on:click.prevent="$dispatch('open-modal', 'pre-update-modal')">
