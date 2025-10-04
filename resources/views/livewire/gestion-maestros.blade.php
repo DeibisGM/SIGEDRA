@@ -135,10 +135,12 @@
                                 </button>
                                 <div x-show="openMenu" @click.outside="openMenu = false" x-transition class="absolute z-10 top-full right-0 mt-0 bg-white border border-gray-100 rounded-md shadow-lg">
                                     <div class="flex flex-col">
+
                                         <x-secondary-button as="a" href="{{ route('maestros.show', $maestro->id) }}" class="me-2 !bg-transparent !border-none !shadow-none !text-gray-700 hover:!text-gray-900 !w-full !justify-start">
                                             <i class="ph ph-eye text-lg"></i>
                                             <span>Ver</span>
                                         </x-secondary-button>
+
                                         <div class="border-t border-gray-100"></div>
                                         <x-secondary-button as="a" href="{{ route('maestros.edit', $maestro->id) }}" class="me-2 !bg-transparent !border-none !shadow-none !text-gray-700 hover:!text-gray-900 !w-full !justify-start">
                                             <i class="ph ph-pencil-simple text-lg"></i>
