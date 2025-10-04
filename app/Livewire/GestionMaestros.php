@@ -15,6 +15,8 @@ class GestionMaestros extends Component
 {
     use WithPagination;
 
+    public bool $isReady = false;
+
     public string $search = '';
     public string $activeFilter = 'active';
     public array $activeFilters = [];
@@ -22,6 +24,11 @@ class GestionMaestros extends Component
     public function mount(): void
     {
         $this->applyFilters();
+    }
+
+    public function loadMaestros(): void
+    {
+        $this->isReady = true;
     }
 
     public function filterByStatus(string $status): void
@@ -47,31 +54,35 @@ class GestionMaestros extends Component
 
     public function render()
     {
-        $query = Maestro::with('user');
+        if (!$this->isReady) {
+            $maestros = new LengthAwarePaginator([], 0, 10);
+        } else {
+            $query = Maestro::with('user');
 
-        if ($this->activeFilters['active'] === 'active') {
-            $query->where('activo', 1);
-        } elseif ($this->activeFilters['active'] === 'inactive') {
-            $query->where('activo', 0);
+            if ($this->activeFilters['active'] === 'active') {
+                $query->where('activo', 1);
+            } elseif ($this->activeFilters['active'] === 'inactive') {
+                $query->where('activo', 0);
+            }
+
+            if ($this->activeFilters['search']) {
+                $searchTerms = explode(' ', $this->activeFilters['search']);
+                $query->where(function (Builder $q) use ($searchTerms) {
+                    foreach ($searchTerms as $term) {
+                        $q->where(function (Builder $q2) use ($term) {
+                            $q2->where('primer_nombre', 'like', '%' . $term . '%')
+                                ->orWhere('primer_apellido', 'like', '%' . $term . '%')
+                                ->orWhere('segundo_apellido', 'like', '%' . $term . '%')
+                                ->orWhereHas('user', function (Builder $qUser) use ($term) {
+                                    $qUser->where('cedula', 'like', '%' . $term . '%');
+                                });
+                        });
+                    }
+                });
+            }
+
+            $maestros = $query->orderBy('primer_nombre')->paginate(10);
         }
-
-        if ($this->activeFilters['search']) {
-            $searchTerms = explode(' ', $this->activeFilters['search']);
-            $query->where(function (Builder $q) use ($searchTerms) {
-                foreach ($searchTerms as $term) {
-                    $q->where(function (Builder $q2) use ($term) {
-                        $q2->where('primer_nombre', 'like', '%' . $term . '%')
-                            ->orWhere('primer_apellido', 'like', '%' . $term . '%')
-                            ->orWhere('segundo_apellido', 'like', '%' . $term . '%')
-                            ->orWhereHas('user', function (Builder $qUser) use ($term) {
-                                $qUser->where('cedula', 'like', '%' . $term . '%');
-                            });
-                    });
-                }
-            });
-        }
-
-        $maestros = $query->orderBy('primer_nombre')->paginate(10);
 
         return view('livewire.gestion-maestros', [
             'maestros' => $maestros,
