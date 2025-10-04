@@ -83,10 +83,10 @@
             <div>
                 <x-input-label for="date" value="Fecha" />
                 <div class="relative mt-1">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
                         <i class="ph ph-calendar-blank w-4 h-4 text-sigedra-text-medium"></i>
                     </div>
-                    <input datepicker datepicker-buttons datepicker-autohide datepicker-format="yyyy-mm-dd" datepicker-autoselect-today id="date" type="text" class="custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full ps-10 p-2.5" placeholder="Seleccionar fecha" x-model="date" required autocomplete="off" @change="showValidationError = false">
+                    <input datepicker datepicker-buttons datepicker-autohide datepicker-format="yyyy-mm-dd" datepicker-autoselect-today id="date" type="text" class="custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" x-model="date" required autocomplete="off" @change="showValidationError = false">
                 </div>
             </div>
         </div>

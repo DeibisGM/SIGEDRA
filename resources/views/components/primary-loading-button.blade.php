@@ -8,7 +8,7 @@
 $baseClasses = 'py-2 px-4 inline-flex items-center justify-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-sigedra-primary text-white hover:bg-sigedra-primary-dark focus:outline-none focus:bg-sigedra-primary-dark transition-all shadow-sm relative';
 @endphp
 
-<button {{ $attributes->merge(['type' => $type, 'class' => $baseClasses]) }}
+<button {{ $attributes->except('wire:target')->merge(['type' => $type, 'class' => $baseClasses]) }}
     @if(!$wireTarget) x-bind:disabled="{{ $loading }}" @endif
 >
     @if($wireTarget)

@@ -5,15 +5,31 @@
     <header class="">
         <div class="container mx-auto px-0 py-5 flex items-center justify-between">
             <div class="flex items-baseline gap-x-2">
-                <x-secondary-loading-button wire:click="closeSession" wire:target="closeSession" title="Volver al historial">
-                    <i class="ph ph-arrow-left text-xl"></i>
-                </x-secondary-loading-button>
+                <button wire:click="closeSession" title="Volver al historial" class="inline-flex items-center justify-center rounded-full text-sigedra-text-medium hover:text-sigedra-primary-dark focus:outline-none transition-colors w-10 h-10">
+                    <span wire:loading.remove wire:target="closeSession">
+                        <i class="ph ph-arrow-left text-xl"></i>
+                    </span>
+                    <span wire:loading wire:target="closeSession">
+                        <div class="animate-spin-custom flex items-center justify-center">
+                            <i class="ph-bold ph-spinner text-xl"></i>
+                        </div>
+                    </span>
+                </button>
                 <h1 class="text-xl font-bold text-sigedra-text-medium leading-tight">Detalles de la Sesión</h1>
             </div>
-            <x-secondary-loading-button wire:click="editSession" wire:target="editSession" class="hidden lg:inline-flex min-w-[150px]">
-                <i class="ph ph-pencil-simple text-lg"></i>
-                <span>Editar sesión</span>
-            </x-secondary-loading-button>
+            <div x-data="{ loading: false }">
+                <button @click="loading = true; window.location.href='{{ route('attendance.edit', $session->id) }}'" :disabled="loading" class="hidden lg:inline-flex min-w-[150px] py-2 px-3 items-center justify-center gap-x-2 text-sm font-semibold rounded-md border bg-sigedra-components-bg text-sigedra-text-medium hover:bg-sigedra-components-hover-bg focus:outline-none focus:sigedra-components-hover-bg transition-colors">
+                    <span x-show="!loading" class="flex items-center gap-x-2">
+                        <i class="ph ph-pencil-simple text-lg"></i>
+                        <span>Editar sesión</span>
+                    </span>
+                    <span x-show="loading" style="display: none;">
+                        <div class="animate-spin-custom flex items-center justify-center">
+                            <i class="ph-bold ph-spinner text-xl"></i>
+                        </div>
+                    </span>
+                </button>
+            </div>
         </div>
     </header>
 
@@ -88,9 +104,14 @@
             @forelse ($studentDetails as $asistencia)
             <div class="p-4">
                 <div class="flex justify-between items-start gap-4">
-                    <div>
-                        <p class="font-bold text-sigedra-text-dark">{{ $asistencia->estudiante->nombre_completo }}</p>
-                        <p class="text-sm text-sigedra-text-medium">{{ $asistencia->estudiante->cedula }}</p>
+                    <div class="flex items-center gap-3">
+                        <span class="flex-shrink-0 w-7 h-7 rounded-full bg-sigedra-primary text-white flex items-center justify-center font-bold text-xs">
+                            {{ $loop->iteration }}
+                        </span>
+                        <div>
+                            <p class="font-bold text-sigedra-text-dark">{{ $asistencia->estudiante->nombre_completo }}</p>
+                            <p class="text-sm text-sigedra-text-medium">{{ $asistencia->estudiante->cedula }}</p>
+                        </div>
                     </div>
                     <span class="shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-lg text-sm font-medium border
                             @switch($asistencia->estadoAsistencia->nombre)
@@ -118,11 +139,18 @@
     </div>
 
     <!-- INICIO: Footer para Móviles -->
-    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-        <x-primary-loading-button wire:click="editSession" wire:target="editSession" class="w-full justify-center py-3">
-            <i class="ph ph-pencil-simple text-lg"></i>
-            <span>Editar sesión</span>
-        </x-primary-loading-button>
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10" x-data="{ loading: false }">
+        <button @click="loading = true; window.location.href='{{ route('attendance.edit', $session->id) }}'" :disabled="loading" class="w-full justify-center py-3 py-2 px-4 inline-flex items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-sigedra-primary text-white hover:bg-sigedra-primary-dark focus:outline-none focus:bg-sigedra-primary-dark transition-all shadow-sm">
+            <span x-show="!loading" class="flex items-center gap-x-2">
+                <i class="ph ph-pencil-simple text-lg"></i>
+                <span>Editar sesión</span>
+            </span>
+            <span x-show="loading" style="display: none;">
+                <div class="animate-spin-custom flex items-center justify-center">
+                    <i class="ph-bold ph-spinner text-xl"></i>
+                </div>
+            </span>
+        </button>
     </div>
     <!-- FIN: Footer para Móviles -->
 
