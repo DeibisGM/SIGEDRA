@@ -5,9 +5,9 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Pennant\Feature;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
-use Laravel\Pennant\Feature;
 
 class AppServiceProvider extends ServiceProvider
 {

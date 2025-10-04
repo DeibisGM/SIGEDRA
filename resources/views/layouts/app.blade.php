@@ -145,6 +145,11 @@
 
 @livewireScripts
 @stack('scripts')
+<script>
+    document.addEventListener('livewire:navigated', () => {
+        window.Livewire.dispatch('remount');
+    })
+</script>
 
 </body>
 </html>

@@ -24,7 +24,7 @@ class MaestroController extends Controller
      */
     public function show(Maestro $maestro): View
     {
-      
+
         $maestro->load(['user', 'materias']);
         return view('maestros.show', compact('maestro'));
     }
