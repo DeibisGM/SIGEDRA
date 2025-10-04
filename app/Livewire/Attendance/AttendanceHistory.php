@@ -8,6 +8,7 @@ use App\Models\Grado;
 use App\Models\Maestro;
 use App\Models\Materia;
 use App\Models\SesionAsistencia;
+use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -89,17 +90,24 @@ class AttendanceHistory extends Component
     {
         $user = auth()->user();
 
-        if ($user->hasRole('Maestro')) {
-            $allMaterias = Materia::whereHas('cargasAcademicas.maestro', fn ($q) => $q->where('usuario_id', $user->id))->orderBy('nombre')->get();
-        } else {
-            $allMaterias = Materia::orderBy('nombre')->get();
-        }
+        $cacheKeyMaterias = $user->hasRole('Maestro') ? 'all_materias_maestro_' . $user->id : 'all_materias';
+        $allMaterias = Cache::remember($cacheKeyMaterias, 60, function () use ($user) {
+            if ($user->hasRole('Maestro')) {
+                return Materia::whereHas('cargasAcademicas.maestro', fn ($q) => $q->where('usuario_id', $user->id))->orderBy('nombre')->get();
+            }
+            return Materia::orderBy('nombre')->get();
+        });
 
-        $allMaestros = Maestro::where('activo', 1)->orderBy('primer_nombre')->get();
-        $allGrados = Grado::with(['nivelAcademico', 'anioAcademico'])
-            ->get()
-            ->sortByDesc('anioAcademico.anio')
-            ->groupBy('anioAcademico.anio');
+        $allMaestros = Cache::remember('all_active_maestros', 60, function () {
+            return Maestro::where('activo', 1)->orderBy('primer_nombre')->get();
+        });
+
+        $allGrados = Cache::remember('all_grados_with_relations', 60, function () {
+            return Grado::with(['nivelAcademico', 'anioAcademico'])
+                ->get()
+                ->sortByDesc('anioAcademico.anio')
+                ->groupBy('anioAcademico.anio');
+        });
 
         $asistencias = collect();
         if ($this->isReady) {

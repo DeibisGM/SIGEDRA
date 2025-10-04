@@ -17,13 +17,20 @@
 
 @section('header_actions')
 <div class="hidden md:flex">
-    <x-primary-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
-    >
-        <i class="ph ph-plus text-base"></i>
-        <span>Pasar Nueva Asistencia</span>
-    </x-primary-button>
+    @if(auth()->user()->hasRole('Administrador'))
+        <x-primary-button>
+            <i class="ph ph-export text-base"></i>
+            <span>Exportar Datos</span>
+        </x-primary-button>
+    @else
+        <x-primary-button
+            x-data=""
+            x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
+        >
+            <i class="ph ph-plus text-base"></i>
+            <span>Pasar Nueva Asistencia</span>
+        </x-primary-button>
+    @endif
 
 </div>
 @endsection

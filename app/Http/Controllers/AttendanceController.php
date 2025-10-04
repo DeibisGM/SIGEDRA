@@ -168,6 +168,14 @@ class AttendanceController extends Controller
      */
     public function edit(SesionAsistencia $sesionAsistencia): View
     {
+        $user = Auth::user();
+
+        if (!$user->hasRole('Administrador')) {
+            if ($user->hasRole('Maestro') && $sesionAsistencia->cargaAcademica->maestro_id !== $user->maestro->id) {
+                abort(403, 'No tienes permiso para editar esta sesión de asistencia.');
+            }
+        }
+
         $sesionAsistencia->load([
             'cargaAcademica.materia',
             'cargaAcademica.grado.nivelAcademico',

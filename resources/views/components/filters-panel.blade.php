@@ -17,7 +17,7 @@
                         <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
                             <i class="ph ph-calendar-blank w-4 h-4 text-sigedra-text-medium"></i>
                         </div>
-                        <input id="start_date" type="text" class="custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off" wire:model.defer="startDate">
+                        <input id="start_date" type="text" class="truncate custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off" wire:model.defer="startDate">
                     </div>
                 </div>
                 <div>
@@ -26,7 +26,7 @@
                         <div class="absolute inset-y-0 end-0 flex items-center pe-3.5 pointer-events-none">
                             <i class="ph ph-calendar-blank w-4 h-4 text-sigedra-text-medium"></i>
                         </div>
-                        <input id="end_date" type="text" class="custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off" wire:model.defer="endDate">
+                        <input id="end_date" type="text" class="truncate custom-datepicker h-11 bg-white border border-sigedra-border text-sigedra-text-dark text-sm rounded-lg focus:border-sigedra-text-medium block w-full pe-10 p-2.5" placeholder="Seleccionar fecha" autocomplete="off" wire:model.defer="endDate">
                     </div>
                 </div>
             </div>
@@ -105,7 +105,9 @@
         </div>
         <div class="flex justify-end gap-3 mt-4">
             <x-secondary-button wire:click="clearFilters">Limpiar Filtros</x-secondary-button>
-            <x-primary-button wire:click="applyFilters">Aplicar Filtros</x-primary-button>
+            <x-primary-button 
+    @click="$wire.applyFilters().then(() => { if (window.matchMedia('(max-width: 767px)').matches) { filtersOpen = false } })"
+>Aplicar Filtros</x-primary-button>
         </div>
     </div>
 </div>

@@ -2,7 +2,9 @@
 
     <!-- Indicador de Borrado -->
     <div x-show="isDeleting" style="display: none;" class="mb-4 bg-red-100 border border-red-400 text-red-700 rounded flex items-center gap-2 px-4 py-3" role="alert">
-        <div class="w-4 h-4 border-2 border-t-red-500 border-red-300 rounded-full animate-spin"></div>
+        <div class="animate-spin-custom flex items-center justify-center">
+            <i class="ph-bold ph-spinner text-xl"></i>
+        </div>
         <span class="text-base">Borrando...</span>
     </div>
 
@@ -75,7 +77,11 @@
                         <td class="px-6 py-3 text-center overflow-hidden">
                             <div class="flex items-center justify-center gap-x-2">
                                 <x-secondary-button @click.prevent="$wire.dispatch('load-session', { sessionId: {{ $asistencia->id }} }); $dispatch('view-session', { sessionId: {{ $asistencia->id }} })" title="Ver Detalles"><i class="ph ph-eye text-lg"></i></x-secondary-button>
-                                <a href="{{ route('attendance.edit', ['sesionAsistencia' => $asistencia->id]) }}" title="Editar Asistencia"><x-secondary-button><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button></a>
+                                <div x-data="{ loading: false }">
+                                    <x-secondary-loading-button loading="loading" @click="loading = true; window.location.href='{{ route('attendance.edit', ['sesionAsistencia' => $asistencia->id]) }}'" title="Editar Asistencia">
+                                        <i class="ph ph-pencil-simple text-lg"></i>
+                                    </x-secondary-loading-button>
+                                </div>
                                 <x-danger-button x-on:click.prevent="$wire.set('recordIdToDelete', {{ $asistencia->id }}); $dispatch('open-modal', 'confirm-deletion')" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
                             </div>
                         </td>
@@ -110,7 +116,11 @@
                     </div>
                     <div class="flex items-center gap-x-2">
                         <x-secondary-button @click.prevent="$wire.dispatch('load-session', { sessionId: {{ $asistencia->id }} }); $dispatch('view-session', { sessionId: {{ $asistencia->id }} })" title="Ver Detalles"><i class="ph ph-eye text-lg"></i></x-secondary-button>
-                        <a href="{{ route('attendance.edit', ['sesionAsistencia' => $asistencia->id]) }}" title="Editar Asistencia"><x-secondary-button><i class="ph ph-pencil-simple text-lg"></i></x-secondary-button></a>
+                        <div x-data="{ loading: false }">
+                            <x-secondary-loading-button loading="loading" @click="loading = true; window.location.href='{{ route('attendance.edit', ['sesionAsistencia' => $asistencia->id]) }}'" title="Editar Asistencia">
+                                <i class="ph ph-pencil-simple text-lg"></i>
+                            </x-secondary-loading-button>
+                        </div>
                         <x-danger-button wire:click="confirmDeletion({{ $asistencia->id }})" title="Eliminar Asistencia"><i class="ph ph-trash text-lg"></i></x-danger-button>
                     </div>
                 </div>
@@ -140,13 +150,19 @@
 
     <!-- Footer Flotante para Móviles -->
     <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 z-10">
-        <x-primary-button
-            x-data=""
-            x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
-            class="w-full justify-center py-3"
-        >
-            <i class="ph ph-plus text-base"></i>
-            <span>Crear Asistencia</span>
-        </x-primary-button>
-    </div>
+            @if(auth()->user()->hasRole('Administrador'))
+                <x-primary-button class="w-full justify-center py-3">
+                    <i class="ph ph-export text-base"></i>
+                    <span>Exportar Datos</span>
+                </x-primary-button>
+            @else
+                <x-primary-button
+                    x-data=""
+                    x-on:click.prevent="$dispatch('open-modal', 'pre-create-modal')"
+                    class="w-full justify-center py-3"
+                >
+                    <i class="ph ph-plus text-base"></i>
+                    <span>Crear Asistencia</span>
+                </x-primary-button>
+            @endif    </div>
 </div>

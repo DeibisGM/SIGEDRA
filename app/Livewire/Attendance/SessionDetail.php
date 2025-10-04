@@ -6,7 +6,7 @@ namespace App\Livewire\Attendance;
 
 use App\Models\Asistencia;
 use App\Models\SesionAsistencia;
-use Illuminate\Http\RedirectResponse;
+use Livewire\Features\SupportRedirects\Redirector;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -48,7 +48,7 @@ class SessionDetail extends Component
         $this->studentDetails = collect();
     }
 
-    public function editSession(): ?RedirectResponse
+    public function editSession(): ?Redirector
     {
         if ($this->session) {
             // Redirige a la ruta de edición con el ID de la sesión.
